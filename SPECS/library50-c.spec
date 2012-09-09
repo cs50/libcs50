@@ -1,9 +1,9 @@
 ############################################################################
 Summary: Simplifies user input for C.
 Name: library50-c
-Version: 17
+Version: 4
 Release: 0
-License: CC BY-NC-SA 3.0
+License: BSD 3-Clause License
 Group: Development/Libraries
 Source: %{name}-%{version}.zip
 Vendor: CS50
@@ -98,5 +98,5 @@ rm -rf %{buildroot}
 %{_srcdir}/*
 
 %changelog
-* Sun Aug 21 2011 David J. Malan <malan@harvard.edu> - 3.0-1
+* Sun Sep 9 2011 David J. Malan <malan@harvard.edu> - 4-0
 - Initial build

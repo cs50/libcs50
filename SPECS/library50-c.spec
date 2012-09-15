@@ -2,14 +2,14 @@
 Summary: Simplifies user input for C.
 Name: library50-c
 Version: 4
-Release: 1
+Release: 2
 License: BSD 3-Clause License
 Group: Development/Libraries
-Source: %{name}-%{version}.zip
 Vendor: CS50
 URL: https://manual.cs50.net/Library
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-Requires: gcc
+Requires: binutils
+Requires: clang
 BuildArch: i386 x86_64
 Conflicts: cs50-library-c
 
@@ -45,50 +45,30 @@ The CS50 Library for C is a suite of code designed to simplify user input.
 
 ############################################################################
 %prep
-/bin/rm -rf %{_builddir}/%{name}-%{version}/
-/usr/bin/unzip %{_sourcedir}/%{name}-%{version}.zip -d %{_builddir}/
+rm -rf %{_builddir}/*
+cp %{_sourcedir}/* %{_builddir}/
 
 
 ############################################################################
 %build
-/usr/bin/gcc -c -ggdb -std=c99 %{_builddir}/%{name}-%{version}/cs50.c -o %{_builddir}/%{name}-%{version}/cs50.o
-/usr/bin/ar rcs %{_builddir}/%{name}-%{version}/libcs50.a %{_builddir}/%{name}-%{version}/cs50.o
-
-
-############################################################################
-%check
+clang -c -ggdb -std=c99 %{_builddir}/cs50.c -o %{_builddir}/cs50.o
+ar rcs %{_builddir}/libcs50.a %{_builddir}/cs50.o
 
 
 ############################################################################
 %install
-/bin/rm -rf %{buildroot}
-/bin/mkdir -p %{buildroot}%{_includedir}
-/bin/mv %{_builddir}/%{name}-%{version}/cs50.h %{buildroot}%{_includedir}/
-/bin/mkdir -p %{buildroot}%{_libdir}
-/bin/mv %{_builddir}/%{name}-%{version}/libcs50.a %{buildroot}%{_libdir}/
-/bin/mkdir -p %{buildroot}%{_srcdir}
-/bin/mv %{_builddir}/%{name}-%{version}/cs50.c %{buildroot}%{_srcdir}/
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_includedir}
+mv %{_builddir}/cs50.h %{buildroot}%{_includedir}/
+mkdir -p %{buildroot}%{_libdir}
+mv %{_builddir}/libcs50.a %{buildroot}%{_libdir}/
+mkdir -p %{buildroot}%{_srcdir}
+mv %{_builddir}/cs50.c %{buildroot}%{_srcdir}/
 
 
 ############################################################################
 %clean
 rm -rf %{buildroot}
-
-
-############################################################################
-%pre
-
-
-############################################################################
-%post
-
-
-############################################################################
-%preun
-
-
-############################################################################
-%postun
 
 
 ############################################################################
@@ -99,5 +79,7 @@ rm -rf %{buildroot}
 %{_srcdir}/*
 
 %changelog
-* Sun Sep 9 2011 David J. Malan <malan@harvard.edu> - 4-0
+* Sat Sep 15 2012 David J. Malan <malan@harvard.edu> - 4-2
+- Tidied repo.
+* Sun Sep 9 2012 David J. Malan <malan@harvard.edu> - 4-0
 - Initial build

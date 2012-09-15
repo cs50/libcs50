@@ -2,7 +2,7 @@
 Summary: Simplifies user input for C.
 Name: library50-c
 Version: 4
-Release: 0
+Release: 1
 License: BSD 3-Clause License
 Group: Development/Libraries
 Source: %{name}-%{version}.zip
@@ -11,6 +11,7 @@ URL: https://manual.cs50.net/Library
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Requires: gcc
 BuildArch: i386 x86_64
+Conflicts: cs50-library-c
 
 
 ############################################################################

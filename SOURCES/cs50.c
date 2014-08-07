@@ -1,13 +1,13 @@
 /****************************************************************************
- * CS50 Library 5
+ * CS50 Library 6
  * https://manual.cs50.net/library/
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2013
+ * Copyright (c) 2013,
  * Glenn Holloway <holloway@eecs.harvard.edu>
  * David J. Malan <malan@harvard.edu>
- * All Rights Reserved
+ * All rights reserved.
  *
  * BSD 3-Clause License
  * http://www.opensource.org/licenses/BSD-3-Clause
@@ -170,7 +170,7 @@ int GetInt(void)
         // return an int if only an int (possibly with
         // leading and/or trailing whitespace) was provided
         int n; char c;
-        if (sscanf(line, " %d %c", &n, &c) == 1)
+        if (sscanf(line, " %i %c", &n, &c) == 1)
         {
             free(line);
             return n;
@@ -190,7 +190,6 @@ int GetInt(void)
  * Leading and trailing whitespace is ignored.  For simplicity, overflow
  * is not detected.  If line can't be read, returns LLONG_MAX.
  */
-
 long long GetLongLong(void)
 {
     // try to get a long long from user

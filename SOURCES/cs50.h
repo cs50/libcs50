@@ -1,13 +1,13 @@
 /****************************************************************************
- * CS50 Library 5
+ * CS50 Library 6
  * https://manual.cs50.net/library/
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2013
+ * Copyright (c) 2013,
  * Glenn Holloway <holloway@eecs.harvard.edu>
  * David J. Malan <malan@harvard.edu>
- * All Rights Reserved
+ * All rights reserved.
  *
  * BSD 3-Clause License
  * http://www.opensource.org/licenses/BSD-3-Clause

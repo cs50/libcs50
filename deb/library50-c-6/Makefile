@@ -1,7 +1,7 @@
 prefix = /usr/local
 srcdir = $(prefix)/src
 libdir = $(prefix)/lib
-includedir = $(sharedir)/include
+includedir = $(prefix)/include
 
 CFLAGS = --std=c99
 

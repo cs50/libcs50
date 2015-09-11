@@ -51,7 +51,7 @@ cp %{_sourcedir}/* %{_builddir}/
 
 ############################################################################
 %build
-clang -c -ggdb -std=c99 %{_builddir}/cs50.c -o %{_builddir}/cs50.o
+clang -c -ggdb -std=c99 -lm %{_builddir}/cs50.c -o %{_builddir}/cs50.o
 ar rcs %{_builddir}/libcs50.a %{_builddir}/cs50.o
 
 

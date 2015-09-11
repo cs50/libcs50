@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h> // Provides errno and ERANGE macro
+#include <math.h> // Provides isfinite()
 #include "cs50.h"
 
 #ifndef SIZE_MAX
@@ -121,7 +122,7 @@ GetDouble(void)
         int errnocpy = errno;
 
         double d = strtod(line, &endptr);
-        if (errno != ERANGE && *endptr == '\0')
+        if (errno != ERANGE && *endptr == '\0' && isfinite(d))
         {
             free(line);
             return d;
@@ -162,7 +163,7 @@ GetFloat(void)
         int errnocpy = errno;
 
         float f = strtof(line, &endptr);
-        if (errno != ERANGE && *endptr == '\0')
+        if (errno != ERANGE && *endptr == '\0' && isfinite(f))
         {
             free(line);
             return f;

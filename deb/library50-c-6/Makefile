@@ -3,7 +3,7 @@ srcdir = $(prefix)/src
 libdir = $(prefix)/lib
 includedir = $(prefix)/include
 
-CFLAGS = --std=c99
+CFLAGS = -lm --std=c99
 
 all:
 	gcc -c -o cs50.o cs50.c

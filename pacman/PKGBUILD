@@ -24,7 +24,7 @@ package() {
     cd $srcdir/library50-c/
     install -Dm0644     libcs50.a   "$pkgdir/usr/lib/libcs50.a"
     install -Dm0644     cs50.h      "$pkgdir/usr/include/cs50.h"
-    install -Dm0644     cs50.c      "$pkgdir/usr/src/cs50.h"
+    install -Dm0644     cs50.c      "$pkgdir/usr/src/cs50.c"
 }
 
 pkgver() {

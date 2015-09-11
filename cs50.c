@@ -117,8 +117,9 @@ GetDouble(void)
 
         // return a double if only a double (possibly with
         // leading and/or trailing whitespace) was provided
-        char *endptr;
+        char *endptr = NULL;
         int errnocpy = errno;
+
         double d = strtod(line, &endptr);
         if (errno != ERANGE && *endptr == '\0')
         {
@@ -157,8 +158,9 @@ GetFloat(void)
 
         // return a float if only a float (possibly with
         // leading and/or trailing whitespace) was provided
-        char *endptr;
+        char *endptr = NULL;
         int errnocpy = errno;
+
         float f = strtof(line, &endptr);
         if (errno != ERANGE && *endptr == '\0')
         {
@@ -198,8 +200,9 @@ GetInt(void)
 
         // return an int if only an int (possibly with
         // leading and/or trailing whitespace) was provided
-        char *endptr;
+        char *endptr = NULL;
         int errnocpy = errno;
+
         /* There is no strtoi() so we must check if n is
          * between INT_MAX and INT_MIN. On most systems
          * a long is the same size as an int but not on all. */
@@ -242,8 +245,9 @@ GetLongLong(void)
 
         // return a long long and only a long long, checking for
         // overflow. Will skip over whitespace.
-        char *endptr;
+        char *endptr = NULL;
         int errnocpy = errno;
+
         long long n = strtoll(line, &endptr, BASE);
         if (errno != ERANGE && *endptr == '\0')
         {

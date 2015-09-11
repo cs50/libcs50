@@ -56,12 +56,6 @@
 #define CAPACITY 128
 // Base for strtol() and strtoll()
 #define BASE 10
-// Macro to reset errno if it has been changed
-#define RESETERR(VAL) if (errno != VAL) errno = VAL
-// Macro to cleanup upon function termination
-#define CLEANUP(BUF, RET) free(BUF); return RET
-// Macro used when the Get*() (except GetString()) recieve invalid input
-#define RETRY(BUF) free(BUF); printf("Retry: ")
 
 
 
@@ -89,11 +83,13 @@ GetChar(void)
         char c1, c2;
         if (sscanf(line, " %c %c", &c1, &c2) == 1)
         {
-            CLEANUP(line, c1);
+            free(line);
+            return c1;
         }
         else
         {
-            RETRY(line);
+            free(line);
+            printf("Retry: ");
         }
     }
 }
@@ -126,12 +122,14 @@ GetDouble(void)
         double d = strtod(line, &endptr);
         if (errno != ERANGE && *endptr == '\0')
         {
-            CLEANUP(line, d);
+            free(line);
+            return d;
         }
         else
         {
-            RESETERR(errnocpy);
-            RETRY(line);
+            errno = errnocpy;
+            free(line);
+            printf("Retry: ");
         }
     }
 }
@@ -164,12 +162,14 @@ GetFloat(void)
         float f = strtof(line, &endptr);
         if (errno != ERANGE && *endptr == '\0')
         {
-            CLEANUP(line, f);
+            free(line);
+            return f;
         }
         else
         {
-            RESETERR(errnocpy);
-            RETRY(line);
+            errno = errnocpy;
+            free(line);
+            printf("Retry: ");
         }
     }
 }
@@ -206,12 +206,14 @@ GetInt(void)
         long n = strtol(line, &endptr, BASE);
         if (errno != ERANGE && *endptr == '\0' && n <= INT_MAX && n >= INT_MIN)
         {
-            CLEANUP(line, (int) n);
+            free(line);
+            return (int) n;
         }
         else
         {
-            RESETERR(errnocpy);
-            RETRY(line);
+            errno = errnocpy;
+            free(line);
+            printf("Retry: ");
         }
     }
 }
@@ -245,12 +247,14 @@ GetLongLong(void)
         long long n = strtoll(line, &endptr, BASE);
         if (errno != ERANGE && *endptr == '\0')
         {
-            CLEANUP(line, n);
+            free(line);
+            return n;
         }
         else
         {
-            RESETERR(errnocpy);
-            RETRY(line);
+            errno = errnocpy;
+            free(line);
+            printf("Retry: ");
         }
     }
 }
@@ -300,7 +304,8 @@ GetString(void)
             }
             else
             {
-                CLEANUP(buffer, NULL);
+                free(buffer);
+                return NULL;
             }
 
             // extend buffer's capacity
@@ -309,7 +314,8 @@ GetString(void)
             string temp = realloc(buffer, capacity * sizeof(*temp));
             if (temp == NULL)
             {
-                CLEANUP(buffer, NULL);
+                free(buffer);
+                return NULL;
             }
 
             buffer = temp;

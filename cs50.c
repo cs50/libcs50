@@ -43,6 +43,7 @@
  ***************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> // Provides strlen()
 #include <errno.h> // Provides errno and ERANGE macro
 #include <math.h> // Provides isfinite()
 #include "cs50.h"
@@ -55,9 +56,9 @@
 
 // Default capacity of buffer for standard input.
 #define CAPACITY 128
-// Base for strtol() and strtoll()
-#define BASE 10
-
+// Automatically detect if input is octal, decimal or hexidecimal in GetInt and
+// GetLong
+#define BASE 0
 
 
 /*
@@ -119,10 +120,10 @@ GetDouble(void)
         // return a double if only a double (possibly with
         // leading and/or trailing whitespace) was provided
         char *endptr = NULL;
-        int errnocpy = errno;
+        int const errnocpy = errno;
 
         double d = strtod(line, &endptr);
-        if (errno != ERANGE && *endptr == '\0' && isfinite(d))
+        if (strlen(line) && errno != ERANGE && *endptr == '\0' && isfinite(d))
         {
             free(line);
             return d;
@@ -160,10 +161,10 @@ GetFloat(void)
         // return a float if only a float (possibly with
         // leading and/or trailing whitespace) was provided
         char *endptr = NULL;
-        int errnocpy = errno;
+        int const errnocpy = errno;
 
         float f = strtof(line, &endptr);
-        if (errno != ERANGE && *endptr == '\0' && isfinite(f))
+        if (strlen(line) && errno != ERANGE && *endptr == '\0' && isfinite(f))
         {
             free(line);
             return f;
@@ -202,13 +203,14 @@ GetInt(void)
         // return an int if only an int (possibly with
         // leading and/or trailing whitespace) was provided
         char *endptr = NULL;
-        int errnocpy = errno;
+        int const errnocpy = errno;
 
         /* There is no strtoi() so we must check if n is
          * between INT_MAX and INT_MIN. On most systems
          * a long is the same size as an int but not on all. */
         long n = strtol(line, &endptr, BASE);
-        if (errno != ERANGE && *endptr == '\0' && n <= INT_MAX && n >= INT_MIN)
+        if (strlen(line) && errno != ERANGE && *endptr == '\0' && n <= INT_MAX
+                && n >= INT_MIN)
         {
             free(line);
             return (int) n;
@@ -247,10 +249,10 @@ GetLongLong(void)
         // return a long long and only a long long, checking for
         // overflow. Will skip over whitespace.
         char *endptr = NULL;
-        int errnocpy = errno;
+        int const errnocpy = errno;
 
         long long n = strtoll(line, &endptr, BASE);
-        if (errno != ERANGE && *endptr == '\0')
+        if (strlen(line) && errno != ERANGE && *endptr == '\0')
         {
             free(line);
             return n;
@@ -351,3 +353,4 @@ GetString(void)
     // return string
     return minimal;
 }
+

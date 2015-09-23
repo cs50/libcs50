@@ -121,9 +121,9 @@ GetDouble(void)
         // leading and/or trailing whitespace) was provided
         char *endptr = NULL;
         int const errnocpy = errno;
-
+    
         double d = strtod(line, &endptr);
-        if (strlen(line) && errno != ERANGE && *endptr == '\0' && isfinite(d))
+        if (strlen(line) && errno != ERANGE && !*endptr && isfinite(d))
         {
             free(line);
             return d;
@@ -164,7 +164,7 @@ GetFloat(void)
         int const errnocpy = errno;
 
         float f = strtof(line, &endptr);
-        if (strlen(line) && errno != ERANGE && *endptr == '\0' && isfinite(f))
+        if (strlen(line) && errno != ERANGE && !*endptr && isfinite(f))
         {
             free(line);
             return f;
@@ -209,7 +209,7 @@ GetInt(void)
          * between INT_MAX and INT_MIN. On most systems
          * a long is the same size as an int but not on all. */
         long n = strtol(line, &endptr, BASE);
-        if (strlen(line) && errno != ERANGE && *endptr == '\0' && n <= INT_MAX
+        if (strlen(line) && errno != ERANGE && !*endptr && n <= INT_MAX
                 && n >= INT_MIN)
         {
             free(line);
@@ -252,7 +252,7 @@ GetLongLong(void)
         int const errnocpy = errno;
 
         long long n = strtoll(line, &endptr, BASE);
-        if (strlen(line) && errno != ERANGE && *endptr == '\0')
+        if (strlen(line) && errno != ERANGE && !*endptr)
         {
             free(line);
             return n;

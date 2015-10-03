@@ -316,9 +316,9 @@ GetString(void)
             }
 
             // extend buffer's capacity
-            // Better practice to use sizeof(*temp) than sizeof(char);
+            // Better practice to use sizeof *temp than sizeof(char);
             // http://stackoverflow.com/questions/7243872/why-write-sizeofchar-if-char-is-1-by-standard
-            string temp = realloc(buffer, capacity * sizeof(*temp));
+            string temp = realloc(buffer, capacity * sizeof *temp);
             if (temp == NULL)
             {
                 free(buffer);
@@ -339,7 +339,7 @@ GetString(void)
     }
 
 
-    string minimal = realloc(buffer, (n + 1) * sizeof(*minimal));
+    string minimal = realloc(buffer, (n + 1) * sizeof *minimal);
     // Check if realloc failed
     if (minimal == NULL)
     {

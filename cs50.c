@@ -36,21 +36,39 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * Contributors:
+ *   Chad Sharp <crossroads1112@riseup.net>
  ***************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
+#include <string.h> // Provides strlen()
+#include <errno.h> // Provides errno and ERANGE macro
+#include <math.h> // Provides isfinite()
 #include "cs50.h"
 
-/**
- * Reads a line of text from standard input and returns the equivalent
- * char; if text does not represent a char, user is prompted to retry.
- * Leading and trailing whitespace is ignored.  If line can't be read,
- * returns CHAR_MAX.
+#ifndef SIZE_MAX
+#define SIZE_MAX ((size_t) -1)
+#endif
+
+
+
+// Default capacity of buffer for standard input.
+#define CAPACITY 128
+// Automatically detect if input is octal, decimal or hexidecimal in GetInt and
+// GetLong
+#define BASE 0
+
+
+/*
+ * Reads a line of text from standard input and returns the equivalent char; if
+ * text does not represent a char, user is prompted to retry.  Leading and
+ * trailing whitespace is ignored.  If line can't be read, returns CHAR_MAX.
  */
-char GetChar(void)
+
+char
+GetChar(void)
 {
     // try to get a char from user
     while (true)
@@ -78,14 +96,16 @@ char GetChar(void)
     }
 }
 
-/**
- * Reads a line of text from standard input and returns the equivalent
- * double as precisely as possible; if text does not represent a
- * double, user is prompted to retry.  Leading and trailing whitespace
- * is ignored.  For simplicity, overflow and underflow are not detected.
- * If line can't be read, returns DBL_MAX.
+
+/*
+ * Reads a line of text from standard input and returns the equivalent double
+ * as precisely as possible; if text does not represent a double, user is
+ * prompted to retry.  Leading and trailing whitespace is ignored.
+ * Overflow/underflow detected.  If line can't be read, returns DBL_MAX.
  */
-double GetDouble(void)
+
+double
+GetDouble(void)
 {
     // try to get a double from user
     while (true)
@@ -99,28 +119,34 @@ double GetDouble(void)
 
         // return a double if only a double (possibly with
         // leading and/or trailing whitespace) was provided
-        double d; char c;
-        if (sscanf(line, " %lf %c", &d, &c) == 1)
+        char *endptr = NULL;
+        int const errnocpy = errno;
+    
+        double d = strtod(line, &endptr);
+        if (strlen(line) && errno != ERANGE && !*endptr && isfinite(d))
         {
             free(line);
             return d;
         }
         else
         {
+            errno = errnocpy;
             free(line);
             printf("Retry: ");
         }
     }
 }
 
-/**
- * Reads a line of text from standard input and returns the equivalent
- * float as precisely as possible; if text does not represent a float,
- * user is prompted to retry.  Leading and trailing whitespace is ignored.
- * For simplicity, overflow and underflow are not detected.  If line can't
- * be read, returns FLT_MAX.
+
+/*
+ * Reads a line of text from standard input and returns the equivalent float as
+ * precisely as possible; if text does not represent a float, user is prompted
+ * to retry.  Leading and trailing whitespace is ignored.  If line can't be
+ * read, returns FLT_MAX. Checks for overflow.
  */
-float GetFloat(void)
+
+float
+GetFloat(void)
 {
     // try to get a float from user
     while (true)
@@ -134,28 +160,35 @@ float GetFloat(void)
 
         // return a float if only a float (possibly with
         // leading and/or trailing whitespace) was provided
-        char c; float f;
-        if (sscanf(line, " %f %c", &f, &c) == 1)
+        char *endptr = NULL;
+        int const errnocpy = errno;
+
+        float f = strtof(line, &endptr);
+        if (strlen(line) && errno != ERANGE && !*endptr && isfinite(f))
         {
             free(line);
             return f;
         }
         else
         {
+            errno = errnocpy;
             free(line);
             printf("Retry: ");
         }
     }
 }
 
-/**
- * Reads a line of text from standard input and returns it as an
- * int in the range of [-2^31 + 1, 2^31 - 2], if possible; if text
- * does not represent such an int, user is prompted to retry.  Leading
- * and trailing whitespace is ignored.  For simplicity, overflow is not
- * detected.  If line can't be read, returns INT_MAX.
+
+/*
+ * Reads a line of text from standard input and returns it as an int in the
+ * range of [-2^31 + 1, 2^31 - 2] (on some systems), if possible; if text does
+ * not represent such an int, user is prompted to retry.  Leading and trailing
+ * whitespace is ignored. Overflow is detected and user is prompted to retry.
+ * If line can't be read, returns INT_MAX.
  */
-int GetInt(void)
+
+int
+GetInt(void)
 {
     // try to get an int from user
     while (true)
@@ -169,28 +202,39 @@ int GetInt(void)
 
         // return an int if only an int (possibly with
         // leading and/or trailing whitespace) was provided
-        int n; char c;
-        if (sscanf(line, " %i %c", &n, &c) == 1)
+        char *endptr = NULL;
+        int const errnocpy = errno;
+
+        /* There is no strtoi() so we must check if n is
+         * between INT_MAX and INT_MIN. On most systems
+         * a long is the same size as an int but not on all. */
+        long n = strtol(line, &endptr, BASE);
+        if (strlen(line) && errno != ERANGE && !*endptr && n <= INT_MAX
+                && n >= INT_MIN)
         {
             free(line);
-            return n;
+            return (int) n;
         }
         else
         {
+            errno = errnocpy;
             free(line);
             printf("Retry: ");
         }
     }
 }
 
-/**
- * Reads a line of text from standard input and returns an equivalent
- * long long in the range [-2^63 + 1, 2^63 - 2], if possible; if text
- * does not represent such a long long, user is prompted to retry.
- * Leading and trailing whitespace is ignored.  For simplicity, overflow
- * is not detected.  If line can't be read, returns LLONG_MAX.
+
+/*
+ * Reads a line of text from standard input and returns an equivalent long long
+ * in the range [-2^63 + 1, 2^63 - 2] (on some sysytems), if possible; if text
+ * does not represent such a long long, user is prompted to retry.  Leading and
+ * trailing whitespace is ignored. Overflow is detected and user prompted to
+ * retry. If line can't be read, returns LLONG_MAX.
  */
-long long GetLongLong(void)
+
+long long
+GetLongLong(void)
 {
     // try to get a long long from user
     while (true)
@@ -202,40 +246,46 @@ long long GetLongLong(void)
             return LLONG_MAX;
         }
 
-        // return a long long if only a long long (possibly with
-        // leading and/or trailing whitespace) was provided
-        long long n; char c;
-        if (sscanf(line, " %lld %c", &n, &c) == 1)
+        // return a long long and only a long long, checking for
+        // overflow. Will skip over whitespace.
+        char *endptr = NULL;
+        int const errnocpy = errno;
+
+        long long n = strtoll(line, &endptr, BASE);
+        if (strlen(line) && errno != ERANGE && !*endptr)
         {
             free(line);
             return n;
         }
         else
         {
+            errno = errnocpy;
             free(line);
             printf("Retry: ");
         }
     }
 }
 
-/**
- * Reads a line of text from standard input and returns it as a
- * string (char*), sans trailing newline character.  (Ergo, if
- * user inputs only "\n", returns "" not NULL.)  Returns NULL
- * upon error or no input whatsoever (i.e., just EOF).  Leading
- * and trailing whitespace is not ignored.  Stores string on heap
- * (via malloc); memory must be freed by caller to avoid leak.
+
+/*
+ * Reads a line of text from standard input and returns it as a string, sans
+ * trailing newline character.  (Ergo, if user inputs only "\n", returns "" not
+ * NULL.)  Leading and trailing whitespace is not ignored.  Returns NULL upon
+ * error or no input whatsoever (i.e., just EOF).
  */
-string GetString(void)
+
+
+string
+GetString(void)
 {
     // growable buffer for chars
     string buffer = NULL;
 
     // capacity of buffer
-    unsigned int capacity = 0;
+    size_t capacity = 0;
 
     // number of chars actually in buffer
-    unsigned int n = 0;
+    size_t n = 0;
 
     // character read or EOF
     int c;
@@ -244,16 +294,20 @@ string GetString(void)
     while ((c = fgetc(stdin)) != '\n' && c != EOF)
     {
         // grow buffer if necessary
-        if (n + 1 > capacity)
+        if (n + 1 >= capacity)
         {
-            // determine new capacity: start at 32 then double
+            // determine new capacity: start at CAPACITY then double
             if (capacity == 0)
             {
-                capacity = 32;
+                capacity = CAPACITY;
             }
-            else if (capacity <= (UINT_MAX / 2))
+            else if (capacity <= (SIZE_MAX / 2))
             {
                 capacity *= 2;
+            }
+            else if (capacity < (SIZE_MAX - 1))
+            {
+                capacity += ((SIZE_MAX - capacity)/2);
             }
             else
             {
@@ -262,12 +316,15 @@ string GetString(void)
             }
 
             // extend buffer's capacity
-            string temp = realloc(buffer, capacity * sizeof(char));
+            // Better practice to use sizeof *temp than sizeof(char);
+            // http://stackoverflow.com/questions/7243872/why-write-sizeofchar-if-char-is-1-by-standard
+            string temp = realloc(buffer, capacity * sizeof *temp);
             if (temp == NULL)
             {
                 free(buffer);
                 return NULL;
             }
+
             buffer = temp;
         }
 
@@ -281,10 +338,14 @@ string GetString(void)
         return NULL;
     }
 
-    // minimize buffer
-    string minimal = malloc((n + 1) * sizeof(char));
-    strncpy(minimal, buffer, n);
-    free(buffer);
+
+    string minimal = realloc(buffer, (n + 1) * sizeof *minimal);
+    // Check if realloc failed
+    if (minimal == NULL)
+    {
+        // Minimization failed. Input should still be returned
+        minimal = buffer;
+    }
 
     // terminate string
     minimal[n] = '\0';
@@ -292,3 +353,4 @@ string GetString(void)
     // return string
     return minimal;
 }
+

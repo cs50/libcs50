@@ -1,10 +1,10 @@
-/****************************************************************************
- * CS50 Library 6
- * https://manual.cs50.net/library/
+/**
+ * CS50 Library for C
+ * https://github.com/cs50/c/
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2013,
+ * Copyright (c) 2016,
  * Glenn Holloway <holloway@eecs.harvard.edu>
  * David J. Malan <malan@harvard.edu>
  * All rights reserved.
@@ -36,7 +36,7 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************/
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,16 +47,16 @@
 /**
  * Reads a line of text from standard input and returns the equivalent
  * char; if text does not represent a char, user is prompted to retry.
- * Leading and trailing whitespace is ignored.  If line can't be read,
+ * Leading and trailing whitespace is ignored. If line can't be read,
  * returns CHAR_MAX.
  */
-char GetChar(void)
+char get_char(void)
 {
     // try to get a char from user
     while (true)
     {
         // get line of text, returning CHAR_MAX on failure
-        string line = GetString();
+        string line = get_string();
         if (line == NULL)
         {
             return CHAR_MAX;
@@ -64,11 +64,11 @@ char GetChar(void)
 
         // return a char if only a char (possibly with
         // leading and/or trailing whitespace) was provided
-        char c1, c2;
-        if (sscanf(line, " %c %c", &c1, &c2) == 1)
+        char c, d;
+        if (sscanf(line, " %c %c", &c, &d) == 1)
         {
             free(line);
-            return c1;
+            return c;
         }
         else
         {
@@ -77,21 +77,21 @@ char GetChar(void)
         }
     }
 }
+char (*GetChar)(void) = get_char;
 
 /**
  * Reads a line of text from standard input and returns the equivalent
  * double as precisely as possible; if text does not represent a
- * double, user is prompted to retry.  Leading and trailing whitespace
- * is ignored.  For simplicity, overflow and underflow are not detected.
- * If line can't be read, returns DBL_MAX.
+ * double, user is prompted to retry. Leading and trailing whitespace
+ * is ignored. If line can't be read, returns DBL_MAX.
  */
-double GetDouble(void)
+double get_double(void)
 {
     // try to get a double from user
     while (true)
     {
         // get line of text, returning DBL_MAX on failure
-        string line = GetString();
+        string line = get_string();
         if (line == NULL)
         {
             return DBL_MAX;
@@ -112,21 +112,21 @@ double GetDouble(void)
         }
     }
 }
+double (*GetDouble)(void) = get_double;
 
 /**
  * Reads a line of text from standard input and returns the equivalent
  * float as precisely as possible; if text does not represent a float,
- * user is prompted to retry.  Leading and trailing whitespace is ignored.
- * For simplicity, overflow and underflow are not detected.  If line can't
- * be read, returns FLT_MAX.
+ * user is prompted to retry. Leading and trailing whitespace is ignored.
+ * If line can't be read, returns FLT_MAX.
  */
-float GetFloat(void)
+float get_float(void)
 {
     // try to get a float from user
     while (true)
     {
         // get line of text, returning FLT_MAX on failure
-        string line = GetString();
+        string line = get_string();
         if (line == NULL)
         {
             return FLT_MAX;
@@ -147,21 +147,21 @@ float GetFloat(void)
         }
     }
 }
+float (*GetFloat)(void) = get_float;
 
 /**
  * Reads a line of text from standard input and returns it as an
- * int in the range of [-2^31 + 1, 2^31 - 2], if possible; if text
- * does not represent such an int, user is prompted to retry.  Leading
- * and trailing whitespace is ignored.  For simplicity, overflow is not
- * detected.  If line can't be read, returns INT_MAX.
+ * int in [-2^31, 2^31 - 1), if possible; if text does not represent
+ * such an int, user is prompted to retry. Leading and trailing
+ * whitespace is ignored. If line can't be read, returns INT_MAX.
  */
-int GetInt(void)
+int get_int(void)
 {
     // try to get an int from user
     while (true)
     {
         // get line of text, returning INT_MAX on failure
-        string line = GetString();
+        string line = get_string();
         if (line == NULL)
         {
             return INT_MAX;
@@ -170,7 +170,7 @@ int GetInt(void)
         // return an int if only an int (possibly with
         // leading and/or trailing whitespace) was provided
         int n; char c;
-        if (sscanf(line, " %i %c", &n, &c) == 1)
+        if (sscanf(line, " %d %c", &n, &c) == 1)
         {
             free(line);
             return n;
@@ -182,21 +182,21 @@ int GetInt(void)
         }
     }
 }
+int (*GetInt)(void) = get_int;
 
 /**
  * Reads a line of text from standard input and returns an equivalent
- * long long in the range [-2^63 + 1, 2^63 - 2], if possible; if text
- * does not represent such a long long, user is prompted to retry.
- * Leading and trailing whitespace is ignored.  For simplicity, overflow
- * is not detected.  If line can't be read, returns LLONG_MAX.
+ * long long in [-2^63, 2^63 - 1), if possible; if text does not
+ * represent such a long long, user is prompted to retry. Leading and
+ * trailing whitespace is ignored. If line can't be read, returns LLONG_MAX.
  */
-long long GetLongLong(void)
+long long get_long_long(void)
 {
     // try to get a long long from user
     while (true)
     {
         // get line of text, returning LLONG_MAX on failure
-        string line = GetString();
+        string line = get_string();
         if (line == NULL)
         {
             return LLONG_MAX;
@@ -217,16 +217,17 @@ long long GetLongLong(void)
         }
     }
 }
+long long (*GetLongLong)(void) = get_long_long;
 
 /**
  * Reads a line of text from standard input and returns it as a
- * string (char*), sans trailing newline character.  (Ergo, if
- * user inputs only "\n", returns "" not NULL.)  Returns NULL
- * upon error or no input whatsoever (i.e., just EOF).  Leading
- * and trailing whitespace is not ignored.  Stores string on heap
+ * string (char *), sans trailing newline character. (Ergo, if
+ * user inputs only "\n", returns "" not NULL.) Returns NULL
+ * upon error or no input whatsoever (i.e., just EOF). Leading
+ * and trailing whitespace is not ignored. Stores string on heap
  * (via malloc); memory must be freed by caller to avoid leak.
  */
-string GetString(void)
+string get_string(void)
 {
     // growable buffer for chars
     string buffer = NULL;
@@ -246,10 +247,10 @@ string GetString(void)
         // grow buffer if necessary
         if (n + 1 > capacity)
         {
-            // determine new capacity: start at 32 then double
+            // initialize capacity to 50 and double thereafter
             if (capacity == 0)
             {
-                capacity = 32;
+                capacity = 50;
             }
             else if (capacity <= (UINT_MAX / 2))
             {
@@ -282,13 +283,16 @@ string GetString(void)
     }
 
     // minimize buffer
-    string minimal = malloc((n + 1) * sizeof(char));
-    strncpy(minimal, buffer, n);
-    free(buffer);
+    if (realloc(buffer, n + 1) == NULL)
+    {
+        free(buffer);
+        return NULL;
+    }
 
     // terminate string
-    minimal[n] = '\0';
+    buffer[n] = '\0';
 
     // return string
-    return minimal;
+    return buffer;
 }
+string (*GetString)(void) = get_string;

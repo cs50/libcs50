@@ -1,10 +1,10 @@
-/****************************************************************************
- * CS50 Library 6
- * https://manual.cs50.net/library/
+/**
+ * CS50 Library for C
+ * https://github.com/cs50/c/
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2013,
+ * Copyright (c) 2016,
  * Glenn Holloway <holloway@eecs.harvard.edu>
  * David J. Malan <malan@harvard.edu>
  * All rights reserved.
@@ -36,7 +36,7 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************/
+ */
 
 #ifndef _CS50_H
 #define _CS50_H
@@ -49,60 +49,62 @@
 /**
  * Our own data type for string variables.
  */
-typedef char* string;
+typedef char *string;
 
 /**
  * Reads a line of text from standard input and returns the equivalent
  * char; if text does not represent a char, user is prompted to retry.
- * Leading and trailing whitespace is ignored.  If line can't be read,
+ * Leading and trailing whitespace is ignored. If line can't be read,
  * returns CHAR_MAX.
  */
-char GetChar(void);
+char get_char(void);
+char (*GetChar)(void) __attribute__((deprecated));
 
 /**
  * Reads a line of text from standard input and returns the equivalent
  * double as precisely as possible; if text does not represent a
- * double, user is prompted to retry.  Leading and trailing whitespace
- * is ignored.  For simplicity, overflow and underflow are not detected.
- * If line can't be read, returns DBL_MAX.
+ * double, user is prompted to retry. Leading and trailing whitespace
+ * is ignored. If line can't be read, returns DBL_MAX.
  */
-double GetDouble(void);
+double get_double(void);
+double (*GetDouble)(void) __attribute__((deprecated));
 
 /**
  * Reads a line of text from standard input and returns the equivalent
  * float as precisely as possible; if text does not represent a float,
- * user is prompted to retry.  Leading and trailing whitespace is ignored.
- * For simplicity, overflow and underflow are not detected.  If line can't
- * be read, returns FLT_MAX.
+ * user is prompted to retry. Leading and trailing whitespace is ignored.
+ * If line can't be read, returns FLT_MAX.
  */
-float GetFloat(void);
+float get_float(void);
+float (*GetFloat)(void) __attribute__((deprecated));
 
 /**
  * Reads a line of text from standard input and returns it as an
- * int in the range of [-2^31 + 1, 2^31 - 2], if possible; if text
- * does not represent such an int, user is prompted to retry.  Leading
- * and trailing whitespace is ignored.  For simplicity, overflow is not
- * detected.  If line can't be read, returns INT_MAX.
+ * int in [-2^31, 2^31 - 1), if possible; if text does not represent
+ * such an int, user is prompted to retry. Leading and trailing
+ * whitespace is ignored. If line can't be read, returns INT_MAX.
  */
-int GetInt(void);
+int get_int(void);
+int (*GetInt)(void) __attribute__((deprecated));
 
 /**
  * Reads a line of text from standard input and returns an equivalent
- * long long in the range [-2^63 + 1, 2^63 - 2], if possible; if text
- * does not represent such a long long, user is prompted to retry.
- * Leading and trailing whitespace is ignored.  For simplicity, overflow
- * is not detected.  If line can't be read, returns LLONG_MAX.
+ * long long in [-2^63, 2^63 - 1), if possible; if text does not
+ * represent such a long long, user is prompted to retry. Leading and
+ * trailing whitespace is ignored. If line can't be read, returns LLONG_MAX.
  */
-long long GetLongLong(void);
+long long get_long_long(void);
+long long (*GetLongLong)(void) __attribute__((deprecated));
 
 /**
  * Reads a line of text from standard input and returns it as a
- * string (char *), sans trailing newline character.  (Ergo, if
- * user inputs only "\n", returns "" not NULL.)  Returns NULL
- * upon error or no input whatsoever (i.e., just EOF).  Leading
- * and trailing whitespace is not ignored.  Stores string on heap
+ * string (char *), sans trailing newline character. (Ergo, if
+ * user inputs only "\n", returns "" not NULL.) Returns NULL
+ * upon error or no input whatsoever (i.e., just EOF). Leading
+ * and trailing whitespace is not ignored. Stores string on heap
  * (via malloc); memory must be freed by caller to avoid leak.
  */
-string GetString(void);
+string get_string(void);
+string (*GetString)(void) __attribute__((deprecated));
 
 #endif

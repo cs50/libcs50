@@ -64,10 +64,9 @@ char get_char(void)
             return CHAR_MAX;
         }
 
-        // return a char if only a char (possibly with
-        // leading and/or trailing whitespace) was provided
+        // return a char if only a char was provided
         char c, d;
-        if (sscanf(line, " %c %c", &c, &d) == 1)
+        if (sscanf(line, "%c%c", &c, &d) == 1)
         {
             free(line);
             return c;

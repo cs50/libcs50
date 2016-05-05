@@ -256,6 +256,10 @@ string get_string(void)
             {
                 capacity *= 2;
             }
+            else if (capacity < SIZE_MAX)
+            {
+                capacity = SIZE_MAX;
+            }
             else
             {
                 free(buffer);
@@ -263,7 +267,7 @@ string get_string(void)
             }
 
             // extend buffer's capacity
-            string temp = realloc(buffer, capacity * sizeof(char));
+            string temp = realloc(buffer, capacity);
             if (temp == NULL)
             {
                 free(buffer);

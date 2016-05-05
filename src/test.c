@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    char c = GetChar();
-    printf("%c\n", c);
+    long long l = get_long_long();
+    printf("%lld\n", l);
 }

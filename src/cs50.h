@@ -63,17 +63,17 @@ char (*GetChar)(void) __attribute__((deprecated));
 /**
  * Reads a line of text from standard input and returns the equivalent
  * double as precisely as possible; if text does not represent a
- * double, user is prompted to retry. Leading and trailing whitespace
- * is ignored. If line can't be read, returns DBL_MAX.
+ * double or if value would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns DBL_MAX.
  */
 double get_double(void);
 double (*GetDouble)(void) __attribute__((deprecated));
 
 /**
  * Reads a line of text from standard input and returns the equivalent
- * float as precisely as possible; if text does not represent a float,
- * user is prompted to retry. Leading and trailing whitespace is ignored.
- * If line can't be read, returns FLT_MAX.
+ * float as precisely as possible; if text does not represent a float
+ * or if value would cause underflow or overflow, user is prompted to
+ * retry. If line can't be read, returns FLT_MAX.
  */
 float get_float(void);
 float (*GetFloat)(void) __attribute__((deprecated));
@@ -81,8 +81,8 @@ float (*GetFloat)(void) __attribute__((deprecated));
 /**
  * Reads a line of text from standard input and returns it as an
  * int in [-2^31, 2^31 - 1), if possible; if text does not represent
- * such an int, user is prompted to retry. Leading and trailing
- * whitespace is ignored. If line can't be read, returns INT_MAX.
+ * such an int or if value would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns INT_MAX.
  */
 int get_int(void);
 int (*GetInt)(void) __attribute__((deprecated));
@@ -90,8 +90,8 @@ int (*GetInt)(void) __attribute__((deprecated));
 /**
  * Reads a line of text from standard input and returns an equivalent
  * long long in [-2^63, 2^63 - 1), if possible; if text does not
- * represent such a long long, user is prompted to retry. Leading and
- * trailing whitespace is ignored. If line can't be read, returns LLONG_MAX.
+ * represent such a long long or if value would cause underflow or overflow,
+ * user is prompted to retry. If line can't be read, returns LLONG_MAX.
  */
 long long get_long_long(void);
 long long (*GetLongLong)(void) __attribute__((deprecated));
@@ -100,9 +100,9 @@ long long (*GetLongLong)(void) __attribute__((deprecated));
  * Reads a line of text from standard input and returns it as a
  * string (char *), sans trailing newline character. (Ergo, if
  * user inputs only "\n", returns "" not NULL.) Returns NULL
- * upon error or no input whatsoever (i.e., just EOF). Leading
- * and trailing whitespace is not ignored. Stores string on heap
- * (via malloc); memory must be freed by caller to avoid leak.
+ * upon error or no input whatsoever (i.e., just EOF). Stores
+ * string on heap (via malloc); memory must be freed by caller
+ * to avoid leak.
  */
 string get_string(void);
 string (*GetString)(void) __attribute__((deprecated));

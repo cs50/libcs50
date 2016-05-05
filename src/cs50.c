@@ -38,6 +38,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,8 +84,8 @@ char (*GetChar)(void) = get_char;
 /**
  * Reads a line of text from standard input and returns the equivalent
  * double as precisely as possible; if text does not represent a
- * double, user is prompted to retry. Leading and trailing whitespace
- * is ignored. If line can't be read, returns DBL_MAX.
+ * double or if value would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns DBL_MAX.
  */
 double get_double(void)
 {
@@ -97,28 +99,29 @@ double get_double(void)
             return DBL_MAX;
         }
 
-        // return a double if only a double (possibly with
-        // leading and/or trailing whitespace) was provided
-        double d; char c;
-        if (sscanf(line, " %lf %c", &d, &c) == 1)
+        // return a double if only a double was provided
+        char *tail;
+        errno = 0;
+        double d = strtod(line, &tail);
+        if (errno == 0 && *tail == '\0' && d < DBL_MAX)
         {
-            free(line);
-            return d;
+            // disallow hexadecimal and exponents
+            if (strcspn(line, "XxEePp") == strlen(line))
+            {
+                return d;
+            }
         }
-        else
-        {
-            free(line);
-            printf("Retry: ");
-        }
+        free(line);
+        printf("Retry: ");
     }
 }
 double (*GetDouble)(void) = get_double;
 
 /**
  * Reads a line of text from standard input and returns the equivalent
- * float as precisely as possible; if text does not represent a float,
- * user is prompted to retry. Leading and trailing whitespace is ignored.
- * If line can't be read, returns FLT_MAX.
+ * float as precisely as possible; if text does not represent a float
+ * or if value would cause underflow or overflow, user is prompted to
+ * retry. If line can't be read, returns FLT_MAX.
  */
 float get_float(void)
 {
@@ -132,19 +135,20 @@ float get_float(void)
             return FLT_MAX;
         }
 
-        // return a float if only a float (possibly with
-        // leading and/or trailing whitespace) was provided
-        char c; float f;
-        if (sscanf(line, " %f %c", &f, &c) == 1)
+        // return a float if only a float was provided
+        char *tail;
+        errno = 0;
+        float f = strtof(line, &tail);
+        if (errno == 0 && *tail == '\0' && f < FLT_MAX)
         {
-            free(line);
-            return f;
+            // disallow hexadecimal and exponents
+            if (strcspn(line, "XxEePp") == strlen(line))
+            {
+                return f;
+            }
         }
-        else
-        {
-            free(line);
-            printf("Retry: ");
-        }
+        free(line);
+        printf("Retry: ");
     }
 }
 float (*GetFloat)(void) = get_float;
@@ -152,8 +156,8 @@ float (*GetFloat)(void) = get_float;
 /**
  * Reads a line of text from standard input and returns it as an
  * int in [-2^31, 2^31 - 1), if possible; if text does not represent
- * such an int, user is prompted to retry. Leading and trailing
- * whitespace is ignored. If line can't be read, returns INT_MAX.
+ * such an int or if value would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns INT_MAX.
  */
 int get_int(void)
 {
@@ -167,19 +171,19 @@ int get_int(void)
             return INT_MAX;
         }
 
-        // return an int if only an int (possibly with
-        // leading and/or trailing whitespace) was provided
-        int n; char c;
-        if (sscanf(line, " %d %c", &n, &c) == 1)
+        // return an int if only an int (in range) was provided
+        if (!isspace(line[0]))
         {
-            free(line);
-            return n;
+            char *tail;
+            errno = 0;
+            long n = strtol(line, &tail, 10);
+            if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)
+            {
+                return n;
+            }
         }
-        else
-        {
-            free(line);
-            printf("Retry: ");
-        }
+        free(line);
+        printf("Retry: ");
     }
 }
 int (*GetInt)(void) = get_int;
@@ -187,8 +191,8 @@ int (*GetInt)(void) = get_int;
 /**
  * Reads a line of text from standard input and returns an equivalent
  * long long in [-2^63, 2^63 - 1), if possible; if text does not
- * represent such a long long, user is prompted to retry. Leading and
- * trailing whitespace is ignored. If line can't be read, returns LLONG_MAX.
+ * represent such a long long or if value would cause underflow or overflow,
+ * user is prompted to retry. If line can't be read, returns LLONG_MAX.
  */
 long long get_long_long(void)
 {
@@ -202,19 +206,19 @@ long long get_long_long(void)
             return LLONG_MAX;
         }
 
-        // return a long long if only a long long (possibly with
-        // leading and/or trailing whitespace) was provided
-        long long n; char c;
-        if (sscanf(line, " %lld %c", &n, &c) == 1)
+        // return a long long if only a long long (in range) was provided
+        if (!isspace(line[0]))
         {
-            free(line);
-            return n;
+            char *tail;
+            errno = 0;
+            long long n = strtoll(line, &tail, 10);
+            if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
+            {
+                return n;
+            }
         }
-        else
-        {
-            free(line);
-            printf("Retry: ");
-        }
+        free(line);
+        printf("Retry: ");
     }
 }
 long long (*GetLongLong)(void) = get_long_long;
@@ -223,9 +227,9 @@ long long (*GetLongLong)(void) = get_long_long;
  * Reads a line of text from standard input and returns it as a
  * string (char *), sans trailing newline character. (Ergo, if
  * user inputs only "\n", returns "" not NULL.) Returns NULL
- * upon error or no input whatsoever (i.e., just EOF). Leading
- * and trailing whitespace is not ignored. Stores string on heap
- * (via malloc); memory must be freed by caller to avoid leak.
+ * upon error or no input whatsoever (i.e., just EOF). Stores
+ * string on heap (via malloc); memory must be freed by caller
+ * to avoid leak.
  */
 string get_string(void)
 {
@@ -287,16 +291,17 @@ string get_string(void)
     }
 
     // minimize buffer
-    if (realloc(buffer, n + 1) == NULL)
+    string s = realloc(buffer, n + 1);
+    if (s == NULL)
     {
         free(buffer);
         return NULL;
     }
 
     // terminate string
-    buffer[n] = '\0';
+    s[n] = '\0';
 
     // return string
-    return buffer;
+    return s;
 }
 string (*GetString)(void) = get_string;

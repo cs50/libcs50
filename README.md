@@ -4,6 +4,7 @@
 
 *   Add `Makefile` (with `-lm`?)
 *   Change format of multi-line comments?
+*   Add tests.
 
 ## Contributors
 

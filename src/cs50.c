@@ -40,6 +40,7 @@
 
 #include <ctype.h>
 #include <errno.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -102,7 +103,7 @@ double get_double(void)
         char *tail;
         errno = 0;
         double d = strtod(line, &tail);
-        if (errno == 0 && *tail == '\0' && d < DBL_MAX)
+        if (errno == 0 && *tail == '\0' && isfinite(d) && d < DBL_MAX)
         {
             // disallow hexadecimal and exponents
             if (strcspn(line, "XxEePp") == strlen(line))
@@ -138,7 +139,7 @@ float get_float(void)
         char *tail;
         errno = 0;
         float f = strtof(line, &tail);
-        if (errno == 0 && *tail == '\0' && f < FLT_MAX)
+        if (errno == 0 && *tail == '\0' && isfinite(f) && f < FLT_MAX)
         {
             // disallow hexadecimal and exponents
             if (strcspn(line, "XxEePp") == strlen(line))

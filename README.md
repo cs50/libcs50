@@ -4,4 +4,9 @@
 
 *   Add Makefile.
 *   Change format of multi-line comments?
-*   Add function comments to cs50.c.
+*   Handle overflow.
+*   Add PKGBUILD for Arch Linux.
+
+## Contributors
+
+*   [Chad Sharp](https://github.com/crossroads1112)

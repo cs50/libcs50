@@ -2,7 +2,7 @@
 
 ## TODO
 
-*   Add `Makefile`.
+*   Add `Makefile` (with `-lm`?)
 *   Change format of multi-line comments?
 *   Add PKGBUILD for Arch Linux.
 

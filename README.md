@@ -2,9 +2,8 @@
 
 ## TODO
 
-*   Add Makefile.
+*   Add `Makefile`.
 *   Change format of multi-line comments?
-*   Handle overflow.
 *   Add PKGBUILD for Arch Linux.
 
 ## Contributors

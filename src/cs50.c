@@ -233,10 +233,10 @@ string get_string(void)
     string buffer = NULL;
 
     // capacity of buffer
-    unsigned int capacity = 0;
+    size_t capacity = 0;
 
     // number of chars actually in buffer
-    unsigned int n = 0;
+    size_t n = 0;
 
     // character read or EOF
     int c;
@@ -247,12 +247,12 @@ string get_string(void)
         // grow buffer if necessary
         if (n + 1 > capacity)
         {
-            // initialize capacity to 50 and double thereafter
+            // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
             if (capacity == 0)
             {
-                capacity = 50;
+                capacity = 16;
             }
-            else if (capacity <= (UINT_MAX / 2))
+            else if (capacity <= (SIZE_MAX / 2))
             {
                 capacity *= 2;
             }

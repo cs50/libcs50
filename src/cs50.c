@@ -100,15 +100,18 @@ double get_double(void)
         }
 
         // return a double if only a double was provided
-        char *tail;
-        errno = 0;
-        double d = strtod(line, &tail);
-        if (errno == 0 && *tail == '\0' && isfinite(d) && d < DBL_MAX)
+        if (!isspace(line[0]))
         {
-            // disallow hexadecimal and exponents
-            if (strcspn(line, "XxEePp") == strlen(line))
+            char *tail;
+            errno = 0;
+            double d = strtod(line, &tail);
+            if (errno == 0 && *tail == '\0' && isfinite(d) != 0 && d < DBL_MAX)
             {
-                return d;
+                // disallow hexadecimal and exponents
+                if (strcspn(line, "XxEePp") == strlen(line))
+                {
+                    return d;
+                }
             }
         }
         free(line);
@@ -136,15 +139,18 @@ float get_float(void)
         }
 
         // return a float if only a float was provided
-        char *tail;
-        errno = 0;
-        float f = strtof(line, &tail);
-        if (errno == 0 && *tail == '\0' && isfinite(f) && f < FLT_MAX)
+        if (!isspace(line[0]))
         {
-            // disallow hexadecimal and exponents
-            if (strcspn(line, "XxEePp") == strlen(line))
+            char *tail;
+            errno = 0;
+            float f = strtof(line, &tail);
+            if (errno == 0 && *tail == '\0' && isfinite(f) != 0 && f < FLT_MAX)
             {
-                return f;
+                // disallow hexadecimal and exponents
+                if (strcspn(line, "XxEePp") == strlen(line))
+                {
+                    return f;
+                }
             }
         }
         free(line);

@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    long long l = get_long_long();
-    printf("%lld\n", l);
+    float f = get_float();
+    printf("%f\n", f);
 }

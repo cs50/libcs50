@@ -41,6 +41,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,11 +73,8 @@ char get_char(void)
             free(line);
             return c;
         }
-        else
-        {
-            free(line);
-            printf("Retry: ");
-        }
+        free(line);
+        printf("Retry: ");
     }
 }
 char (*GetChar)(void) = get_char;
@@ -110,6 +108,7 @@ double get_double(void)
                 // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
+                    free(line);
                     return d;
                 }
             }
@@ -149,6 +148,7 @@ float get_float(void)
                 // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
+                    free(line);
                     return f;
                 }
             }
@@ -185,6 +185,7 @@ int get_int(void)
             long n = strtol(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)
             {
+                free(line);
                 return n;
             }
         }
@@ -220,6 +221,7 @@ long long get_long_long(void)
             long long n = strtoll(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
             {
+                free(line);
                 return n;
             }
         }

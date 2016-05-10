@@ -3,6 +3,5 @@
 
 int main(void)
 {
-    float f = get_float();
-    printf("%f\n", f);
+    eprintf("hello, %s\n", "world");
 }

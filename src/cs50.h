@@ -52,6 +52,16 @@
 typedef char *string;
 
 /**
+ * Prints to standard error according to a format, a la printf,
+ * with caller's file name and line number first printed in yellow.
+ */
+#define eprintf(format, args...)\
+    fprintf(stderr, "\033[33m");\
+    fprintf(stderr, "%s:%i: ", __FILE__, __LINE__);\
+    fprintf(stderr, "\033[39m");\
+    fprintf(stderr, format , ##args);
+
+/**
  * Reads a line of text from standard input and returns the equivalent
  * char; if text does not represent a char, user is prompted to retry.
  * Leading and trailing whitespace is ignored. If line can't be read,

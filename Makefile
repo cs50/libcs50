@@ -1,3 +1,5 @@
+all: lib test
+
 build:
 	rm -rf build
 	mkdir build

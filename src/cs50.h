@@ -54,6 +54,8 @@ typedef char *string;
 /**
  * Prints to standard error according to a format, a la printf,
  * with caller's file name and line number first printed in yellow.
+ *
+ * TODO: decide whether to move to function so that each funcall doesn't appear when student is debugging
  */
 #define eprintf(...) (fflush(stdout), fprintf(stderr, "%s:%i: ", __FILE__, __LINE__), fprintf(stderr, __VA_ARGS__), fflush(stderr))
 

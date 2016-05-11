@@ -2,7 +2,6 @@
 
 ## TODO
 
-*   Add `Makefile`.
 *   Change format of multi-line comments?
 *   Add tests.
 

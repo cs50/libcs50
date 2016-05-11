@@ -55,11 +55,7 @@ typedef char *string;
  * Prints to standard error according to a format, a la printf,
  * with caller's file name and line number first printed in yellow.
  */
-#define eprintf(format, args...)\
-    fprintf(stderr, "\033[33m");\
-    fprintf(stderr, "%s:%i: ", __FILE__, __LINE__);\
-    fprintf(stderr, "\033[39m");\
-    fprintf(stderr, format , ##args);
+#define eprintf(...) (fflush(stdout), fprintf(stderr, "%s:%i: ", __FILE__, __LINE__), fprintf(stderr, __VA_ARGS__), fflush(stderr))
 
 /**
  * Reads a line of text from standard input and returns the equivalent

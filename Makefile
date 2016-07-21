@@ -11,7 +11,7 @@ lib: build
 	ar rcs lib/libcs50.a build/cs50.o
 
 test: lib
-	clang -ggdb3 -Isrc -O0 -std=c11 -Wall -Werror -Wno-deprecated-declarations -o build/test tests/test.c
+	clang -ggdb3 -Isrc -O0 -std=c11 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Llib -lcs50 -o build/test
 
 clean:
 	rm -rf build/ lib/

@@ -232,12 +232,13 @@ long long get_long_long(void)
 long long (*GetLongLong)(void) = get_long_long;
 
 /**
- * Reads a line of text from standard input and returns it as a
- * string (char *), sans trailing newline character. (Ergo, if
- * user inputs only "\n", returns "" not NULL.) Returns NULL
- * upon error or no input whatsoever (i.e., just EOF). Stores
- * string on heap (via malloc); memory must be freed by caller
- * to avoid leak.
+ * Reads a line of text from standard input and returns it as
+ * a string (char *), sans trailing line ending. Supports
+ * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
+ * inputs only "\n", returns "", not NULL. Returns NULL upon
+ * error or no input whatsoever (i.e., just EOF). Stores string
+ * on heap (via malloc); memory must be freed by caller to
+ * avoid leak.
  */
 string get_string(void)
 {
@@ -253,8 +254,8 @@ string get_string(void)
     // character read or EOF
     int c;
 
-    // iteratively get chars from standard input
-    while ((c = fgetc(stdin)) != '\n' && c != EOF)
+    // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
+    while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
     {
         // grow buffer if necessary
         if (n + 1 > capacity)
@@ -296,6 +297,18 @@ string get_string(void)
     if (n == 0 && c == EOF)
     {
         return NULL;
+    }
+
+    // if last character read was CR, try to read LF as well
+    if (c == '\r' && (c = fgetc(stdin)) != '\n')
+    {
+
+        // return NULL if character can't be pushed back onto standard input
+        if (c != EOF && ungetc(c, stdin) == EOF)
+        {
+            free(buffer);
+            return NULL;
+        }
     }
 
     // minimize buffer

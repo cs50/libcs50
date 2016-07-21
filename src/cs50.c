@@ -302,7 +302,6 @@ string get_string(void)
     // if last character read was CR, try to read LF as well
     if (c == '\r' && (c = fgetc(stdin)) != '\n')
     {
-
         // return NULL if character can't be pushed back onto standard input
         if (c != EOF && ungetc(c, stdin) == EOF)
         {

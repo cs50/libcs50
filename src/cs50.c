@@ -51,6 +51,8 @@
 
 /**
  * http://www.gnu.org/software/libc/manual/html_node/Variable-Arguments-Output.html
+ * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages
+ * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html
  */
 void eprintf(const char *template, ...)
 {

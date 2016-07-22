@@ -57,7 +57,10 @@ typedef char *string;
  *
  * TODO: decide whether to move to function so that each funcall doesn't appear when student is debugging
  */
+/*
 #define eprintf(...) (fflush(stdout), fprintf(stderr, "%s:%i: ", __FILE__, __LINE__), fprintf(stderr, __VA_ARGS__), fflush(stderr))
+*/
+void eprintf(const char *template, ...) __attribute__((format(printf, 1, 2)));
 
 /**
  * Reads a line of text from standard input and returns the equivalent

@@ -41,12 +41,29 @@
 #include <ctype.h>
 #include <errno.h>
 #include <math.h>
+#include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "cs50.h"
+
+/**
+ * http://www.gnu.org/software/libc/manual/html_node/Variable-Arguments-Output.html
+ */
+void eprintf(const char *template, ...)
+{
+    va_list ap;
+    fflush(stdout);
+    /* TODO: add wrap with macro so __FILE__ and __LINE__ work
+    fprintf(stderr, "%s:%i: ", __FILE__, __LINE__);
+    */
+    va_start(ap, template);
+    vfprintf(stderr, template, ap);
+    va_end(ap);
+    fflush(stderr);
+}
 
 /**
  * Reads a line of text from standard input and returns the equivalent

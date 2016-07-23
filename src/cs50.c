@@ -71,7 +71,7 @@ void eprintf(const char * restrict file, int line, const char * restrict format,
     // variable argument list
     va_list ap;
 
-    // last parameter before variable argument list is line number
+    // last parameter before variable argument list is format
     va_start(ap, format);
 
     // print error message, formatted like printf

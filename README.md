@@ -33,3 +33,4 @@ Link with `-lcs50`.
 
 *   [Chad Sharp](https://github.com/crossroads1112)
 *   [Ivan Jasenov](https://github.com/IvanJasenov)
+*   [Kareem Zidane](https://github.com/kzidane)

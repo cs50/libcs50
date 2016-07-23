@@ -49,6 +49,15 @@
 #include "cs50.h"
 
 /**
+ * Called automatically before execution enters main. Disables buffering for standard output.
+ */
+__attribute__((constructor))
+void _init(void)
+{
+    setvbuf(stdout, NULL, _IONBF, 0);
+}
+
+/**
  * Reads a line of text from standard input and returns the equivalent
  * char; if text does not represent a char, user is prompted to retry.
  * Leading and trailing whitespace is ignored. If line can't be read,

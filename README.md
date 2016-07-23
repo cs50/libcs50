@@ -32,3 +32,4 @@ Link with `-lcs50`.
 ## Contributors
 
 *   [Chad Sharp](https://github.com/crossroads1112)
+*   [Ivan Jasenov](https://github.com/IvanJasenov)

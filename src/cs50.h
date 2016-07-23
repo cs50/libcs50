@@ -69,7 +69,7 @@ void eprintf(const char * restrict file, int line, const char * restrict format,
  * Macro that allows function of the same name to be called without specifying caller's
  * file or line number explicitly.
  */
-#define eprintf(format, ...) eprintf(format, __FILE__, __LINE__, __VA_ARGS__)
+#define eprintf(format, ...) eprintf(__FILE__, __LINE__, format, __VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns the equivalent

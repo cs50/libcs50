@@ -1,8 +1,0 @@
-cs50.o
-libcs50.a
-
-# files under debian/
-debian/*.log
-debian/*.substvars
-debian/files
-debian/library50-c

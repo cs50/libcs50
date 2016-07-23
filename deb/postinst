@@ -1,0 +1,5 @@
+prefix=/usr/local
+
+chmod 0644 "$prefix/src/cs50.c"
+chmod 0644 "$prefix/include/cs50.h"
+chmod 0644 "$prefix/lib/libcs50.a"

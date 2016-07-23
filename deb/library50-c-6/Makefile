@@ -5,8 +5,6 @@ includedir = $(prefix)/include
 libdir = $(prefix)/lib
 srcdir = $(prefix)/src
 
-CFLAGS = --std=c99
-
 all:
 	gcc -c -I$(src) -o cs50.o $(src)/cs50.c
 	ar rcs libcs50.a cs50.o

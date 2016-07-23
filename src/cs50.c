@@ -50,21 +50,35 @@
 #include "cs50.h"
 
 /**
- * http://www.gnu.org/software/libc/manual/html_node/Variable-Arguments-Output.html
- * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages
- * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html
+ * Prints an error message, formatted like printf, to standard error, prefixing it with program's
+ * name as well as the file and line number from which function was called, which a macro is
+ * expected to provide.
+ *
+ * This function is not intended to be called directly. Instead, call the macro of the same name,
+ * which expects fewer arguments.
+ *
+ * Inspired by http://www.gnu.org/software/libc/manual/html_node/Variable-Arguments-Output.html
+ * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
+ * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
-void eprintf(const char *template, ...)
+#undef eprintf
+extern char *program_invocation_short_name;
+void eprintf(const char * restrict file, int line, const char * restrict format, ...)
 {
+    // print program's name followed by caller's file and line number
+    fprintf(stderr, "%s:%s:%d: ", program_invocation_short_name, file, line);
+
+    // variable argument list
     va_list ap;
-    fflush(stdout);
-    /* TODO: add wrap with macro so __FILE__ and __LINE__ work
-    fprintf(stderr, "%s:%i: ", __FILE__, __LINE__);
-    */
-    va_start(ap, template);
-    vfprintf(stderr, template, ap);
+
+    // last parameter before variable argument list is line number
+    va_start(ap, format);
+
+    // print error message, formatted like printf
+    vfprintf(stderr, format, ap);
+
+    // invalidate variable argument list
     va_end(ap);
-    fflush(stderr);
 }
 
 /**

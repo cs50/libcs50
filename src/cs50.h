@@ -52,12 +52,24 @@
 typedef char *string;
 
 /**
- * Prints to standard error according to a format, a la printf,
- * with caller's file name and line number first printed in yellow.
+ * Prints an error message, formatted like printf, to standard error, prefixing it with program's
+ * name as well as the file and line number from which function was called, which a macro is
+ * expected to provide.
  *
- * TODO: decide whether to move to function so that each funcall doesn't appear when student is debugging
+ * This function is not intended to be called directly. Instead, call the macro of the same name,
+ * which expects fewer arguments.
+ *
+ * Inspired by http://www.gnu.org/software/libc/manual/html_node/Variable-Arguments-Output.html
+ * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
+ * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
-#define eprintf(...) (fflush(stdout), fprintf(stderr, "%s:%i: ", __FILE__, __LINE__), fprintf(stderr, __VA_ARGS__), fflush(stderr))
+void eprintf(const char * restrict file, int line, const char * restrict format, ...) __attribute__((format(printf, 3, 4)));
+
+/**
+ * Macro that allows function of the same name to be called without specifying caller's
+ * file or line number explicitly.
+ */
+#define eprintf(format, ...) eprintf(format, __FILE__, __LINE__, __VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns the equivalent

@@ -2,6 +2,7 @@ PACKAGE_NAME = library50-c
 VERSION = 6.0.0
 SRC_DIR = ./src
 PREFIX = /usr/local
+DEB_DIR= ./deb
 DEB_FILE = $(PACKAGE_NAME)_$(VERSION)_amd64.deb
 
 all: lib deb test
@@ -22,16 +23,16 @@ deb: lib
 		--category misc -a amd64 --no-depends \
 		--description "$$(printf "CS50 library for C\nSimplifies user input for C.\n")" \
 		--url https://mirror.cs50.net/library50/c/ \
-		--after-install deb/postinst \
-		--deb-changelog deb/changelog \
+		--after-install $(DEB_DIR)/postinst \
+		--deb-changelog $(DEB_DIR)/changelog \
 		--deb-no-default-config-files \
 		-s dir -t deb \
 		./lib/libcs50.a=$(PREFIX)/lib/libcs50.a $(SRC_DIR)/cs50.c=$(PREFIX)/src/cs50.c $(SRC_DIR)/cs50.h=$(PREFIX)/include/cs50.h
 
-	mv $(DEB_FILE) deb/
+	mv $(DEB_FILE) $(DEB_DIR)
 test: lib
 	clang -ggdb3 -Isrc -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Llib -lcs50 -o build/test
 
 clean:
 	rm -rf build/ lib/
-	rm -f $(DEB_FILE)
+	rm -f $(DEB_DIR)/$(DEB_FILE)

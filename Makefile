@@ -15,3 +15,8 @@ test: lib
 
 clean:
 	rm -rf build/ lib/
+
+gc: lib
+	@echo "\nBe sure you've run: apt-get install -y libgc-dev valgrind\n"
+	clang -ggdb3 -Isrc -O0 -std=c99 -Wall -Werror tests/gc.c -Llib -lcs50 -lgc -o build/gc
+	echo John | valgrind ./build/gc

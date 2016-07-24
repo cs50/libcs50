@@ -42,6 +42,7 @@
 
 #include <ctype.h>
 #include <errno.h>
+#include <gc.h>
 #include <math.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -52,11 +53,15 @@
 #include "cs50.h"
 
 /**
- * Called automatically before execution enters main. Disables buffering for standard output.
+ * Called automatically before execution enters main. 
  */
 __attribute__((constructor))
 static void _init(void)
 {
+    // initialize garbage collector
+    GC_INIT();
+
+    // disable buffering of standard output
     setvbuf(stdout, NULL, _IONBF, 0);
 }
 

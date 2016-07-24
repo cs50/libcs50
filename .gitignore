@@ -1,6 +1,6 @@
 .bash_history
-.build/
 .viminfo
+build/
 lib/
 src/test
 src/test.dSYM

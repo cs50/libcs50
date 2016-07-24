@@ -41,6 +41,10 @@
 #ifndef _CS50_H
 #define _CS50_H
 
+#define free GC_FREE
+#define malloc GC_MALLOC
+#define realloc GC_REALLOC
+
 #include <float.h>
 #include <limits.h>
 #include <stdbool.h>

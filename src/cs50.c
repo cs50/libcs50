@@ -38,6 +38,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _GNU_SOURCE
+
 #include <ctype.h>
 #include <errno.h>
 #include <math.h>
@@ -53,7 +55,7 @@
  * Called automatically before execution enters main. Disables buffering for standard output.
  */
 __attribute__((constructor))
-void _init(void)
+static void _init(void)
 {
     setvbuf(stdout, NULL, _IONBF, 0);
 }

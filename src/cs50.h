@@ -47,14 +47,6 @@
 #include <stdlib.h>
 
 /**
- * Enables garbage collection transparently.
- */
-#define calloc GC_MALLOC
-#define free GC_FREE
-#define malloc GC_MALLOC_ATOMIC
-#define realloc GC_REALLOC
-
-/**
  * Our own data type for string variables.
  */
 typedef char *string;

@@ -53,6 +53,14 @@
 #include "cs50.h"
 
 /**
+ * Enables garbage collection for library transparently.
+ */
+#define calloc GC_MALLOC
+#define free GC_FREE
+#define malloc GC_MALLOC_ATOMIC
+#define realloc GC_REALLOC
+
+/**
  * Called automatically before execution enters main. 
  */
 __attribute__((constructor))

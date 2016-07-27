@@ -15,3 +15,9 @@ test: lib
 
 clean:
 	rm -rf build/ lib/
+
+# http://valgrind.org/docs/manual/manual-core.html#manual-core.suppress
+gc: lib
+	@echo "\nBe sure you've run: apt-get install -y libgc-dev valgrind\n"
+	clang -ggdb3 -Isrc -O0 -std=c99 -Wall -Werror tests/gc.c -Llib -lcs50 -lgc -o build/gc
+	echo John | valgrind --suppressions=./valgrind/libgc.supp ./build/gc

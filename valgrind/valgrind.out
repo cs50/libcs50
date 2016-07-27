@@ -1,0 +1,506 @@
+==817== Memcheck, a memory error detector
+==817== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==817== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==817== Command: ./build/gc
+==817== Parent PID: 1
+==817== 
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4D81F: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4D824: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4D621: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_mark_and_push_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4D633: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_mark_and_push_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4D661: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_mark_and_push_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4A476: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E46A02: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_find_header
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4A485: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E46A02: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_find_header
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4A4AF: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E46A02: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_find_header
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E46A42: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56B1B: GC_with_callee_saves_pushed (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4EEAE: GC_push_roots (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_with_callee_saves_pushed
+   fun:GC_push_roots
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4D81F: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4D824: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4D621: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_mark_and_push_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4D633: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_mark_and_push_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4D661: GC_mark_and_push_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_mark_and_push_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4A476: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E46A02: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_find_header
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Conditional jump or move depends on uninitialised value(s)
+==817==    at 0x4E4A485: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E46A02: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:GC_find_header
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E4A4AF: GC_find_header (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E46A02: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_find_header
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== Use of uninitialised value of size 8
+==817==    at 0x4E46A42: GC_add_to_black_list_stack (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4D82E: GC_push_all_eager (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E56557: GC_push_all_stacks (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4E24A: GC_mark_some (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E4532C: GC_stopped_mark (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E45CBE: GC_try_to_collect_inner (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x4E50482: GC_init (in /usr/lib/x86_64-linux-gnu/libgc.so.1.0.3)
+==817==    by 0x400DFC: _init (in /root/build/gc)
+==817==    by 0x4017FC: __libc_csu_init (in /root/build/gc)
+==817==    by 0x50C4ED4: (below main) (libc-start.c:246)
+==817== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:GC_add_to_black_list_stack
+   fun:GC_push_all_eager
+   fun:GC_push_all_stacks
+   fun:GC_mark_some
+   fun:GC_stopped_mark
+   fun:GC_try_to_collect_inner
+   fun:GC_init
+   fun:_init
+   fun:__libc_csu_init
+   fun:(below main)
+}
+==817== 
+==817== HEAP SUMMARY:
+==817==     in use at exit: 0 bytes in 0 blocks
+==817==   total heap usage: 4 allocs, 4 frees, 960 bytes allocated
+==817== 
+==817== All heap blocks were freed -- no leaks are possible
+==817== 
+==817== For counts of detected and suppressed errors, rerun with: -v
+==817== Use --track-origins=yes to see where uninitialised values come from
+==817== ERROR SUMMARY: 353 errors from 18 contexts (suppressed: 0 from 0)

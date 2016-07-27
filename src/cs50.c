@@ -38,8 +38,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _GNU_SOURCE
+
 #include <ctype.h>
 #include <errno.h>
+#include <gc.h>
 #include <math.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -48,6 +51,27 @@
 #include <string.h>
 
 #include "cs50.h"
+
+/**
+ * Enables garbage collection for library transparently.
+ */
+#define calloc GC_MALLOC
+#define free GC_FREE
+#define malloc GC_MALLOC_ATOMIC
+#define realloc GC_REALLOC
+
+/**
+ * Called automatically before execution enters main. 
+ */
+__attribute__((constructor))
+static void _init(void)
+{
+    // initialize garbage collector
+    GC_INIT();
+
+    // disable buffering of standard output
+    setvbuf(stdout, NULL, _IONBF, 0);
+}
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's

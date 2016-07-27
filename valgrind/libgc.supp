@@ -1,0 +1,10 @@
+{
+   name
+   Memcheck:Cond
+   obj:/usr/lib/x86_64-linux-gnu/libgc.so.*
+}
+{
+   name
+   Memcheck:Value8
+   obj:/usr/lib/x86_64-linux-gnu/libgc.so.*
+}

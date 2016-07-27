@@ -268,10 +268,10 @@ long long (*GetLongLong)(void) = get_long_long;
  * Reads a line of text from standard input and returns it as
  * a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
- * inputs only "\n", returns "", not NULL. Returns NULL upon
- * error or no input whatsoever (i.e., just EOF). Stores string
- * on heap (via malloc); memory must be freed by caller to
- * avoid leak.
+ * inputs only a line ending, returns "", not NULL. Returns NULL
+ * upon error or no input whatsoever (i.e., just EOF). Stores
+ * string on heap (via malloc); memory must be freed by caller
+ * to avoid leak.
  */
 string get_string(void)
 {

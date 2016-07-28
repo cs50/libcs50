@@ -38,6 +38,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _GNU_SOURCE
+
 #include <ctype.h>
 #include <errno.h>
 #include <math.h>
@@ -48,6 +50,15 @@
 #include <string.h>
 
 #include "cs50.h"
+
+/**
+ * Called automatically before execution enters main. Disables buffering for standard output.
+ */
+__attribute__((constructor))
+static void _init(void)
+{
+    setvbuf(stdout, NULL, _IONBF, 0);
+}
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's

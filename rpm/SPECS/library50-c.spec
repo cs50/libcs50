@@ -51,8 +51,8 @@ cp %{_sourcedir}/* %{_builddir}/
 
 ############################################################################
 %build
-clang -c -ggdb -std=c99 %{_builddir}/cs50.c -o %{_builddir}/cs50.o
-ar rcs %{_builddir}/libcs50.a %{_builddir}/cs50.o
+gcc -c -fPIC -ggdb3 -O0 -std=c99 %{_builddir}/cs50.c -o %{_builddir}/cs50.o
+gcc -shared -o %{_builddir}/libcs50.so %{_builddir}/cs50.o
 
 
 ############################################################################
@@ -61,7 +61,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_includedir}
 mv %{_builddir}/cs50.h %{buildroot}%{_includedir}/
 mkdir -p %{buildroot}%{_libdir}
-mv %{_builddir}/libcs50.a %{buildroot}%{_libdir}/
+mv %{_builddir}/libcs50.so %{buildroot}%{_libdir}/
 mkdir -p %{buildroot}%{_srcdir}
 mv %{_builddir}/cs50.c %{buildroot}%{_srcdir}/
 

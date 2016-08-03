@@ -12,16 +12,15 @@ provides=("libcs50")
 source=(git+https://github.com/cs50/c.git)
 
 build(){
-    cd $srcdir/c/
-    gcc -c -lm -std=c99 -ggdb cs50.c -o cs50.o
-    ar rcs libcs50.a cs50.o
+    cd "$srcdir/c"
+    make lib
 }
 
 package() {
-    cd $srcdir/library50-c/
-    install -Dm0644     libcs50.a   "$pkgdir/usr/lib/libcs50.a"
-    install -Dm0644     cs50.h      "$pkgdir/usr/include/cs50.h"
-    install -Dm0644     cs50.c      "$pkgdir/usr/src/cs50.c"
+    cd "$srcdir/c"
+    install -Dm0644     lib/libcs50.so  "$pkgdir/usr/lib/libcs50.so"
+    install -Dm0644     src/cs50.h      "$pkgdir/usr/include/cs50.h"
+    install -Dm0644     src/cs50.c      "$pkgdir/usr/src/cs50.c"
 }
 
 pkgver() {

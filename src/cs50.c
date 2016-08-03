@@ -52,15 +52,6 @@
 #include "cs50.h"
 
 /**
- * Called automatically before execution enters main. Disables buffering for standard output.
- */
-__attribute__((constructor))
-static void _init(void)
-{
-    setvbuf(stdout, NULL, _IONBF, 0);
-}
-
-/**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's
  * name as well as the file and line number from which function was called, which a macro is
  * expected to provide.
@@ -281,19 +272,21 @@ long long (*GetLongLong)(void) = get_long_long;
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
  * inputs only "\n", returns "", not NULL. Returns NULL upon
  * error or no input whatsoever (i.e., just EOF). Stores string
- * on heap (via malloc); memory must be freed by caller to
- * avoid leak.
+ * on heap (via malloc), but library's destructor frees memory
+ * on program's exit.
  */
+static size_t allocs = 0;
+static string *strings = NULL;
 string get_string(void)
 {
-    // growable buffer for chars
+    // growable buffer for characters
     string buffer = NULL;
 
     // capacity of buffer
     size_t capacity = 0;
 
-    // number of chars actually in buffer
-    size_t n = 0;
+    // number of characters actually in buffer
+    size_t size = 0;
 
     // character read or EOF
     int c;
@@ -302,7 +295,7 @@ string get_string(void)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
     {
         // grow buffer if necessary
-        if (n + 1 > capacity)
+        if (size + 1 > capacity)
         {
             // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
             if (capacity == 0)
@@ -334,11 +327,11 @@ string get_string(void)
         }
 
         // append current character to buffer
-        buffer[n++] = c;
+        buffer[size++] = c;
     }
 
     // return NULL if user provided no input
-    if (n == 0 && c == EOF)
+    if (size == 0 && c == EOF)
     {
         return NULL;
     }
@@ -355,7 +348,7 @@ string get_string(void)
     }
 
     // minimize buffer
-    string s = realloc(buffer, n + 1);
+    string s = realloc(buffer, size + 1);
     if (s == NULL)
     {
         free(buffer);
@@ -363,9 +356,45 @@ string get_string(void)
     }
 
     // terminate string
-    s[n] = '\0';
+    s[size] = '\0';
+
+    // grow memo
+    string *tmp = realloc(strings, sizeof(string) * (allocs + 1));
+    if (tmp == NULL)
+    {
+        free(s);
+        return NULL;
+    }
+    strings = tmp;
+
+    // append current string to memo
+    strings[allocs] = s;
+    allocs++;
 
     // return string
     return s;
 }
 string (*GetString)(void) = get_string;
+
+/**
+ * Called automatically before execution enters main. Disables buffering for standard output.
+ */
+__attribute__((constructor))
+static void setup(void)
+{
+    setvbuf(stdout, NULL, _IONBF, 0);
+}
+
+/**
+ * Called automatically after execution exits main. Frees library's memory.
+ */
+__attribute__((destructor))
+static void teardown(void)
+{
+    for (int i = 0; i < allocs; i++)
+    {
+        printf("Freeing string #%i at %p\n", i, strings[i]);
+        free(strings[i]);
+    }
+    free(strings);
+}

@@ -65,7 +65,7 @@
  */
 #undef eprintf
 extern char *program_invocation_short_name;
-void eprintf(const char * restrict file, int line, const char * restrict format, ...)
+void eprintf(const char *file, int line, const char *format, ...)
 {
     // print program's name followed by caller's file and line number
     fprintf(stderr, "%s:%s:%d: ", program_invocation_short_name, file, line);
@@ -267,16 +267,23 @@ long long get_long_long(void)
 long long (*GetLongLong)(void) = get_long_long;
 
 /**
+ * Number of strings allocated by get_string.
+ */
+static size_t allocations = 0;
+
+/**
+ * Array of strings allocated by get_string.
+ */
+static string *strings = NULL;
+
+/**
  * Reads a line of text from standard input and returns it as
  * a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
  * inputs only "\n", returns "", not NULL. Returns NULL upon
  * error or no input whatsoever (i.e., just EOF). Stores string
- * on heap (via malloc), but library's destructor frees memory
- * on program's exit.
+ * on heap, but library's destructor frees memory on program's exit.
  */
-static size_t allocs = 0;
-static string *strings = NULL;
 string get_string(void)
 {
     // growable buffer for characters
@@ -358,8 +365,8 @@ string get_string(void)
     // terminate string
     s[size] = '\0';
 
-    // grow memo
-    string *tmp = realloc(strings, sizeof(string) * (allocs + 1));
+    // resize array so as to append string
+    string *tmp = realloc(strings, sizeof(string) * (allocations + 1));
     if (tmp == NULL)
     {
         free(s);
@@ -367,9 +374,9 @@ string get_string(void)
     }
     strings = tmp;
 
-    // append current string to memo
-    strings[allocs] = s;
-    allocs++;
+    // append string to array
+    strings[allocations] = s;
+    allocations++;
 
     // return string
     return s;
@@ -391,10 +398,12 @@ static void setup(void)
 __attribute__((destructor))
 static void teardown(void)
 {
-    for (int i = 0; i < allocs; i++)
+    if (strings != NULL)
     {
-        printf("Freeing string #%i at %p\n", i, strings[i]);
-        free(strings[i]);
+        for (int i = 0; i < allocations; i++)
+        {
+            free(strings[i]);
+        }
+        free(strings);
     }
-    free(strings);
 }

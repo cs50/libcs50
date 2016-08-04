@@ -122,8 +122,7 @@ long long (*GetLongLong)(void) __attribute__((deprecated));
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
  * inputs only "\n", returns "", not NULL. Returns NULL upon
  * error or no input whatsoever (i.e., just EOF). Stores string
- * on heap (via malloc); memory must be freed by caller to
- * avoid leak.
+ * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(void);
 string (*GetString)(void) __attribute__((deprecated));

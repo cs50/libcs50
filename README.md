@@ -2,12 +2,14 @@
 
 ## Development
 
-Requires [Docker Toolbox](https://www.docker.com/products/docker-toolbox).
+Requires [Docker Engine](https://docs.docker.com/engine/installation/).
 
-    docker-compose run cli # runs CS50 CLI
-    make # builds all
-    make lib # builds lib/libcs50.a
-    make test # builds build/test
+    make bash
+    make build # builds static library
+    make deb # builds .deb
+    make pacman # builds .pkg.tar.xz
+    make rpm # builds .rpm
+    make test # builds test program
 
 ## Usage
 
@@ -26,8 +28,9 @@ Link with `-lcs50`.
 
 ## TODO
 
-*   Change format of multi-line comments?
 *   Add tests.
+*   Test `eprintf`.
+*   Decide whether to use `stdint.h`.
 
 ## Contributors
 

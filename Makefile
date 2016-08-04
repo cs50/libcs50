@@ -1,17 +1,70 @@
-all: lib test
+DESCRIPTION = CS50 Library for C
+MAINTAINER = CS50
+NAME = library50-c
+VERSION = 7.0.0
 
-build:
-	rm -rf build
-	mkdir build
-	clang -c -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
+.PHONY: bash
+bash:
+	docker run -i --rm -v "$(PWD)":/root -t cs50/fpm
 
-lib: build
-	rm -rf lib
-	mkdir lib
-	ar rcs lib/libcs50.a build/cs50.o
+.PHONY: build
+build: clean Makefile src/cs50.c src/cs50.h
+	mkdir -p build/usr/include
+	mkdir -p build/usr/lib
+	gcc -c -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
+	ar rcs build/usr/lib/libcs50.a build/cs50.o
+	rm -f build/cs50.o
+	cp src/cs50.h build/usr/include
 
-test: lib
-	clang -ggdb3 -Isrc -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Llib -lcs50 -o build/test
-
+.PHONY: clean
 clean:
-	rm -rf build/ lib/
+	rm -rf build
+
+.PHONY: deb
+deb: build
+	fpm \
+	-m "$(MAINTAINER)" \
+	-n "$(NAME)" \
+	-p build \
+	-s dir \
+	-t deb \
+	-v $(VERSION) \
+	--deb-no-default-config-files \
+	--depends libc-dev \
+	--description "$(DESCRIPTION)" \
+	build/usr
+
+# TODO: add dependencies
+.PHONY: pacman
+pacman: build
+	rm -f $(NAME)-$(VERSION)-*.pkg.tar.xz
+	fpm \
+	-m "$(MAINTAINER)" \
+	-n "$(NAME)" \
+	-p build \
+	-s dir \
+	-t pacman \
+	-v $(VERSION) \
+	--deb-no-default-config-files \
+	--description "$(DESCRIPTION)" \
+	build/usr
+
+# TODO: add dependencies
+.PHONY: rpm
+rpm: build
+	rm -f $(NAME)-$(VERSION)-*.rpm
+	fpm \
+	-m "$(MAINTAINER)" \
+	-n "$(NAME)" \
+	-p build \
+	-s dir \
+	-t rpm \
+	-v $(VERSION) \
+	--deb-no-default-config-files \
+	--description "$(DESCRIPTION)" \
+	build/usr
+
+# TODO: improve test suite
+.PHONY: test
+test: build
+	gcc -ggdb3 -Isrc -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Llib -lcs50 -o build/test

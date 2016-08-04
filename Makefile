@@ -6,6 +6,7 @@ VERSION = 7.0.0
 .PHONY: bash
 bash:
 	docker run -i --rm -v "$(PWD)":/root -t cs50/fpm
+	#ID=$(docker build -q .) docker run -i -t $(ID)
 
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h
@@ -67,4 +68,4 @@ rpm: build
 # TODO: improve test suite
 .PHONY: test
 test: build
-	gcc -ggdb3 -Isrc -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Llib -lcs50 -o build/test
+	gcc -ggdb3 -Ibuild/usr/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Lbuild/usr/lib -lcs50 -o build/test

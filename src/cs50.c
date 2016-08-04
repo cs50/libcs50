@@ -49,6 +49,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef __GLIBC__
+#define program_invocation_short_name getprogname()
+#endif
+
 #include "cs50.h"
 
 /**

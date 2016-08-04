@@ -1,3 +1,2 @@
-.bash_history
-.build/
-.viminfo
+.*
+!.gitignore

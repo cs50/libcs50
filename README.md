@@ -30,7 +30,6 @@ Link with `-lcs50`.
 
 *   Add tests.
 *   Test `eprintf`.
-*   Decide whether to use `stdint.h`.
 
 ## Contributors
 

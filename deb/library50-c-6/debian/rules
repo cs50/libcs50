@@ -1,8 +1,0 @@
-#!/usr/bin/make -f
-
-%:
-	dh $@
-
-override_dh_auto_install:
-	$(MAKE) DESTDIR=$$(pwd)/debian/library50-c prefix=/usr install
-

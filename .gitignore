@@ -1,6 +1,2 @@
-.bash_history
-.build/
-.viminfo
-lib/
-src/test
-src/test.dSYM
+.*
+!.gitignore

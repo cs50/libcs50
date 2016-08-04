@@ -1,4 +1,0 @@
-cli:
-  volumes:
-    - ./:/root
-  image: cs50/cli:ubuntu

@@ -38,6 +38,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _GNU_SOURCE
+
 #include <ctype.h>
 #include <errno.h>
 #include <math.h>
@@ -46,6 +48,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef __GLIBC__
+#define program_invocation_short_name getprogname()
+#endif
 
 #include "cs50.h"
 
@@ -63,7 +69,7 @@
  */
 #undef eprintf
 extern char *program_invocation_short_name;
-void eprintf(const char * restrict file, int line, const char * restrict format, ...)
+void eprintf(const char *file, int line, const char *format, ...)
 {
     // print program's name followed by caller's file and line number
     fprintf(stderr, "%s:%s:%d: ", program_invocation_short_name, file, line);
@@ -265,24 +271,33 @@ long long get_long_long(void)
 long long (*GetLongLong)(void) = get_long_long;
 
 /**
+ * Number of strings allocated by get_string.
+ */
+static size_t allocations = 0;
+
+/**
+ * Array of strings allocated by get_string.
+ */
+static string *strings = NULL;
+
+/**
  * Reads a line of text from standard input and returns it as
  * a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
- * inputs only a line ending, returns "", not NULL. Returns NULL
- * upon error or no input whatsoever (i.e., just EOF). Stores
- * string on heap (via malloc); memory must be freed by caller
- * to avoid leak.
+ * inputs only "\n", returns "", not NULL. Returns NULL upon
+ * error or no input whatsoever (i.e., just EOF). Stores string
+ * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(void)
 {
-    // growable buffer for chars
+    // growable buffer for characters
     string buffer = NULL;
 
     // capacity of buffer
     size_t capacity = 0;
 
-    // number of chars actually in buffer
-    size_t n = 0;
+    // number of characters actually in buffer
+    size_t size = 0;
 
     // character read or EOF
     int c;
@@ -291,7 +306,7 @@ string get_string(void)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
     {
         // grow buffer if necessary
-        if (n + 1 > capacity)
+        if (size + 1 > capacity)
         {
             // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
             if (capacity == 0)
@@ -323,11 +338,11 @@ string get_string(void)
         }
 
         // append current character to buffer
-        buffer[n++] = c;
+        buffer[size++] = c;
     }
 
     // return NULL if user provided no input
-    if (n == 0 && c == EOF)
+    if (size == 0 && c == EOF)
     {
         return NULL;
     }
@@ -344,7 +359,7 @@ string get_string(void)
     }
 
     // minimize buffer
-    string s = realloc(buffer, n + 1);
+    string s = realloc(buffer, size + 1);
     if (s == NULL)
     {
         free(buffer);
@@ -352,9 +367,47 @@ string get_string(void)
     }
 
     // terminate string
-    s[n] = '\0';
+    s[size] = '\0';
+
+    // resize array so as to append string
+    string *tmp = realloc(strings, sizeof(string) * (allocations + 1));
+    if (tmp == NULL)
+    {
+        free(s);
+        return NULL;
+    }
+    strings = tmp;
+
+    // append string to array
+    strings[allocations] = s;
+    allocations++;
 
     // return string
     return s;
 }
 string (*GetString)(void) = get_string;
+
+/**
+ * Called automatically before execution enters main. Disables buffering for standard output.
+ */
+__attribute__((constructor))
+static void setup(void)
+{
+    setvbuf(stdout, NULL, _IONBF, 0);
+}
+
+/**
+ * Called automatically after execution exits main. Frees library's memory.
+ */
+__attribute__((destructor))
+static void teardown(void)
+{
+    if (strings != NULL)
+    {
+        for (int i = 0; i < allocations; i++)
+        {
+            free(strings[i]);
+        }
+        free(strings);
+    }
+}

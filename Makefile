@@ -14,7 +14,7 @@ build: clean Makefile src/cs50.c src/cs50.h
 	mkdir -p build/usr/local/include
 	mkdir -p build/usr/local/lib
 	gcc -c -fPIC -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
-	gcc -o build/usr/local/lib/libcs50.a -shared build/cs50.o
+	gcc -o build/usr/local/lib/libcs50.so -shared build/cs50.o
 	rm -f build/cs50.o
 	cp src/cs50.h build/usr/local/include
 	chmod -R a+rX build

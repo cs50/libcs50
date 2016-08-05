@@ -24,9 +24,9 @@ clean:
 .PHONY: deb
 deb: build
 	fpm \
+	-C build \
 	-m "$(MAINTAINER)" \
 	-n "$(NAME)" \
-	-C build \
 	-p build \
 	-s dir \
 	-t deb \
@@ -41,6 +41,7 @@ deb: build
 pacman: build
 	rm -f $(NAME)-$(VERSION)-*.pkg.tar.xz
 	fpm \
+	-C build \
 	-m "$(MAINTAINER)" \
 	-n "$(NAME)" \
 	-p build \
@@ -49,13 +50,14 @@ pacman: build
 	-v $(VERSION) \
 	--deb-no-default-config-files \
 	--description "$(DESCRIPTION)" \
-	build/usr
+	usr
 
 # TODO: add dependencies
 .PHONY: rpm
 rpm: build
 	rm -f $(NAME)-$(VERSION)-*.rpm
 	fpm \
+	-C build \
 	-m "$(MAINTAINER)" \
 	-n "$(NAME)" \
 	-p build \
@@ -64,7 +66,7 @@ rpm: build
 	-v $(VERSION) \
 	--deb-no-default-config-files \
 	--description "$(DESCRIPTION)" \
-	build/usr
+	usr
 
 # TODO: improve test suite
 .PHONY: test

@@ -10,12 +10,12 @@ bash:
 
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h
-	mkdir -p build/usr/include
-	mkdir -p build/usr/lib
+	mkdir -p build/usr/local/include
+	mkdir -p build/usr/local/lib
 	gcc -c -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
-	ar rcs build/usr/lib/libcs50.a build/cs50.o
+	ar rcs build/usr/local/lib/libcs50.a build/cs50.o
 	rm -f build/cs50.o
-	cp src/cs50.h build/usr/include
+	cp src/cs50.h build/usr/local/include
 
 .PHONY: clean
 clean:
@@ -71,4 +71,4 @@ rpm: build
 # TODO: improve test suite
 .PHONY: test
 test: build
-	gcc -ggdb3 -Ibuild/usr/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Lbuild/usr/lib -lcs50 -o build/test
+	gcc -ggdb3 -Ibuild/usr/local/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Lbuild/usr/local/lib -lcs50 -o build/test

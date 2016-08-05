@@ -51,6 +51,8 @@
 
 #include "cs50.h"
 
+static void *grow_array(void *arr, size_t *cap, size_t size);
+
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's
  * name as well as the file and line number from which function was called, which a macro is
@@ -273,12 +275,17 @@ long long (*GetLongLong)(void) = get_long_long;
 /**
  * Number of strings allocated by get_string.
  */
-static size_t allocations = 0;
+size_t allocations = 0;
 
 /**
  * Array of strings allocated by get_string.
  */
-static string *strings = NULL;
+string *strings = NULL;
+
+/**
+ * Size of memory allocated for strings array
+ */
+size_t alloc_size = 0;
 
 /**
  * Reads a line of text from standard input and returns it as
@@ -308,27 +315,7 @@ string get_string(void)
         // grow buffer if necessary
         if (size + 1 > capacity)
         {
-            // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
-            if (capacity == 0)
-            {
-                capacity = 16;
-            }
-            else if (capacity <= (SIZE_MAX / 2))
-            {
-                capacity *= 2;
-            }
-            else if (capacity < SIZE_MAX)
-            {
-                capacity = SIZE_MAX;
-            }
-            else
-            {
-                free(buffer);
-                return NULL;
-            }
-
-            // extend buffer's capacity
-            string temp = realloc(buffer, capacity);
+            char *temp = grow_array(buffer, &capacity, sizeof (char*));
             if (temp == NULL)
             {
                 free(buffer);
@@ -370,13 +357,16 @@ string get_string(void)
     s[size] = '\0';
 
     // resize array so as to append string
-    string *tmp = realloc(strings, sizeof(string) * (allocations + 1));
-    if (tmp == NULL)
+    if (allocations == alloc_size)
     {
-        free(s);
-        return NULL;
+        string *tmp = grow_array(strings, &alloc_size, sizeof (string *));
+        if (tmp == NULL)
+        {
+            free(s);
+            return NULL;
+        }
+        strings = tmp;
     }
-    strings = tmp;
 
     // append string to array
     strings[allocations] = s;
@@ -385,7 +375,56 @@ string get_string(void)
     // return string
     return s;
 }
+
 string (*GetString)(void) = get_string;
+
+/* 
+ * By how much we should attempt to grow the array 
+ */
+#define GROWTH_FACTOR 2
+
+/*
+ * Size array should be allocated to if it is empty
+ */
+#define INIT_SIZE 16
+
+/*
+ * Attempts to grow an array `arr` with members of size `size` and initial 
+ * capacity `*cap`. If *cap is 0, array will be created with a size defined by
+ * INIT_SIZE. Upon successful allocation, returns the newly resized array and
+ * sets *cap to the new capacity. Returns NULL on failure
+ */
+static void *grow_array(void *arr, size_t *cap, size_t size)
+{
+    size_t bytes = *cap * size;
+
+    if (bytes == 0)
+    {
+        bytes = INIT_SIZE  * size;
+    }
+    else if (bytes < SIZE_MAX / GROWTH_FACTOR)
+    {
+        bytes *= GROWTH_FACTOR;
+    } 
+    else if (bytes < (SIZE_MAX - (SIZE_MAX % size)))
+    {
+            bytes = SIZE_MAX - (SIZE_MAX % size);
+    } 
+    else 
+    {
+        return NULL;
+    }
+
+    void *new = realloc(arr, bytes);
+    if (new == NULL)
+    {
+        return NULL;
+    }
+    *cap = bytes / size;
+    return new;
+
+}
+
 
 /**
  * Called automatically before execution enters main. Disables buffering for standard output.

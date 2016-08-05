@@ -1,5 +1,5 @@
 DESCRIPTION = CS50 Library for C
-MAINTAINER = CS50
+MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
 NAME = library50-c
 VERSION = 7.0.0
 
@@ -7,7 +7,7 @@ VERSION = 7.0.0
 bash:
 	# docker-compose up # https://github.com/docker/compose/issues/3106
 	docker build . -t library-c
-	docker run -i --rm -t -v "$(PWD)" library-c
+	docker run -i --rm -t -v "$(PWD):/root" library-c
 
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h

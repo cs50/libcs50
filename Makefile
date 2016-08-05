@@ -34,7 +34,7 @@ deb: build
 	-v $(VERSION) \
 	--deb-no-default-config-files \
 	--deb-use-file-permissions \
-	--depends libc-dev \
+	--depends c-compiler \
 	--description "$(DESCRIPTION)" \
 	usr
 

@@ -26,6 +26,7 @@ deb: build
 	fpm \
 	-m "$(MAINTAINER)" \
 	-n "$(NAME)" \
+	-C build \
 	-p build \
 	-s dir \
 	-t deb \
@@ -33,7 +34,7 @@ deb: build
 	--deb-no-default-config-files \
 	--depends libc-dev \
 	--description "$(DESCRIPTION)" \
-	build/usr
+	usr
 
 # TODO: add dependencies
 .PHONY: pacman

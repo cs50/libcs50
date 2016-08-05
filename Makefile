@@ -5,8 +5,9 @@ VERSION = 7.0.0
 
 .PHONY: bash
 bash:
-	docker run -i --rm -v "$(PWD)":/root -t cs50/fpm
-	#ID=$(docker build -q .) docker run -i -t $(ID)
+	# docker-compose up # https://github.com/docker/compose/issues/3106
+	docker build . -t library-c
+	docker run -i --rm -t -v "$(PWD)" library-c
 
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h

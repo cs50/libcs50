@@ -17,7 +17,7 @@ build: clean Makefile src/cs50.c src/cs50.h
 	gcc -o build/usr/local/lib/libcs50.a -shared build/cs50.o
 	rm -f build/cs50.o
 	cp src/cs50.h build/usr/local/include
-	chmod -R 0755 build
+	find build -type d -exec chmod 0755 {} +
 	find build -type f -exec chmod 0644 {} +
 
 .PHONY: clean

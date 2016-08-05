@@ -16,6 +16,7 @@ build: clean Makefile src/cs50.c src/cs50.h
 	ar rcs build/usr/local/lib/libcs50.a build/cs50.o
 	rm -f build/cs50.o
 	cp src/cs50.h build/usr/local/include
+	chmod -R a+rX build
 
 .PHONY: clean
 clean:
@@ -32,6 +33,7 @@ deb: build
 	-t deb \
 	-v $(VERSION) \
 	--deb-no-default-config-files \
+	--deb-use-file-permissions \
 	--depends libc-dev \
 	--description "$(DESCRIPTION)" \
 	usr
@@ -48,7 +50,7 @@ pacman: build
 	-s dir \
 	-t pacman \
 	-v $(VERSION) \
-	--deb-no-default-config-files \
+	--pacman-use-file-permissions \
 	--description "$(DESCRIPTION)" \
 	usr
 
@@ -64,7 +66,7 @@ rpm: build
 	-s dir \
 	-t rpm \
 	-v $(VERSION) \
-	--deb-no-default-config-files \
+	--rpm-use-file-permissions \
 	--description "$(DESCRIPTION)" \
 	usr
 

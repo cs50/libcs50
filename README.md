@@ -29,7 +29,7 @@ Link with `-lcs50`.
 ## TODO
 
 *   Add tests.
-*   Test `eprintf`.
+*   Move installation from `/usr/local` to `/usr` or `/opt`.
 
 ## Contributors
 

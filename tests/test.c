@@ -3,9 +3,7 @@
 
 int main(void)
 {
-    //eprintf("hello, %s\n", "world");
     get_string();
-    get_string();
-    get_string();
+    eprintf("hello, %s\n", "world");
     get_string();
 }

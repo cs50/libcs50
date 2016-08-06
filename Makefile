@@ -73,3 +73,4 @@ rpm: build
 .PHONY: test
 test: build
 	gcc -ggdb3 -Ibuild/usr/local/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Lbuild/usr/local/lib -lcs50 -o build/test
+	LD_LIBRARY_PATH=build/usr/local/lib build/test

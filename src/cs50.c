@@ -388,20 +388,22 @@ string get_string(void)
 string (*GetString)(void) = get_string;
 
 /**
- * Called automatically before execution enters main. Disables buffering for standard output.
+ * Called automatically before execution enters main.
  */
 __attribute__((constructor))
 static void setup(void)
 {
+    // disable buffering for standard output
     setvbuf(stdout, NULL, _IONBF, 0);
 }
 
 /**
- * Called automatically after execution exits main. Frees library's memory.
+ * Called automatically after execution exits main.
  */
 __attribute__((destructor))
 static void teardown(void)
 {
+    // free library's strings
     if (strings != NULL)
     {
         for (int i = 0; i < allocations; i++)

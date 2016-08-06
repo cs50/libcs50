@@ -63,7 +63,7 @@ typedef char *string;
  * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
-void eprintf(const char * restrict file, int line, const char * restrict format, ...) __attribute__((format(printf, 3, 4)));
+void eprintf(const char *file, int line, const char *format, ...) __attribute__((format(printf, 3, 4)));
 
 /**
  * Macro that allows function of the same name to be called without specifying caller's

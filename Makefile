@@ -9,12 +9,12 @@ bash:
 
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h
-	mkdir -p build/usr/local/include
-	mkdir -p build/usr/local/lib
+	mkdir -p build/usr/include
+	mkdir -p build/usr/lib
 	gcc -c -fPIC -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
-	gcc -o build/usr/local/lib/libcs50.so -shared build/cs50.o
+	gcc -o build/usr/lib/libcs50.so -shared build/cs50.o
 	rm -f build/cs50.o
-	cp src/cs50.h build/usr/local/include
+	cp src/cs50.h build/usr/include
 	find build -type d -exec chmod 0755 {} +
 	find build -type f -exec chmod 0644 {} +
 
@@ -36,6 +36,13 @@ deb: build
 	--depends c-compiler \
 	--description "$(DESCRIPTION)" \
 	usr
+
+.PHONY: hackerrank
+hackerrank: build
+	cat src/cs50.h > build/cs50.h
+	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> build/cs50.h
+	cat src/cs50.c >> build/cs50.h
+	echo "\n#endif" >> build/cs50.h
 
 # TODO: add dependencies
 .PHONY: pacman
@@ -69,6 +76,8 @@ rpm: build
 
 # TODO: improve test suite
 .PHONY: test
-test: build
-	gcc -ggdb3 -Ibuild/usr/local/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/test.c -Lbuild/usr/local/lib -lcs50 -o build/test
-	LD_LIBRARY_PATH=build/usr/local/lib build/test
+test: build hackerrank
+	clang -ggdb3 -Ibuild/usr/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/eprintf.c -Lbuild/usr/lib -lcs50 -o build/eprintf
+	LD_LIBRARY_PATH=build/usr/lib build/eprintf
+	clang -Ibuild -std=c11 -Wall -Werror -Wno-deprecated-declarations tests/hackerrank.c -o build/hackerrank
+	build/hackerrank

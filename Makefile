@@ -9,12 +9,12 @@ bash:
 
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h
-	mkdir -p build/usr/include
-	mkdir -p build/usr/lib
+	mkdir -p build/usr/include build/usr/lib build/usr/src
 	gcc -c -fPIC -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
 	gcc -o build/usr/lib/libcs50.so -shared build/cs50.o
 	rm -f build/cs50.o
 	cp src/cs50.h build/usr/include
+	cp src/cs50.c build/usr/src
 	find build -type d -exec chmod 0755 {} +
 	find build -type f -exec chmod 0644 {} +
 

@@ -32,6 +32,9 @@ deb: build
 	-s dir \
 	-t deb \
 	-v $(VERSION) \
+	--provides $(NAME) \
+	--conflicts "$(NAME) (<< $(VERSION))" \
+	--replaces "$(NAME) (<= $(VERSION))" \
 	--deb-no-default-config-files \
 	--depends c-compiler \
 	--description "$(DESCRIPTION)" \

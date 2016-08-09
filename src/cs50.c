@@ -109,10 +109,8 @@ char get_char(void)
         char c, d;
         if (sscanf(line, "%c%c", &c, &d) == 1)
         {
-            free(line);
             return c;
         }
-        free(line);
         printf("Retry: ");
     }
 }
@@ -147,12 +145,10 @@ double get_double(void)
                 // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
-                    free(line);
                     return d;
                 }
             }
         }
-        free(line);
         printf("Retry: ");
     }
 }
@@ -187,12 +183,10 @@ float get_float(void)
                 // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
-                    free(line);
                     return f;
                 }
             }
         }
-        free(line);
         printf("Retry: ");
     }
 }
@@ -224,11 +218,9 @@ int get_int(void)
             long n = strtol(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)
             {
-                free(line);
                 return n;
             }
         }
-        free(line);
         printf("Retry: ");
     }
 }
@@ -260,11 +252,9 @@ long long get_long_long(void)
             long long n = strtoll(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
             {
-                free(line);
                 return n;
             }
         }
-        free(line);
         printf("Retry: ");
     }
 }

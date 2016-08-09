@@ -1,6 +1,7 @@
 DESCRIPTION = CS50 Library for C
 MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
 NAME = lib50-c
+OLD_NAME = library50-c
 VERSION = 7.0.0
 
 .PHONY: bash
@@ -33,11 +34,14 @@ deb: build
 	-t deb \
 	-v $(VERSION) \
 	--conflicts "$(NAME) (<< $(VERSION))" \
+	--conflicts $(OLD_NAME) \
 	--deb-no-default-config-files \
 	--depends c-compiler \
 	--description "$(DESCRIPTION)" \
 	--provides $(NAME) \
+	--provides $(OLD_NAME) \
 	--replaces "$(NAME) (<= $(VERSION))" \
+	--replaces $(OLD_NAME) \
 	usr
 
 .PHONY: hackerrank

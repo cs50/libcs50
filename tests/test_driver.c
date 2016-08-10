@@ -3,24 +3,35 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+
+#include <dirent.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "test_driver.h"
-#include "cs50.h"
-
-char const * const tests[] = {"get_char"};
 
 int main(void)
 {
-    for (size_t i = 0; i < sizeof tests / sizeof *tests; i++)
+    struct dirent *dent;
+    DIR *srcdir = opendir(".");
+    Assertf(srcdir, "Opening current directory failed: %s", strerror(errno));
+
+    while ((dent = readdir(srcdir)) != NULL)
     {
+        struct stat st;
+        if (strcmp(dent->d_name, ".") == 0 || strcmp(dent->d_name, "..") == 0) continue;
+        fstatat(dirfd(srcdir), dent->d_name, &st, 0); 
+        if (!S_ISDIR(st.st_mode)) continue;
+
+        printf("Beginning test \"%s\"\n", dent->d_name);
         char *exe = NULL;
-        Assertf(asprintf(&exe, "%s/%s", tests[i], tests[i]) != -1, "%s", "Memory allocation failure");
+        Assertf(asprintf(&exe, "%s/%s", dent->d_name, dent->d_name) != -1, "Memory allocation failure");
 
         char *infile = NULL;
-        Assertf(asprintf(&infile, "%s.txt", exe) != -1, "%s", "Memory allocation failure");
+        Assertf(asprintf(&infile, "%s.txt", exe) != -1, "Memory allocation failure");
 
         int fd = open(infile, O_RDONLY);
         Assertf(fd != -1, "Error opening test input: %s", strerror(errno));
@@ -37,13 +48,14 @@ int main(void)
         {
             int status = 0;
             waitpid(p, &status, 0);
-            Assertf(status == 0, "Test \"%s\" failed", tests[i]);
-            printf("Test \"%s\" finished successfully\n", tests[i]);
+            Assertf(status == 0, "Test \"%s\" failed", dent->d_name);
+            printf("Test \"%s\" finished successfully\n", dent->d_name);
             free(infile);
             free(exe);
             close(fd);
         }
     }
+    closedir(srcdir);
 
 
 }

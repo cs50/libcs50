@@ -8,6 +8,7 @@
         if (!(COND))                \
         {                           \
             eprintf(__VA_ARGS__);   \
+            fprintf(stderr,"\n");   \
             abort();                \
         }                           \
     } while (false)                 \

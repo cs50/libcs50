@@ -4,6 +4,20 @@ NAME = lib50-c
 OLD_NAME = library50-c
 VERSION = 7.0.0
 
+CC=clang
+CFLAGS=-Wall -Werror -std=c99
+INCDIRS = -I./build/usr/include
+LIBDIRS=-L./build/usr/lib
+LDFLAGS=-lcs50
+DEBUG=-O0 -ggdb3
+
+# Create test build. 
+# Accepts three arguments: input file, output file, additoinal compiler flags (optional)
+cc-test = $(CC) $(DEBUG) $(CFLAGS) $(INCDIRS) $(3) $(1) -o $(2) $(LIBDIRS) $(LDFLAGS)
+
+TESTDIRS=$(sort $(dir $(wildcard ./tests/*/*/)))
+TESTS=$(addsuffix test, $(TESTDIRS))
+
 .PHONY: bash
 bash:
 	docker run -i --rm -t -v "$(PWD):/root" cs50/cli
@@ -11,8 +25,8 @@ bash:
 .PHONY: build
 build: clean Makefile src/cs50.c src/cs50.h
 	mkdir -p build/usr/include build/usr/lib build/usr/src
-	gcc -c -fPIC -std=c99 -Wall -Werror -o build/cs50.o src/cs50.c
-	gcc -o build/usr/lib/libcs50.so -shared build/cs50.o
+	$(CC) $(CFLAGS) -c -fPIC -o build/cs50.o src/cs50.c
+	$(CC) -o build/usr/lib/libcs50.so -shared build/cs50.o
 	rm -f build/cs50.o
 	cp src/cs50.h build/usr/include
 	cp src/cs50.c build/usr/src
@@ -22,6 +36,7 @@ build: clean Makefile src/cs50.c src/cs50.h
 .PHONY: clean
 clean:
 	rm -rf build
+	rm -f $(TESTS)
 
 .PHONY: deb
 deb: build
@@ -81,10 +96,18 @@ rpm: build
 	--description "$(DESCRIPTION)" \
 	usr
 
-# TODO: improve test suite
+# TODO: Improve test suite
 .PHONY: test
-test: build hackerrank
-	clang -ggdb3 -Ibuild/usr/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/eprintf.c -Lbuild/usr/lib -lcs50 -o build/eprintf
+test: build hackerrank test_driver
+	cd tests; ./test_driver
+	$(call cc-test, tests/eprintf.c, build/eprintf, -Wno-deprecated-declarations)
 	LD_LIBRARY_PATH=build/usr/lib build/eprintf
 	clang -Ibuild -std=c11 -Wall -Werror -Wno-deprecated-declarations tests/hackerrank.c -o build/hackerrank
 	build/hackerrank
+
+.PHONY: test_driver
+test_driver: $(TESTS)
+	$(call cc-test, tests/test_driver.c, tests/test_driver)
+
+tests/%/test: tests/%/test.c build
+	$(call cc-test, $<, $@)

@@ -78,7 +78,7 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  * returns CHAR_MAX.
  */
 char get_char(void);
-char (*GetChar)(void) __attribute__((deprecated));
+char (*GetChar)(void);
 
 /**
  * Reads a line of text from standard input and returns the equivalent
@@ -87,7 +87,7 @@ char (*GetChar)(void) __attribute__((deprecated));
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
 double get_double(void);
-double (*GetDouble)(void) __attribute__((deprecated));
+double (*GetDouble)(void);
 
 /**
  * Reads a line of text from standard input and returns the equivalent
@@ -96,7 +96,7 @@ double (*GetDouble)(void) __attribute__((deprecated));
  * retry. If line can't be read, returns FLT_MAX.
  */
 float get_float(void);
-float (*GetFloat)(void) __attribute__((deprecated));
+float (*GetFloat)(void);
 
 /**
  * Reads a line of text from standard input and returns it as an
@@ -105,7 +105,7 @@ float (*GetFloat)(void) __attribute__((deprecated));
  * prompted to retry. If line can't be read, returns INT_MAX.
  */
 int get_int(void);
-int (*GetInt)(void) __attribute__((deprecated));
+int (*GetInt)(void);
 
 /**
  * Reads a line of text from standard input and returns an equivalent
@@ -114,7 +114,7 @@ int (*GetInt)(void) __attribute__((deprecated));
  * user is prompted to retry. If line can't be read, returns LLONG_MAX.
  */
 long long get_long_long(void);
-long long (*GetLongLong)(void) __attribute__((deprecated));
+long long (*GetLongLong)(void);
 
 /**
  * Reads a line of text from standard input and returns it as
@@ -125,6 +125,6 @@ long long (*GetLongLong)(void) __attribute__((deprecated));
  * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(void);
-string (*GetString)(void) __attribute__((deprecated));
+string (*GetString)(void);
 
 #endif

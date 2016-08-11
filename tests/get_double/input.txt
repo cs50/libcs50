@@ -1,0 +1,8 @@
+
+floating point number
+.5
+25a
+nan
+-0.5
+inf
+4.

@@ -31,8 +31,6 @@ int main(void)
         if (!S_ISDIR(st.st_mode)) continue;
 
         printf("Beginning test \"%s\"\n", dent->d_name);
-        char *exe = NULL;
-        Assertf(asprintf(&exe, "%s/%s", dent->d_name, dent->d_name) != -1, "Memory allocation failure");
 
         char *outfile = NULL;
         Assertf(asprintf(&outfile, "%s/output.txt", dent->d_name) != -1, "Memory allocation failure");
@@ -52,11 +50,14 @@ int main(void)
 
         if (pid == 0) // Child
         {
-            close(p[0]);
             // Child writes to pipe, reads from input.txt
+            close(p[0]);
+
+            // Child should enter test directory
+            chdir(dent->d_name);
             Assertf(dup2(p[1], STDOUT_FILENO) != -1, "%s", "Could not replace stdout");
             Assertf(dup2(in_fd, STDIN_FILENO) != -1, "%s", "Could not replace stdin");
-            Assertf(execl(exe, exe, (char *) NULL) != -1, "Execution failure: %s", strerror(errno));
+            Assertf(execl("test", "test", (char *) NULL) != -1, "Execution failure: %s/test: %s", dent->d_name, strerror(errno));
         }
         else // Parent
         {
@@ -70,7 +71,6 @@ int main(void)
             // Cleanup
             free(infile);
             free(outfile);
-            free(exe);
             close(in_fd);
         }
     }

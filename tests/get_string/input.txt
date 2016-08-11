@@ -1,0 +1,5 @@
+Line ending in CRLF
+Line ending in LF
+This is a very long line that should require some buffer resizing ending in LF
+
+This is CS50

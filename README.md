@@ -1,4 +1,5 @@
 # CS50 Library for C
+![Build Status](https://codeship.com/projects/2f287c50-437e-0134-7ad2-76dd7bf7b13e/status?branch=master)
 
 ## Development
 

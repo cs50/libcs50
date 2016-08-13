@@ -1,0 +1,2 @@
+- service: deb
+  command: make deb

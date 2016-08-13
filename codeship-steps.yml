@@ -1,2 +1,2 @@
 - service: deb
-  command: make deb
+  command: make -C /lib50-c deb

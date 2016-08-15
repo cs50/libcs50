@@ -35,5 +35,6 @@ Link with `-lcs50`.
 ## Contributors
 
 *   [Chad Sharp](https://github.com/crossroads1112)
+*   [Emrul Hasan Zawad](https://github.com/ehzShelter)
 *   [Ivan Jasenov](https://github.com/IvanJasenov)
 *   [Kareem Zidane](https://github.com/kzidane)

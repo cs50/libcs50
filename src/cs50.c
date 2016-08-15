@@ -280,6 +280,12 @@ static string *strings = NULL;
  */
 string get_string(void)
 {
+    // check whether we have room for another string
+    if (allocations == SIZE_MAX)
+    {
+        return NULL;
+    }
+
     // growable buffer for characters
     string buffer = NULL;
 
@@ -331,7 +337,7 @@ string get_string(void)
         buffer[size++] = c;
     }
 
-    // return NULL if user provided no input
+    // check whether user provided input
     if (size == 0 && c == EOF)
     {
         return NULL;
@@ -396,7 +402,7 @@ static void teardown(void)
     // free library's strings
     if (strings != NULL)
     {
-        for (int i = 0; i < allocations; i++)
+        for (size_t i = 0; i < allocations; i++)
         {
             free(strings[i]);
         }

@@ -2,7 +2,7 @@ DESCRIPTION = CS50 Library for C
 MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
 NAME = lib50-c
 OLD_NAME = library50-c
-VERSION = 7.0.1
+VERSION = 7.0.2
 
 .PHONY: bash
 bash:

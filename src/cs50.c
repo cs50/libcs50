@@ -263,12 +263,12 @@ long long (*GetLongLong)(void) = get_long_long;
 /**
  * Number of strings allocated by get_string.
  */
-static size_t allocations = 0;
+static size_t allocations;
 
 /**
  * Array of strings allocated by get_string.
  */
-static string *strings = NULL;
+static string *strings;
 
 /**
  * Reads a line of text from standard input and returns it as

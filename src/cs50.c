@@ -324,7 +324,7 @@ string get_string(void)
             }
 
             // extend buffer's capacity
-            string temp = (string*)realloc(buffer, capacity);
+            string temp = (char*)realloc(buffer, capacity);
             if (temp == NULL)
             {
                 free(buffer);
@@ -358,7 +358,7 @@ string get_string(void)
     }
 
     // minimize buffer
-    string s = (string*)realloc(buffer, size + 1);
+    string s = (char*)realloc(buffer, size + 1);
     if (s == NULL)
     {
         free(buffer);

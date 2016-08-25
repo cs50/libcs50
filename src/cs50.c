@@ -324,13 +324,16 @@ string get_string(void)
             }
 
             // extend buffer's capacity
-            string temp = realloc(buffer, capacity);
+            string temp = (string*)realloc(buffer, capacity);
             if (temp == NULL)
             {
                 free(buffer);
                 return NULL;
             }
+            // sharing a pointee
             buffer = temp;
+            // and free up tmp
+            free(temp);
         }
 
         // append current character to buffer
@@ -355,7 +358,7 @@ string get_string(void)
     }
 
     // minimize buffer
-    string s = realloc(buffer, size + 1);
+    string s = (string*)realloc(buffer, size + 1);
     if (s == NULL)
     {
         free(buffer);
@@ -372,7 +375,9 @@ string get_string(void)
         free(s);
         return NULL;
     }
+    // sharing a pointee
     strings = tmp;
+    free(tmp);
 
     // append string to array
     strings[allocations] = s;

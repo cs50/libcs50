@@ -86,5 +86,5 @@ rpm: build
 test: build hackerrank
 	clang -ggdb3 -Ibuild/usr/include -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/eprintf.c -Lbuild/usr/lib -lcs50 -o build/eprintf
 	LD_LIBRARY_PATH=build/usr/lib build/eprintf
-	clang -Ibuild -std=c11 -Wall -Werror -Wno-deprecated-declarations tests/hackerrank.c -o build/hackerrank
+	clang -Ibuild -std=c99 -Wall -Werror -Wno-deprecated-declarations tests/hackerrank.c -o build/hackerrank
 	build/hackerrank

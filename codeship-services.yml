@@ -1,4 +1,0 @@
-deb:
-    image: cs50/cli
-    volumes:
-      - ./:/lib50-c

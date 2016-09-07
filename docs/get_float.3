@@ -1,0 +1,54 @@
+'\" t
+.\"     Title: get_float
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: Asciidoctor 1.5.4
+.\"      Date: 2016-09-07
+.\"    Manual: CS50 Programmer's Manual
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "GET_FLOAT" "3" "2016-09-07" "\ \&" "CS50 Programmer\(aqs Manual"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.LINKSTYLE blue R < >
+.SH "NAME"
+get_float \- reads a line of text from stdin and returns the equivalent float.
+.SH "SYNOPSIS"
+.sp
+\fB#include <cs50.h>\fP
+.sp
+\fBfloat get_float(void);\fP
+.SH "DESCRIPTION"
+.sp
+Reads a line of text from the standard input and returns the equivalent float as precisely as possible; if text does not represent a float or if value would cause underflow or overflow, user is prompted to retry.
+.SH "RETURN VALUE"
+.sp
+Returns the equivalent float of the line read from stdin, as precisely as possible. If line can\(cqt be read, returns \fBFLT_MAX\fP.
+.SH "EXAMPLE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+// attempt to read float from stdin
+float f = get_float();
+
+// ensure float was read
+if (f != FLT_MAX)
+{
+    printf("You entered %f\(rsn", f);
+}
+.fi
+.if n \{\
+.RE
+.\}
+.SH "SEE ALSO"
+.sp
+get_char(3), get_double(3), get_int(3), get_long_long(3), get_string(3)

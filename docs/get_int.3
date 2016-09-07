@@ -1,0 +1,54 @@
+'\" t
+.\"     Title: get_int
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: Asciidoctor 1.5.4
+.\"      Date: 2016-09-07
+.\"    Manual: CS50 Programmer's Manual
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "GET_INT" "3" "2016-09-07" "\ \&" "CS50 Programmer\(aqs Manual"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.LINKSTYLE blue R < >
+.SH "NAME"
+get_int \- reads a line of text from stdin and returns the equivalent int.
+.SH "SYNOPSIS"
+.sp
+\fB#include <cs50.h>\fP
+.sp
+\fBint get_int(void);\fP
+.SH "DESCRIPTION"
+.sp
+Reads a line of text from standard input and returns it as an int in [\-2^31, 2^31 \- 1), if possible; if text does not represent such an int or if value would cause underflow or overflow, user is prompted to retry.
+.SH "RETURN VALUE"
+.sp
+Returns the equivalent int of the line read from stdin, in [\-2^31, 2^31 \- 1), if possible. If line can\(cqt be read, returns \fBINT_MAX\fP.
+.SH "EXAMPLE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+// attempt to read integer from stdin
+int i = get_int();
+
+// ensure integer was read
+if (i != INT_MAX)
+{
+    printf("You entered %i\(rsn", i);
+}
+.fi
+.if n \{\
+.RE
+.\}
+.SH "SEE ALSO"
+.sp
+get_char(3), get_double(3), get_float(3), get_long_long(3), get_string(3)

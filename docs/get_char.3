@@ -1,0 +1,54 @@
+'\" t
+.\"     Title: get_char
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: Asciidoctor 1.5.4
+.\"      Date: 2016-09-07
+.\"    Manual: CS50 Programmer's Manual
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "GET_CHAR" "3" "2016-09-07" "\ \&" "CS50 Programmer\(aqs Manual"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.LINKSTYLE blue R < >
+.SH "NAME"
+get_char \- reads a line of text from stdin and returns the equivalent char.
+.SH "SYNOPSIS"
+.sp
+\fB#include <cs50.h>\fP
+.sp
+\fBchar get_char(void);\fP
+.SH "DESCRIPTION"
+.sp
+Reads a line of text from the standard input and returns the equivalent char; if text does not represent a char, user is prompted to retry.
+.SH "RETURN VALUE"
+.sp
+Returns the equivalent char of the line read from stdin. If line can\(cqt be read, returns \fBCHAR_MAX\fP.
+.SH "EXAMPLE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+// attempt to read character from stdin
+char c = get_char();
+
+// ensure character was read
+if (c != CHAR_MAX)
+{
+    printf("You entered %c\(rsn", c);
+}
+.fi
+.if n \{\
+.RE
+.\}
+.SH "SEE ALSO"
+.sp
+get_double(3), get_float(3), get_int(3), get_long_long(3), get_string(3)

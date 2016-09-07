@@ -72,7 +72,7 @@ extern char *program_invocation_short_name;
 void eprintf(const char *file, int line, const char *format, ...)
 {
     // print program's name followed by caller's file and line number
-    fprintf(stderr, "%s:%s:%d: ", program_invocation_short_name, file, line);
+    fprintf(stderr, "%s:%s:%i: ", program_invocation_short_name, file, line);
 
     // variable argument list
     va_list ap;

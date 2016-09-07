@@ -5,11 +5,18 @@
 Requires [Docker Engine](https://docs.docker.com/engine/installation/).
 
     make bash
-    make build # builds static library
+    make build # builds dynamic library
     make deb # builds .deb
     make pacman # builds .pkg.tar.xz
     make rpm # builds .rpm
     make test # builds test program
+
+# Installation
+
+1. Download the latest release per https://github.com/cs50/lib50-c/releases
+1. Extract `lib50-c-*.*`
+1. `cd lib50-c-*`
+1. `make install`
 
 ## Usage
 
@@ -29,7 +36,6 @@ Link with `-lcs50`.
 ## TODO
 
 *   Add tests.
-*   Move installation from `/usr/local` to `/usr` or `/opt`.
 
 ## Contributors
 

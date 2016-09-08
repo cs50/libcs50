@@ -24,7 +24,7 @@ get_string \- reads a line of text from stdin and returns it as a string.
 .sp
 \fB#include <cs50.h>\fP
 .sp
-\fBchar *get_string(void);\fP
+\fBstring get_string(void);\fP
 .SH "DESCRIPTION"
 .sp
 Reads a line of text from the standard input and returns it as a string (char *), sans trailing line ending. Stores the string on heap, but the library\(cqs destructor frees memory on program\(cqs exit.
@@ -32,7 +32,7 @@ Reads a line of text from the standard input and returns it as a string (char *)
 Supports \fBCR (\(rsr)\fP, \fBLF (\(rsn)\fP, and \fBCRLF (\(rsr\(rsn)\fP as line endings.
 .SH "RETURN VALUE"
 .sp
-If user inputs only \fB"\(rsn"\fP, returns \fB""\fP, not \fBNULL\fP. Returns \fBNULL\fP upon error or no input whatsoever (i.e., just \fBEOF\fP).
+Returns the read line as a string. If the user inputs only \fB"\(rsn"\fP, returns \fB""\fP, not \fBNULL\fP. Returns \fBNULL\fP upon error or no input whatsoever (i.e., just \fBEOF\fP).
 .SH "EXAMPLE"
 .sp
 .if n \{\
@@ -40,7 +40,7 @@ If user inputs only \fB"\(rsn"\fP, returns \fB""\fP, not \fBNULL\fP. Returns \fB
 .\}
 .nf
 // attempt to read string from stdin
-char *s = get_string();
+string s = get_string();
 
 // ensure integer was read
 if (s != NULL)

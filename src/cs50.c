@@ -381,7 +381,90 @@ string get_string(void)
     // return string
     return s;
 }
-string (*GetString)(void) = get_string;
+string GetString(void)
+{
+    // growable buffer for characters
+    string buffer = NULL;
+
+    // capacity of buffer
+    size_t capacity = 0;
+
+    // number of characters actually in buffer
+    size_t size = 0;
+
+    // character read or EOF
+    int c;
+
+    // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
+    while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
+    {
+        // grow buffer if necessary
+        if (size + 1 > capacity)
+        {
+            // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
+            if (capacity == 0)
+            {
+                capacity = 16;
+            }
+            else if (capacity <= (SIZE_MAX / 2))
+            {
+                capacity *= 2;
+            }
+            else if (capacity < SIZE_MAX)
+            {
+                capacity = SIZE_MAX;
+            }
+            else
+            {
+                free(buffer);
+                return NULL;
+            }
+
+            // extend buffer's capacity
+            string temp = realloc(buffer, capacity);
+            if (temp == NULL)
+            {
+                free(buffer);
+                return NULL;
+            }
+            buffer = temp;
+        }
+
+        // append current character to buffer
+        buffer[size++] = c;
+    }
+
+    // check whether user provided input
+    if (size == 0 && c == EOF)
+    {
+        return NULL;
+    }
+
+    // if last character read was CR, try to read LF as well
+    if (c == '\r' && (c = fgetc(stdin)) != '\n')
+    {
+        // return NULL if character can't be pushed back onto standard input
+        if (c != EOF && ungetc(c, stdin) == EOF)
+        {
+            free(buffer);
+            return NULL;
+        }
+    }
+
+    // minimize buffer
+    string s = realloc(buffer, size + 1);
+    if (s == NULL)
+    {
+        free(buffer);
+        return NULL;
+    }
+
+    // terminate string
+    s[size] = '\0';
+
+    // return string
+    return s;
+}
 
 /**
  * Called automatically before execution enters main.

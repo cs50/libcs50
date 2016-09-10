@@ -125,6 +125,6 @@ long long (*GetLongLong)(void);
  * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(void);
-string (*GetString)(void);
+string GetString(void);
 
 #endif

@@ -49,7 +49,7 @@
 /**
  * Our own data type for string variables.
  */
-typedef char *string;
+typedef char *string = NULL;
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's

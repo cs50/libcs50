@@ -27,10 +27,6 @@ NAME = lib50-c
 OLD_NAME = library50-c
 VERSION = 7.1.1
 
-# space character
-SPACE =
-SPACE +=
-
 .PHONY: bash
 bash:
 	docker run -i --rm -t -v "$(PWD):/root" cs50/cli

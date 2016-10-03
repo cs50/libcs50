@@ -119,5 +119,5 @@ rpm: build
 test: build hackerrank
 	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
 	clang -I "$(BUILD_DIR)" -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
-	LD_LIBRARY_PATH="$(LIB_DIR)" $(subst $(SPACE),\ ,$(EPRINTF_EXE))
-	$(subst $(SPACE),\ ,$(HR_EXE))
+	LD_LIBRARY_PATH="$(LIB_DIR)" "$(EPRINTF_EXE)"
+	"$(HR_EXE)"

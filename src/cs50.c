@@ -63,16 +63,11 @@
  * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
-#ifdef __GLIBC__
-extern char *program_invocation_short_name;
-#else
-#define program_invocation_short_name getprogname()
-#endif
 #undef eprintf
 void eprintf(const char *file, int line, const char *format, ...)
 {
     // print program's name followed by caller's file and line number
-    fprintf(stderr, "%s:%s:%i: ", program_invocation_short_name, file, line);
+    fprintf(stderr, "%s:%i: ", file, line);
 
     // variable argument list
     va_list ap;

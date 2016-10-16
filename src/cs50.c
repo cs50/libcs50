@@ -268,9 +268,9 @@ static string *strings = NULL;
 /**
  * Reads a line of text from standard input and returns it as
  * a string (char *), sans trailing line ending. Supports
- * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
- * inputs only "\n", returns "", not NULL. Returns NULL upon
- * error or no input whatsoever (i.e., just EOF). Stores string
+ * CR (\r), LF (\n), and CRLF (\r\n) as line endings. Returns ""
+ * if user inputs only CR, LF, or CRLF. Returns "" upon no input
+ * whatsoever (i.e., just EOF). Returns NULL upon error. Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(void)
@@ -330,12 +330,6 @@ string get_string(void)
 
         // append current character to buffer
         buffer[size++] = c;
-    }
-
-    // check whether user provided input
-    if (size == 0 && c == EOF)
-    {
-        return NULL;
     }
 
     // if last character read was CR, try to read LF as well
@@ -427,12 +421,6 @@ string GetString(void)
 
         // append current character to buffer
         buffer[size++] = c;
-    }
-
-    // check whether user provided input
-    if (size == 0 && c == EOF)
-    {
-        return NULL;
     }
 
     // if last character read was CR, try to read LF as well

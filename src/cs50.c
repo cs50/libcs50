@@ -4,7 +4,7 @@
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2016,
+ * Copyright (c) 2017,
  * Glenn Holloway <holloway@eecs.harvard.edu>
  * David J. Malan <malan@harvard.edu>
  * All rights reserved.
@@ -66,7 +66,7 @@
 #undef eprintf
 void eprintf(const char *file, int line, const char *format, ...)
 {
-    // print program's name followed by caller's file and line number
+    // print caller's file name and line number
     fprintf(stderr, "%s:%i: ", file, line);
 
     // variable argument list

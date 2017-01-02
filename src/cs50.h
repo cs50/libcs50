@@ -4,7 +4,7 @@
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2016,
+ * Copyright (c) 2017,
  * Glenn Holloway <holloway@eecs.harvard.edu>
  * David J. Malan <malan@harvard.edu>
  * All rights reserved.
@@ -67,7 +67,7 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
 
 /**
  * Macro that allows function of the same name to be called without specifying caller's
- * file or line number explicitly.
+ * file name or line number explicitly.
  */
 #define eprintf(format, ...) eprintf(__FILE__, __LINE__, format, ##__VA_ARGS__)
 

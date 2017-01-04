@@ -77,8 +77,8 @@ hackerrank: build
 
 .PHONY: install
 install: build
-	cp "$(INCLUDE_DIR)/*" /usr/include
-	cp "$(LIB_DIR)/*" /usr/lib
+	cp "$(INCLUDE_DIR)/*" /usr/local/include
+	cp "$(LIB_DIR)/*" /usr/local/lib
 
 # TODO: add dependencies
 .PHONY: pacman

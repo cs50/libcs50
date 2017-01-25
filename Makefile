@@ -77,13 +77,13 @@ hackerrank: build
 
 .PHONY: install
 install: build
-	cp "$(INCLUDE_DIR)/*" /usr/include
-	cp "$(LIB_DIR)/*" /usr/lib
+	cp "$(INCLUDE_DIR)"/* /usr/include
+	cp "$(LIB_DIR)"/* /usr/lib
 
 # TODO: add dependencies
 .PHONY: pacman
 pacman: build
-	rm -f "$(NAME)-$(VERSION)-*.pkg.tar.xz"
+	rm -f "$(NAME)-$(VERSION)-"*.pkg.tar.xz
 	fpm \
 	-C "$(BUILD_DIR)" \
 	-m "$(MAINTAINER)" \
@@ -98,7 +98,7 @@ pacman: build
 # TODO: add dependencies
 .PHONY: rpm
 rpm: build
-	rm -f "$(NAME)-$(VERSION)-*.rpm"
+	rm -f "$(NAME)-$(VERSION)-"*.rpm
 	fpm \
 	-C "$(BUILD_DIR)" \
 	-m "$(MAINTAINER)" \

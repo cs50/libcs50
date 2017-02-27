@@ -23,9 +23,9 @@ TESTS_DIR = tests
 # deb package info
 DESCRIPTION = CS50 Library for C
 MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
-NAME = lib50-c
-OLD_NAME = library50-c
-VERSION = 7.1.2
+NAME = libcs50
+OLD_NAMES = lib50-c library50-c
+VERSION = 7.2.0
 
 .PHONY: bash
 bash:
@@ -58,14 +58,12 @@ deb: build
 	-t deb \
 	-v "$(VERSION)" \
 	--conflicts "$(NAME) (<< $(VERSION))" \
-	--conflicts "$(OLD_NAME)" \
+	$(foreach name,$(OLD_NAMES),--conflicts $(name) --provides $(name) --replaces $(name)) \
 	--deb-no-default-config-files \
 	--depends c-compiler \
 	--description "$(DESCRIPTION)" \
 	--provides "$(NAME)" \
-	--provides "$(OLD_NAME)" \
 	--replaces "$(NAME) (<= $(VERSION))" \
-	--replaces "$(OLD_NAME)" \
 	usr
 
 .PHONY: hackerrank

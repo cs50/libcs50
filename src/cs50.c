@@ -1,6 +1,6 @@
 /**
  * CS50 Library for C
- * https://github.com/cs50/c/
+ * https://github.com/cs50/libcs50
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *

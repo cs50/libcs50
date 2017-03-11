@@ -273,7 +273,7 @@ static string *strings = NULL;
  * error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(void)
+const string get_string(void)
 {
     // check whether we have room for another string
     if (allocations == SIZE_MAX)

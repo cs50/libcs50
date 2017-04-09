@@ -104,9 +104,8 @@ extern float (*GetFloat)(void);
  * such an int or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns INT_MAX.
  */
-int get_int(void);
+int get_int(string s);
 extern int (*GetInt)(void);
-int one_or_two(int a, int b);
 
 /**
  * Reads a line of text from standard input and returns an equivalent

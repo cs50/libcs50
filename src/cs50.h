@@ -47,13 +47,12 @@
 #include <stdlib.h>
 
 /**
- * TODO
- *
- * https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/
+ * Temporarily used to make arguments to get_* (but not Get*) optional.
+ * Inspired by https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/.
  */
 #define _ARGS(_0, _1, _2, ...) _2
 #define ARGS(...) _ARGS(, ##__VA_ARGS__, 1, 0)
-#define ARG_0(NAME) "Retry: "
+#define ARG_0(NAME) NULL
 #define ARG_1(NAME, a) a
 #define __ZERO_OR_ONE_ARG(NAME, N, ...) ARG_ ## N (NAME, ##__VA_ARGS__)
 #define _ZERO_OR_ONE_ARG(NAME, N, ...) __ZERO_OR_ONE_ARG(NAME, N, ##__VA_ARGS__)
@@ -85,19 +84,19 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
 #define eprintf(format, ...) eprintf(__FILE__, __LINE__, format, ##__VA_ARGS__)
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * char; if text does not represent a char, user is prompted to retry.
- * Leading and trailing whitespace is ignored. If line can't be read,
- * returns CHAR_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent char; if text does not represent a char, user is prompted
+ * to retry. Leading and trailing whitespace is ignored. If line can't
+ * be read, returns CHAR_MAX.
  */
 char get_char(string prompt);
 char GetChar(void) __attribute__((deprecated));
 #define get_char(...) ZERO_OR_ONE_ARG(get_char, ##__VA_ARGS__)
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * double as precisely as possible; if text does not represent a
- * double or if value would cause underflow or overflow, user is
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent double as precisely as possible; if text does not represent
+ * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
 double get_double(string prompt);
@@ -105,38 +104,38 @@ double GetDouble(void) __attribute__((deprecated));
 #define get_double(...) ZERO_OR_ONE_ARG(get_double, ##__VA_ARGS__)
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * float as precisely as possible; if text does not represent a float
- * or if value would cause underflow or overflow, user is prompted to
- * retry. If line can't be read, returns FLT_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent float as precisely as possible; if text does not represent
+ * a float or if value would cause underflow or overflow, user is prompted
+ * to retry. If line can't be read, returns FLT_MAX.
  */
 float get_float(string prompt);
 float GetFloat(void) __attribute__((deprecated));
 #define get_float(...) ZERO_OR_ONE_ARG(get_float, ##__VA_ARGS__)
 
 /**
- * Reads a line of text from standard input and returns it as an
- * int in [-2^31, 2^31 - 1), if possible; if text does not represent
- * such an int or if value would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns INT_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent int; if text does not represent an int in [-2^31, 2^31 - 1)
+ * or would cause underflow or overflow, user is prompted to retry. If line
+ * can't be read, returns INT_MAX.
  */
 int get_int(string prompt);
 int GetInt(void) __attribute__((deprecated));
 #define get_int(...) ZERO_OR_ONE_ARG(get_int, ##__VA_ARGS__)
 
 /**
- * Reads a line of text from standard input and returns an equivalent
- * long long in [-2^63, 2^63 - 1), if possible; if text does not
- * represent such a long long or if value would cause underflow or overflow,
- * user is prompted to retry. If line can't be read, returns LLONG_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent long long; if text does not represent a long long in
+ * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
 long long get_long_long(string prompt);
 long long GetLongLong(void) __attribute__((deprecated));
 #define get_long_long(...) ZERO_OR_ONE_ARG(get_long_long, ##__VA_ARGS__)
 
 /**
- * Reads a line of text from standard input and returns it as
- * a string (char *), sans trailing line ending. Supports
+ * Prompts user for a line of text from standard input and returns
+ * it as a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
  * inputs only "\n", returns "", not NULL. Returns NULL upon
  * error or no input whatsoever (i.e., just EOF). Stores string

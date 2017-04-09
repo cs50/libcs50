@@ -83,10 +83,10 @@ void eprintf(const char *file, int line, const char *format, ...)
 }
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * char; if text does not represent a char, user is prompted to retry.
- * Leading and trailing whitespace is ignored. If line can't be read,
- * returns CHAR_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent char; if text does not represent a char, user is prompted
+ * to retry. Leading and trailing whitespace is ignored. If line can't
+ * be read, returns CHAR_MAX.
  */
 char get_char(string prompt)
 {
@@ -115,9 +115,9 @@ char GetChar(void)
 }
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * double as precisely as possible; if text does not represent a
- * double or if value would cause underflow or overflow, user is
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent double as precisely as possible; if text does not represent
+ * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
 double get_double(string prompt)
@@ -156,10 +156,10 @@ double GetDouble(void)
 }
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * float as precisely as possible; if text does not represent a float
- * or if value would cause underflow or overflow, user is prompted to
- * retry. If line can't be read, returns FLT_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent float as precisely as possible; if text does not represent
+ * a float or if value would cause underflow or overflow, user is prompted
+ * to retry. If line can't be read, returns FLT_MAX.
  */
 float get_float(string prompt)
 {
@@ -197,10 +197,10 @@ float GetFloat(void)
 }
 
 /**
- * Reads a line of text from standard input and returns it as an
- * int in [-2^31, 2^31 - 1), if possible; if text does not represent
- * such an int or if value would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns INT_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent int; if text does not represent an int in [-2^31, 2^31 - 1)
+ * or would cause underflow or overflow, user is prompted to retry. If line
+ * can't be read, returns INT_MAX.
  */
 int get_int(string prompt)
 {
@@ -234,10 +234,10 @@ int GetInt(void)
 }
 
 /**
- * Reads a line of text from standard input and returns an equivalent
- * long long in [-2^63, 2^63 - 1), if possible; if text does not
- * represent such a long long or if value would cause underflow or overflow,
- * user is prompted to retry. If line can't be read, returns LLONG_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent long long; if text does not represent a long long in
+ * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
 long long get_long_long(string prompt)
 {
@@ -281,8 +281,8 @@ static size_t allocations = 0;
 static string *strings = NULL;
 
 /**
- * Reads a line of text from standard input and returns it as
- * a string (char *), sans trailing line ending. Supports
+ * Prompts user for a line of text from standard input and returns
+ * it as a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
  * inputs only "\n", returns "", not NULL. Returns NULL upon
  * error or no input whatsoever (i.e., just EOF). Stores string

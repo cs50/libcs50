@@ -51,6 +51,27 @@
 
 #include "cs50.h"
 
+// https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/
+/*
+#define _ARG2(_0, _1, _2, ...) _2
+#define NARG2(...) _ARG2(__VA_ARGS__, 2, 1, 0)
+#define _ONE_OR_TWO_ARGS_1(NAME, a) a, NAME ## _default_arg_1()
+#define _ONE_OR_TWO_ARGS_2(NAME, a, b) a, b
+#define __ONE_OR_TWO_ARGS(NAME, N, ...) _ONE_OR_TWO_ARGS_ ## N (NAME, __VA_ARGS__)
+#define _ONE_OR_TWO_ARGS(NAME, N, ...) __ONE_OR_TWO_ARGS(NAME, N, __VA_ARGS__)
+#define ONE_OR_TWO_ARGS(NAME, ...) NAME(_ONE_OR_TWO_ARGS(NAME, NARG2(__VA_ARGS__), __VA_ARGS__))
+#define one_or_two(...) ONE_OR_TWO_ARGS(one_or_two, __VA_ARGS__)
+*/
+
+#define _ARG1(_0, _1, ...) _1
+#define NARG1(...) _ARG1(__VA_ARGS__, 1, 0)
+#define _ZERO_OR_ONE_ARG_0(NAME), NAME ## _default_arg_0()
+#define _ZERO_OR_ONE_ARG_1(NAME, a) a
+#define __ZERO_OR_ONE_ARG(NAME, N, ...) _ZERO_OR_ONE_ARG_ ## N (NAME, __VA_ARGS__)
+#define _ZERO_OR_ONE_ARG(NAME, N, ...) __ZERO_OR_ONE_ARG(NAME, N, __VA_ARGS__)
+#define ZERO_OR_TWO_ARG(NAME, ...) NAME(_ZERO_OR_ONE_ARG(NAME, NARG2(__VA_ARGS__), __VA_ARGS__))
+#define get_integer(...) ZERO_OR_ONE_ARG(get_integer, __VA_ARGS__)
+
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's
  * name as well as the file and line number from which function was called, which a macro is
@@ -193,7 +214,7 @@ float (*GetFloat)(void) = get_float;
  * such an int or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns INT_MAX.
  */
-int get_int(void)
+int get_int(string s)
 {
     // try to get an int from user
     while (true)
@@ -219,7 +240,10 @@ int get_int(void)
         printf("Retry: ");
     }
 }
+/*
 int (*GetInt)(void) = get_int;
+*/
+static inline string get_int_default_arg_0(void) {  return "Retry: "; }
 
 /**
  * Reads a line of text from standard input and returns an equivalent

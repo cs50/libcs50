@@ -106,6 +106,7 @@ extern float (*GetFloat)(void);
  */
 int get_int(void);
 extern int (*GetInt)(void);
+int one_or_two(int a, int b);
 
 /**
  * Reads a line of text from standard input and returns an equivalent

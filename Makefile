@@ -34,7 +34,7 @@ bash:
 .PHONY: build
 build: clean Makefile $(SRC) $(HDR)
 	mkdir -p "$(INCLUDE_DIR)" "$(LIB_DIR)" "$(MAN_DIR)" "$(BUILD_SRC)"
-	gcc -c -fPIC -std=c99 -Wall -Werror -o "$(OBJ)" "$(SRC)"
+	gcc -c -fPIC -std=gnu99 -Wall -o "$(OBJ)" "$(SRC)"
 	gcc -o "$(LIB_DIR)/libcs50.so" -shared "$(OBJ)"
 	rm -f "$(OBJ)"
 	cp "$(HDR)" "$(INCLUDE_DIR)"
@@ -111,7 +111,6 @@ rpm: build
 # TODO: improve test suite
 .PHONY: test
 test: build hackerrank
-	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
-	clang -I "$(BUILD_DIR)" -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
-	LD_LIBRARY_PATH="$(LIB_DIR)" "$(EPRINTF_EXE)"
-	"$(HR_EXE)"
+	#clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
+	#clang -I "$(BUILD_DIR)" -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
+	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -std=gnu99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/get_int.c" -L "$(LIB_DIR)" -lcs50 -o "$(BUILD_DIR)"/get_int

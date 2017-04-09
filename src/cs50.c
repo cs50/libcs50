@@ -52,23 +52,6 @@
 #include "cs50.h"
 
 /**
- *
- * https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/
- */
-#define _ARGS(_0, _1, _2, ...) _2
-#define ARGS(...) _ARGS(, ##__VA_ARGS__, 1, 0)
-#define ARG_0(NAME) retry()
-#define ARG_1(NAME, a) a
-#define __ZERO_OR_ONE_ARG(NAME, N, ...) ARG_ ## N (NAME, ##__VA_ARGS__)
-#define _ZERO_OR_ONE_ARG(NAME, N, ...) __ZERO_OR_ONE_ARG(NAME, N, ##__VA_ARGS__)
-#define ZERO_OR_ONE_ARG(NAME, ...) NAME(_ZERO_OR_ONE_ARG(NAME, ARGS(__VA_ARGS__), ##__VA_ARGS__))
-#define get_int(...) ZERO_OR_ONE_ARG(get_int, ##__VA_ARGS__)
-static inline string retry(void)
-{
-    return "Retry: ";
-}
-
-/**
  * Prints an error message, formatted like printf, to standard error, prefixing it with program's
  * name as well as the file and line number from which function was called, which a macro is
  * expected to provide.
@@ -105,7 +88,7 @@ void eprintf(const char *file, int line, const char *format, ...)
  * Leading and trailing whitespace is ignored. If line can't be read,
  * returns CHAR_MAX.
  */
-char get_char(void)
+char get_char(string prompt)
 {
     // try to get a char from user
     while (true)
@@ -123,10 +106,13 @@ char get_char(void)
         {
             return c;
         }
-        printf("Retry: ");
+        printf("%s", prompt);
     }
 }
-char (*GetChar)(void) = get_char;
+char GetChar(void)
+{
+    return get_char();
+}
 
 /**
  * Reads a line of text from standard input and returns the equivalent
@@ -134,7 +120,7 @@ char (*GetChar)(void) = get_char;
  * double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(void)
+double get_double(string prompt)
 {
     // try to get a double from user
     while (true)
@@ -161,10 +147,13 @@ double get_double(void)
                 }
             }
         }
-        printf("Retry: ");
+        printf("%s", prompt);
     }
 }
-double (*GetDouble)(void) = get_double;
+double GetDouble(void)
+{
+    return get_double();
+}
 
 /**
  * Reads a line of text from standard input and returns the equivalent
@@ -172,7 +161,7 @@ double (*GetDouble)(void) = get_double;
  * or if value would cause underflow or overflow, user is prompted to
  * retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(void)
+float get_float(string prompt)
 {
     // try to get a float from user
     while (true)
@@ -199,10 +188,13 @@ float get_float(void)
                 }
             }
         }
-        printf("Retry: ");
+        printf("%s", prompt);
     }
 }
-float (*GetFloat)(void) = get_float;
+float GetFloat(void)
+{
+    return get_float();
+}
 
 /**
  * Reads a line of text from standard input and returns it as an
@@ -210,7 +202,7 @@ float (*GetFloat)(void) = get_float;
  * such an int or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns INT_MAX.
  */
-int get_int(string s)
+int get_int(string prompt)
 {
     // try to get an int from user
     while (true)
@@ -233,10 +225,13 @@ int get_int(string s)
                 return n;
             }
         }
-        printf("Retry: ");
+        printf("%s", prompt);
     }
 }
-int (*GetInt)(void) = get_int;
+int GetInt(void)
+{
+    return get_int();
+}
 
 /**
  * Reads a line of text from standard input and returns an equivalent
@@ -244,7 +239,7 @@ int (*GetInt)(void) = get_int;
  * represent such a long long or if value would cause underflow or overflow,
  * user is prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(void)
+long long get_long_long(string prompt)
 {
     // try to get a long long from user
     while (true)
@@ -267,10 +262,13 @@ long long get_long_long(void)
                 return n;
             }
         }
-        printf("Retry: ");
+        printf("%s", prompt);
     }
 }
-long long (*GetLongLong)(void) = get_long_long;
+long long GetLongLong(void)
+{
+    return get_long_long();
+}
 
 /**
  * Number of strings allocated by get_string.
@@ -290,7 +288,7 @@ static string *strings = NULL;
  * error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(void)
+string get_string(string prompt)
 {
     // check whether we have room for another string
     if (allocations == SIZE_MAX)

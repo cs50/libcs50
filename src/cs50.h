@@ -47,6 +47,19 @@
 #include <stdlib.h>
 
 /**
+ * TODO
+ *
+ * https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/
+ */
+#define _ARGS(_0, _1, _2, ...) _2
+#define ARGS(...) _ARGS(, ##__VA_ARGS__, 1, 0)
+#define ARG_0(NAME) "Retry: "
+#define ARG_1(NAME, a) a
+#define __ZERO_OR_ONE_ARG(NAME, N, ...) ARG_ ## N (NAME, ##__VA_ARGS__)
+#define _ZERO_OR_ONE_ARG(NAME, N, ...) __ZERO_OR_ONE_ARG(NAME, N, ##__VA_ARGS__)
+#define ZERO_OR_ONE_ARG(NAME, ...) NAME(_ZERO_OR_ONE_ARG(NAME, ARGS(__VA_ARGS__), ##__VA_ARGS__))
+
+/**
  * Our own data type for string variables.
  */
 typedef char *string;
@@ -77,8 +90,9 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  * Leading and trailing whitespace is ignored. If line can't be read,
  * returns CHAR_MAX.
  */
-char get_char(void);
-extern char (*GetChar)(void);
+char get_char(string prompt);
+char GetChar(void) __attribute__((deprecated));
+#define get_char(...) ZERO_OR_ONE_ARG(get_char, ##__VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns the equivalent
@@ -86,8 +100,9 @@ extern char (*GetChar)(void);
  * double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(void);
-extern double (*GetDouble)(void);
+double get_double(string prompt);
+double GetDouble(void) __attribute__((deprecated));
+#define get_double(...) ZERO_OR_ONE_ARG(get_double, ##__VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns the equivalent
@@ -95,8 +110,9 @@ extern double (*GetDouble)(void);
  * or if value would cause underflow or overflow, user is prompted to
  * retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(void);
-extern float (*GetFloat)(void);
+float get_float(string prompt);
+float GetFloat(void) __attribute__((deprecated));
+#define get_float(...) ZERO_OR_ONE_ARG(get_float, ##__VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns it as an
@@ -104,8 +120,9 @@ extern float (*GetFloat)(void);
  * such an int or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns INT_MAX.
  */
-int get_int(string s);
-extern int (*GetInt)(void);
+int get_int(string prompt);
+int GetInt(void) __attribute__((deprecated));
+#define get_int(...) ZERO_OR_ONE_ARG(get_int, ##__VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns an equivalent
@@ -113,8 +130,9 @@ extern int (*GetInt)(void);
  * represent such a long long or if value would cause underflow or overflow,
  * user is prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(void);
-extern long long (*GetLongLong)(void);
+long long get_long_long(string prompt);
+long long GetLongLong(void) __attribute__((deprecated));
+#define get_long_long(...) ZERO_OR_ONE_ARG(get_long_long, ##__VA_ARGS__)
 
 /**
  * Reads a line of text from standard input and returns it as
@@ -124,7 +142,8 @@ extern long long (*GetLongLong)(void);
  * error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(void);
-string GetString(void);
+string get_string(string prompt);
+string GetString(void) __attribute__((deprecated));
+#define get_string(...) ZERO_OR_ONE_ARG(get_string, ##__VA_ARGS__)
 
 #endif

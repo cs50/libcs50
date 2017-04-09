@@ -94,7 +94,7 @@ char get_char(string prompt)
     while (true)
     {
         // get line of text, returning CHAR_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return CHAR_MAX;
@@ -106,12 +106,17 @@ char get_char(string prompt)
         {
             return c;
         }
-        printf("%s", prompt);
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
 char GetChar(void)
 {
-    return get_char();
+    return get_char(NULL);
 }
 
 /**
@@ -126,7 +131,7 @@ double get_double(string prompt)
     while (true)
     {
         // get line of text, returning DBL_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return DBL_MAX;
@@ -147,12 +152,17 @@ double get_double(string prompt)
                 }
             }
         }
-        printf("%s", prompt);
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
 double GetDouble(void)
 {
-    return get_double();
+    return get_double(NULL);
 }
 
 /**
@@ -167,7 +177,7 @@ float get_float(string prompt)
     while (true)
     {
         // get line of text, returning FLT_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return FLT_MAX;
@@ -188,12 +198,17 @@ float get_float(string prompt)
                 }
             }
         }
-        printf("%s", prompt);
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
 float GetFloat(void)
 {
-    return get_float();
+    return get_float(NULL);
 }
 
 /**
@@ -208,7 +223,7 @@ int get_int(string prompt)
     while (true)
     {
         // get line of text, returning INT_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return INT_MAX;
@@ -225,12 +240,17 @@ int get_int(string prompt)
                 return n;
             }
         }
-        printf("%s", prompt);
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
 int GetInt(void)
 {
-    return get_int();
+    return get_int(NULL);
 }
 
 /**
@@ -262,12 +282,17 @@ long long get_long_long(string prompt)
                 return n;
             }
         }
-        printf("%s", prompt);
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
 long long GetLongLong(void)
 {
-    return get_long_long();
+    return get_long_long(NULL);
 }
 
 /**
@@ -307,6 +332,12 @@ string get_string(string prompt)
 
     // character read or EOF
     int c;
+
+	// prompt user
+	if (prompt != NULL)
+	{
+		printf("%s", prompt);
+	}
 
     // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)

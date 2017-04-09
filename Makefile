@@ -25,7 +25,7 @@ DESCRIPTION = CS50 Library for C
 MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
 NAME = libcs50
 OLD_NAMES = lib50-c library50-c
-VERSION = 7.2.0
+VERSION = 8.0.0
 
 .PHONY: bash
 bash:
@@ -111,6 +111,7 @@ rpm: build
 # TODO: improve test suite
 .PHONY: test
 test: build hackerrank
-	#clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
-	#clang -I "$(BUILD_DIR)" -std=c99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
-	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -std=gnu99 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/get_int.c" -L "$(LIB_DIR)" -lcs50 -o "$(BUILD_DIR)"/get_int
+	#clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
+	#clang -I "$(BUILD_DIR)" -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
+	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/get_int.c" -L "$(LIB_DIR)" -lcs50 -o "$(BUILD_DIR)"/get_int
+	LD_LIBRARY_PATH="$(LIB_DIR)" "$(BUILD_DIR)"/get_int

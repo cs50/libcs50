@@ -50,6 +50,7 @@
  * Temporarily used to make arguments to get_* (but not Get*) optional.
  * Inspired by https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/.
  */
+#ifdef __GNUC__
 #define _ARGS(_0, _1, _2, ...) _2
 #define ARGS(...) _ARGS(, ##__VA_ARGS__, 1, 0)
 #define ARG_0(NAME) NULL
@@ -57,6 +58,7 @@
 #define __ZERO_OR_ONE_ARG(NAME, N, ...) ARG_ ## N (NAME, ##__VA_ARGS__)
 #define _ZERO_OR_ONE_ARG(NAME, N, ...) __ZERO_OR_ONE_ARG(NAME, N, ##__VA_ARGS__)
 #define ZERO_OR_ONE_ARG(NAME, ...) NAME(_ZERO_OR_ONE_ARG(NAME, ARGS(__VA_ARGS__), ##__VA_ARGS__))
+#endif 
 
 /**
  * Our own data type for string variables.
@@ -91,7 +93,9 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  */
 char get_char(string prompt);
 char GetChar(void) __attribute__((deprecated));
+#ifdef __GNUC__
 #define get_char(...) ZERO_OR_ONE_ARG(get_char, ##__VA_ARGS__)
+#endif
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -101,7 +105,9 @@ char GetChar(void) __attribute__((deprecated));
  */
 double get_double(string prompt);
 double GetDouble(void) __attribute__((deprecated));
+#ifdef __GNUC__
 #define get_double(...) ZERO_OR_ONE_ARG(get_double, ##__VA_ARGS__)
+#endif
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -111,7 +117,9 @@ double GetDouble(void) __attribute__((deprecated));
  */
 float get_float(string prompt);
 float GetFloat(void) __attribute__((deprecated));
+#ifdef __GNUC__
 #define get_float(...) ZERO_OR_ONE_ARG(get_float, ##__VA_ARGS__)
+#endif
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -121,7 +129,9 @@ float GetFloat(void) __attribute__((deprecated));
  */
 int get_int(string prompt);
 int GetInt(void) __attribute__((deprecated));
+#ifdef __GNUC__
 #define get_int(...) ZERO_OR_ONE_ARG(get_int, ##__VA_ARGS__)
+#endif
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -131,7 +141,9 @@ int GetInt(void) __attribute__((deprecated));
  */
 long long get_long_long(string prompt);
 long long GetLongLong(void) __attribute__((deprecated));
+#ifdef __GNUC__
 #define get_long_long(...) ZERO_OR_ONE_ARG(get_long_long, ##__VA_ARGS__)
+#endif
 
 /**
  * Prompts user for a line of text from standard input and returns
@@ -143,6 +155,8 @@ long long GetLongLong(void) __attribute__((deprecated));
  */
 string get_string(string prompt);
 string GetString(void) __attribute__((deprecated));
+#ifdef __GNUC__
 #define get_string(...) ZERO_OR_ONE_ARG(get_string, ##__VA_ARGS__)
+#endif
 
 #endif

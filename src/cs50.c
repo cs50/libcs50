@@ -309,8 +309,8 @@ static string *strings = NULL;
  * Prompts user for a line of text from standard input and returns
  * it as a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
- * inputs only "\n", returns "", not NULL. Returns NULL upon
- * error or no input whatsoever (i.e., just EOF). Stores string
+ * inputs only a line ending, returns "", not NULL. Returns NULL
+ * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(string prompt)

@@ -87,9 +87,8 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
 
 /**
  * Prompts user for a line of text from standard input and returns the
- * equivalent char; if text does not represent a char, user is prompted
- * to retry. Leading and trailing whitespace is ignored. If line can't
- * be read, returns CHAR_MAX.
+ * equivalent char; if text is not a single char, user is prompted
+ * to retry. If line can't be read, returns CHAR_MAX.
  */
 char get_char(string prompt);
 char GetChar(void) __attribute__((deprecated));

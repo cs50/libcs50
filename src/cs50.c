@@ -52,9 +52,8 @@
 #include "cs50.h"
 
 /**
- * Prints an error message, formatted like printf, to standard error, prefixing it with program's
- * name as well as the file and line number from which function was called, which a macro is
- * expected to provide.
+ * Prints an error message, formatted like printf, to standard error, prefixing it with
+ * file name and line number from which function was called (which a macro provides).
  *
  * This function is not intended to be called directly. Instead, call the macro of the same name,
  * which expects fewer arguments.

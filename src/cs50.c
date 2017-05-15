@@ -463,19 +463,8 @@ string GetString(void)
 }
 
 /**
- * Called automatically before execution enters main.
- */
-__attribute__((constructor))
-static void setup(void)
-{
-    // disable buffering for standard output
-    setvbuf(stdout, NULL, _IONBF, 0);
-}
-
-/**
  * Called automatically after execution exits main.
  */
-__attribute__((destructor))
 static void teardown(void)
 {
     // free library's strings
@@ -488,3 +477,40 @@ static void teardown(void)
         free(strings);
     }
 }
+
+/**
+ * Preprocessor magic to make initializers work somewhat portably
+ * Modified from http://stackoverflow.com/questions/1113409/attribute-constructor-equivalent-in-vc
+*/
+#if defined (_MSC_VER) // MSVC
+    #pragma section(".CRT$XCU",read)
+    #define INITIALIZER_(FUNC,PREFIX) \
+        static void FUNC(void); \
+        __declspec(allocate(".CRT$XCU")) void (*FUNC##_)(void) = FUNC; \
+        __pragma(comment(linker,"/include:" PREFIX #FUNC "_")) \
+        static void FUNC(void)
+    #ifdef _WIN64
+        #define INITIALIZER(FUNC) INITIALIZER_(FUNC,"")
+    #else
+        #define INITIALIZER(FUNC) INITIALIZER_(FUNC,"_")
+    #endif
+#elif defined (__GNUC__) // GCC, Clang, MinGW
+    #define INITIALIZER(FUNC) \
+        static void FUNC(void) __attribute__((constructor)); \
+        static void FUNC(void)
+#else
+    #error The CS50 library requires some compiler-specific features, \
+           but we do not recognize this compiler/version. Please file an issue at \
+           github.com/cs50/libcs50
+#endif
+
+/**
+ * Called automatically before execution enters main.
+ */
+INITIALIZER(setup)
+{
+    atexit(teardown);
+    // disable buffering for standard output
+    setvbuf(stdout, NULL, _IONBF, 0);
+}
+

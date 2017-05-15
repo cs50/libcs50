@@ -53,9 +53,8 @@
 #include "cs50.h"
 
 /**
- * Prints an error message, formatted like printf, to standard error, prefixing it with program's
- * name as well as the file and line number from which function was called, which a macro is
- * expected to provide.
+ * Prints an error message, formatted like printf, to standard error, prefixing it with
+ * file name and line number from which function was called (which a macro provides).
  *
  * This function is not intended to be called directly. Instead, call the macro of the same name,
  * which expects fewer arguments.
@@ -84,18 +83,17 @@ void eprintf(const char *file, int line, const char *format, ...)
 }
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * char; if text does not represent a char, user is prompted to retry.
- * Leading and trailing whitespace is ignored. If line can't be read,
- * returns CHAR_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent char; if text is not a single char, user is prompted
+ * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(void)
+char get_char(string prompt)
 {
     // try to get a char from user
     while (true)
     {
         // get line of text, returning CHAR_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return CHAR_MAX;
@@ -107,24 +105,32 @@ char get_char(void)
         {
             return c;
         }
-        printf("Retry: ");
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
-char (*GetChar)(void) = get_char;
+char GetChar(void)
+{
+    return get_char(NULL);
+}
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * double as precisely as possible; if text does not represent a
- * double or if value would cause underflow or overflow, user is
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent double as precisely as possible; if text does not represent
+ * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(void)
+double get_double(string prompt)
 {
     // try to get a double from user
     while (true)
     {
         // get line of text, returning DBL_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return DBL_MAX;
@@ -145,24 +151,32 @@ double get_double(void)
                 }
             }
         }
-        printf("Retry: ");
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
-double (*GetDouble)(void) = get_double;
+double GetDouble(void)
+{
+    return get_double(NULL);
+}
 
 /**
- * Reads a line of text from standard input and returns the equivalent
- * float as precisely as possible; if text does not represent a float
- * or if value would cause underflow or overflow, user is prompted to
- * retry. If line can't be read, returns FLT_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent float as precisely as possible; if text does not represent
+ * a float or if value would cause underflow or overflow, user is prompted
+ * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(void)
+float get_float(string prompt)
 {
     // try to get a float from user
     while (true)
     {
         // get line of text, returning FLT_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return FLT_MAX;
@@ -183,24 +197,32 @@ float get_float(void)
                 }
             }
         }
-        printf("Retry: ");
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
-float (*GetFloat)(void) = get_float;
+float GetFloat(void)
+{
+    return get_float(NULL);
+}
 
 /**
- * Reads a line of text from standard input and returns it as an
- * int in [-2^31, 2^31 - 1), if possible; if text does not represent
- * such an int or if value would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns INT_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent int; if text does not represent an int in [-2^31, 2^31 - 1)
+ * or would cause underflow or overflow, user is prompted to retry. If line
+ * can't be read, returns INT_MAX.
  */
-int get_int(void)
+int get_int(string prompt)
 {
     // try to get an int from user
     while (true)
     {
         // get line of text, returning INT_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return INT_MAX;
@@ -217,18 +239,26 @@ int get_int(void)
                 return n;
             }
         }
-        printf("Retry: ");
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
-int (*GetInt)(void) = get_int;
+int GetInt(void)
+{
+    return get_int(NULL);
+}
 
 /**
- * Reads a line of text from standard input and returns an equivalent
- * long long in [-2^63, 2^63 - 1), if possible; if text does not
- * represent such a long long or if value would cause underflow or overflow,
- * user is prompted to retry. If line can't be read, returns LLONG_MAX.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent long long; if text does not represent a long long in
+ * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(void)
+long long get_long_long(string prompt)
 {
     // try to get a long long from user
     while (true)
@@ -251,10 +281,18 @@ long long get_long_long(void)
                 return n;
             }
         }
-        printf("Retry: ");
+
+        // temporarily here for backwards compatibility
+        if (prompt == NULL)
+        {
+            printf("Retry: ");
+        }
     }
 }
-long long (*GetLongLong)(void) = get_long_long;
+long long GetLongLong(void)
+{
+    return get_long_long(NULL);
+}
 
 /**
  * Number of strings allocated by get_string.
@@ -267,14 +305,14 @@ static size_t allocations = 0;
 static string *strings = NULL;
 
 /**
- * Reads a line of text from standard input and returns it as
- * a string (char *), sans trailing line ending. Supports
+ * Prompts user for a line of text from standard input and returns
+ * it as a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user
- * inputs only "\n", returns "", not NULL. Returns NULL upon
- * error or no input whatsoever (i.e., just EOF). Stores string
+ * inputs only a line ending, returns "", not NULL. Returns NULL
+ * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(void)
+string get_string(string prompt)
 {
     // check whether we have room for another string
     if (allocations * sizeof(string) == SIZE_MAX)
@@ -293,6 +331,12 @@ string get_string(void)
 
     // character read or EOF
     int c;
+
+	// prompt user
+	if (prompt != NULL)
+	{
+		printf("%s", prompt);
+	}
 
     // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)

@@ -277,7 +277,7 @@ static string *strings = NULL;
 string get_string(void)
 {
     // check whether we have room for another string
-    if (allocations == SIZE_MAX)
+    if (allocations * sizeof(string) == SIZE_MAX)
     {
         return NULL;
     }

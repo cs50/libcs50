@@ -377,9 +377,16 @@ string get_string(string prompt)
         buffer[size++] = c;
     }
 
-    // check whether user provided input
+    // check whether user provided no input
     if (size == 0 && c == EOF)
     {
+        return NULL;
+    }
+    
+    // check whether user provided too much input (leaving no room for trailing NUL)
+    if (size == SIZE_MAX)
+    {
+        free(buffer);
         return NULL;
     }
 
@@ -474,9 +481,16 @@ string GetString(void)
         buffer[size++] = c;
     }
 
-    // check whether user provided input
+    // check whether user provided no input
     if (size == 0 && c == EOF)
     {
+        return NULL;
+    }
+
+    // check whether user provided too much input (leaving no room for trailing NUL)
+    if (size == SIZE_MAX)
+    {
+        free(buffer);
         return NULL;
     }
 

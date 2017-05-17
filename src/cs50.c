@@ -332,11 +332,11 @@ string get_string(string prompt)
     // character read or EOF
     int c;
 
-	// prompt user
-	if (prompt != NULL)
-	{
-		printf("%s", prompt);
-	}
+    // prompt user
+    if (prompt != NULL)
+    {
+        printf("%s", prompt);
+    }
 
     // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)

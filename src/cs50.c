@@ -137,7 +137,7 @@ double get_double(string prompt)
         }
 
         // return a double if only a double was provided
-        if (strlen(line) > 0 && !isspace(line[0]))
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
             errno = 0;
@@ -183,7 +183,7 @@ float get_float(string prompt)
         }
 
         // return a float if only a float was provided
-        if (strlen(line) > 0 && !isspace(line[0]))
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
             errno = 0;
@@ -229,7 +229,7 @@ int get_int(string prompt)
         }
 
         // return an int if only an int (in range) was provided
-        if (strlen(line) > 0 && !isspace(line[0]))
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
             errno = 0;
@@ -271,7 +271,7 @@ long long get_long_long(string prompt)
         }
 
         // return a long long if only a long long (in range) was provided
-        if (strlen(line) > 0 && !isspace(line[0]))
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
             errno = 0;

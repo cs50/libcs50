@@ -139,7 +139,7 @@ double get_double(string prompt)
         // return a double if only a double was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
-            char *tail;
+            char *tail = NULL;
             errno = 0;
             double d = strtod(line, &tail);
             if (errno == 0 && *tail == '\0' && isfinite(d) != 0 && d < DBL_MAX)
@@ -185,7 +185,7 @@ float get_float(string prompt)
         // return a float if only a float was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
-            char *tail;
+            char *tail = NULL;
             errno = 0;
             float f = strtof(line, &tail);
             if (errno == 0 && *tail == '\0' && isfinite(f) != 0 && f < FLT_MAX)
@@ -231,7 +231,7 @@ int get_int(string prompt)
         // return an int if only an int (in range) was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
-            char *tail;
+            char *tail = NULL;
             errno = 0;
             long n = strtol(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)

@@ -297,12 +297,12 @@ long long GetLongLong(void)
 /**
  * Number of strings allocated by get_string.
  */
-static size_t allocations = 0;
+static size_t allocations;
 
 /**
  * Array of strings allocated by get_string.
  */
-static string *strings = NULL;
+static string *strings;
 
 /**
  * Prompts user for a line of text from standard input and returns

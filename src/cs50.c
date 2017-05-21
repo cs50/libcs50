@@ -351,7 +351,7 @@ string get_string(string prompt)
             }
             else if (capacity <= (SIZE_MAX / 2))
             {
-                capacity *= 2;
+                capacity <<= 1;
             }
             else if (capacity < SIZE_MAX)
             {

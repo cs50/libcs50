@@ -26,4 +26,4 @@ deb: build
 	rsync -a build/* $(UPSTREAM)/
 	tar -cvzf $(NAME)_$(VERSION).orig.tar.gz $(UPSTREAM)
 	cp -r debian $(UPSTREAM)
-	cd $(UPSTREAM) && debuild -sa --lintian-opts --info --display-info --show-overrides
+	cd $(UPSTREAM) && debuild -S -sa --lintian-opts --info --display-info --show-overrides

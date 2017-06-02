@@ -1,117 +1,29 @@
-# useful paths
-SRC_DIR = src
-HDR = $(SRC_DIR)/cs50.h
-SRC = $(SRC_DIR)/cs50.c
-
-BUILD_DIR = build
-OBJ = $(BUILD_DIR)/cs50.o
-USR_DIR = $(BUILD_DIR)/usr
-INCLUDE_DIR = $(USR_DIR)/include
-LIB_DIR = $(USR_DIR)/lib
-MAN_DIR = $(USR_DIR)/share/man/man3
-BUILD_SRC = $(USR_DIR)/src
-
-# eprintf
-EPRINTF_EXE = $(BUILD_DIR)/eprintf
-
-# HackerRank
-HR_HDR = $(BUILD_DIR)/cs50.h
-HR_EXE = $(BUILD_DIR)/hackerrank
-
-TESTS_DIR = tests
-
-# deb package info
-DESCRIPTION = CS50 Library for C
-MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
-NAME = libcs50
-OLD_NAMES = lib50-c library50-c
-VERSION = 8.0.2
-
-.PHONY: bash
-bash:
-	docker run -i --rm -t -v "$(PWD):/root" cs50/cli
+NAME := libcs50
+VERSION := 8.0.2
+UPSTREAM := $(NAME)-$(VERSION)
 
 .PHONY: build
-build: clean Makefile $(SRC) $(HDR)
-	mkdir -p "$(INCLUDE_DIR)" "$(LIB_DIR)" "$(MAN_DIR)" "$(BUILD_SRC)"
-	gcc -c -fPIC -std=gnu99 -Wall -o "$(OBJ)" "$(SRC)"
-	gcc -o "$(LIB_DIR)/libcs50.so" -shared "$(OBJ)"
-	rm -f "$(OBJ)"
-	cp "$(HDR)" "$(INCLUDE_DIR)"
-	cp "$(SRC)" "$(BUILD_SRC)"
-	cp -r docs/* "$(MAN_DIR)"
-	find "$(BUILD_DIR)" -type d -exec chmod 0755 {} +
-	find "$(BUILD_DIR)" -type f -exec chmod 0644 {} +
-
-.PHONY: clean
-clean:
-	rm -rf "$(BUILD_DIR)"
-
-.PHONY: deb
-deb: build
-	fpm \
-	-C "$(BUILD_DIR)" \
-	-m "$(MAINTAINER)" \
-	-n "$(NAME)" \
-	-p "$(BUILD_DIR)" \
-	-s dir \
-	-t deb \
-	-v "$(VERSION)" \
-	--conflicts "$(NAME) (<< $(VERSION))" \
-	$(foreach name,$(OLD_NAMES),--conflicts $(name) --provides $(name) --replaces $(name)) \
-	--deb-no-default-config-files \
-	--depends c-compiler \
-	--description "$(DESCRIPTION)" \
-	--provides "$(NAME)" \
-	--replaces "$(NAME) (<= $(VERSION))" \
-	usr
-
-.PHONY: hackerrank
-hackerrank: build
-	cat "$(HDR)" > "$(HR_HDR)"
-	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> "$(HR_HDR)"
-	cat "$(SRC)" >> "$(HR_HDR)"
-	echo "\n#endif" >> "$(HR_HDR)"
+build: clean
+	gcc -c -fPIC -std=gnu99 -Wall -o cs50.o src/cs50.c
+	gcc -shared -Wl,-soname,libcs50.so.8 -o libcs50.so.$(VERSION) cs50.o
+	rm -f cs50.o
+	ln -s libcs50.so.$(VERSION) libcs50.so.8
+	ln -s libcs50.so.8 libcs50.so
+	install -D -m 644 src/cs50.h build/usr/include/cs50.h
+	mkdir -p build/usr/lib
+	mv libcs50.so* build/usr/lib
 
 .PHONY: install
 install: build
-	cp "$(INCLUDE_DIR)"/* /usr/include
-	cp "$(LIB_DIR)"/* /usr/lib
+	cp -r build/* /
 
-# TODO: add dependencies
-.PHONY: pacman
-pacman: build
-	rm -f "$(NAME)-$(VERSION)-"*.pkg.tar.xz
-	fpm \
-	-C "$(BUILD_DIR)" \
-	-m "$(MAINTAINER)" \
-	-n "$(NAME)" \
-	-p "$(BUILD_DIR)" \
-	-s dir \
-	-t pacman \
-	-v "$(VERSION)" \
-	--description "$(DESCRIPTION)" \
-	usr
+.PHONY: clean
+clean:
+	rm -rf build libcs50-* libcs50_*
 
-# TODO: add dependencies
-.PHONY: rpm
-rpm: build
-	rm -f "$(NAME)-$(VERSION)-"*.rpm
-	fpm \
-	-C "$(BUILD_DIR)" \
-	-m "$(MAINTAINER)" \
-	-n "$(NAME)" \
-	-p "$(BUILD_DIR)" \
-	-s dir \
-	-t rpm \
-	-v "$(VERSION)" \
-	--description "$(DESCRIPTION)" \
-	usr
-
-# TODO: improve test suite
-.PHONY: test
-test: build hackerrank
-	#clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
-	#clang -I "$(BUILD_DIR)" -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
-	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/get_int.c" -L "$(LIB_DIR)" -lcs50 -o "$(BUILD_DIR)"/get_int
-	LD_LIBRARY_PATH="$(LIB_DIR)" "$(BUILD_DIR)"/get_int
+.PHONY: package
+deb: build
+	rsync -a build/* $(UPSTREAM)/
+	tar -cvzf $(NAME)_$(VERSION).orig.tar.gz $(UPSTREAM)
+	cp -r debian $(UPSTREAM)
+	cd $(UPSTREAM) && debuild -sa --lintian-opts --info --display-info --show-overrides

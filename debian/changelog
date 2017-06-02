@@ -1,0 +1,7 @@
+libcs50 (8.0.2-0ubuntu1) trusty; urgency=low
+
+  * renamed to libcs50.
+  * added support for optional arguments.
+  * fixed bugs.
+
+ -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  Fri, 02 Jun 2017 13:49:37 +0200

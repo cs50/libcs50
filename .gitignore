@@ -1,3 +1,6 @@
 .*
 !.gitignore
+!.travis.yml
 build/
+libcs50-*
+libcs50_*

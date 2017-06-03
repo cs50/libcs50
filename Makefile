@@ -13,8 +13,9 @@ build: clean
 	ln -s libcs50.so.$(VERSION) libcs50.so.8
 	ln -s libcs50.so.8 libcs50.so
 	install -D -m 644 src/cs50.h build/include/cs50.h
-	mkdir -p build/lib
+	mkdir -p build/lib build/src/libcs50
 	mv libcs50.so* build/lib
+	cp -r src/* build/src/libcs50
 
 .PHONY: install
 install: build

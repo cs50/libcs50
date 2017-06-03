@@ -2,5 +2,6 @@
 !.gitignore
 !.travis.yml
 build/
+debian/docs/
 libcs50-*
 libcs50_*

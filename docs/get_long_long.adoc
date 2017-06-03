@@ -24,7 +24,7 @@ Returns the equivalent long long of the line read from stdin in [*LLONG_MIN*, *L
 == EXAMPLE
     
     // attempt to read long long from stdin
-    long long ll = get_long_long("enter long long: ");
+    long long ll = get_long_long("Enter long long: ");
 
     // ensure long long was read
     if (ll != LLONG_MAX)

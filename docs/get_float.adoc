@@ -24,7 +24,7 @@ Returns the equivalent float of the line read from stdin, as precisely as possib
 == EXAMPLE
     
     // attempt to read float from stdin
-    float f = get_float("enter float: ");
+    float f = get_float("Enter float: ");
 
     // ensure float was read
     if (f != FLT_MAX)

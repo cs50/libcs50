@@ -24,7 +24,7 @@ Returns the equivalent int of the line read from stdin in [*INT_MIN*, *INT_MAX*)
 == EXAMPLE
     
     // attempt to read int from stdin
-    int i = get_int("enter int: ");
+    int i = get_int("Enter int: ");
 
     // ensure int was read
     if (i != INT_MAX)

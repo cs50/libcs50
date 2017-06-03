@@ -24,7 +24,7 @@ Returns the equivalent double of the line read from stdin, as precisely as possi
 == EXAMPLE
     
     // attempt to read double from stdin
-    double d = get_double("enter double: ");
+    double d = get_double("Enter double: ");
 
     // ensure double was read
     if (d != DBL_MAX)

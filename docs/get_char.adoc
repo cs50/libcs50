@@ -24,7 +24,7 @@ Returns the equivalent char of the line read from stdin. If line can't be read, 
 == EXAMPLE
     
     // attempt to read character from stdin
-    char c = get_char("enter char: ");
+    char c = get_char("Enter char: ");
 
     // ensure character was read
     if (c != CHAR_MAX)

@@ -24,7 +24,7 @@ Returns the read line as a string. If user inputs only a line ending, returns ""
 == EXAMPLE
     
     // attempt to read string from stdin
-    string s = get_string("enter string: ");
+    string s = get_string("Enter string: ");
 
     // ensure string was read
     if (s != NULL)

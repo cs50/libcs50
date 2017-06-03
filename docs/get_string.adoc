@@ -5,7 +5,7 @@
 
 == NAME
 
-get_string - prompts user for a line of text from stdin and returns it as a string.
+get_string - prompts user for a line of text from stdin and returns it as a string
 
 == SYNOPSIS
 

@@ -5,7 +5,7 @@
 
 == NAME
 
-get_float - prompts user for a line of text from stdin and returns the equivalent float.
+get_float - prompts user for a line of text from stdin and returns the equivalent float
 
 == SYNOPSIS
 

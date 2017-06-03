@@ -5,7 +5,7 @@
 
 == NAME
 
-get_double - prompts user for a line of text from stdin and returns the equivalent double.
+get_double - prompts user for a line of text from stdin and returns the equivalent double
 
 == SYNOPSIS
 

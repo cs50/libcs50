@@ -5,7 +5,7 @@
 
 == NAME
 
-get_char - prompts user for a line of text from stdin and returns the equivalent char.
+get_char - prompts user for a line of text from stdin and returns the equivalent char
 
 == SYNOPSIS
 

@@ -5,7 +5,7 @@
 
 == NAME
 
-get_int - prompts user for a line of text from stdin and returns the equivalent int.
+get_int - prompts user for a line of text from stdin and returns the equivalent int
 
 == SYNOPSIS
 

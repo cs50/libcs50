@@ -5,7 +5,7 @@
 
 == NAME
 
-get_long_long - prompts user for a line of text from stdin and returns the equivalent long long.
+get_long_long - prompts user for a line of text from stdin and returns the equivalent long long
 
 == SYNOPSIS
 

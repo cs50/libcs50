@@ -5,7 +5,7 @@
 
 == NAME
 
-eprintf - prints an error message to stderr.
+eprintf - prints an error message to stderr
 
 == SYNOPSIS
 

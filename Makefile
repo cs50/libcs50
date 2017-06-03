@@ -19,10 +19,14 @@ install: build
 
 .PHONY: clean
 clean:
-	rm -rf build libcs50-* libcs50_*
+	rm -rf build debian/docs/ libcs50-* libcs50_*
+
+.PHONY: docs
+docs:
+	asciidoctor -d manpage -b manpage -D debian/docs/ docs/*.adoc
 
 .PHONY: package
-deb: build
+deb: build docs
 	rsync -a build/* $(UPSTREAM)/
 	tar -cvzf $(NAME)_$(VERSION).orig.tar.gz $(UPSTREAM)
 	cp -r debian $(UPSTREAM)

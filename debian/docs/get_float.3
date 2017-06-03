@@ -2,12 +2,12 @@
 .\"     Title: get_float
 .\"    Author: [see the "AUTHORS" section]
 .\" Generator: Asciidoctor 1.5.4
-.\"      Date: 2016-09-07
+.\"      Date: 2017-06-03
 .\"    Manual: CS50 Programmer's Manual
-.\"    Source: \ \&
+.\"    Source: CS50
 .\"  Language: English
 .\"
-.TH "GET_FLOAT" "3" "2016-09-07" "\ \&" "CS50 Programmer\(aqs Manual"
+.TH "GET_FLOAT" "3" "2017-06-03" "CS50" "CS50 Programmer\(aqs Manual"
 .ie \n(.g .ds Aq \(aq
 .el       .ds Aq '
 .ss \n[.ss] 0
@@ -19,15 +19,15 @@
 .if \n[.g] .mso www.tmac
 .LINKSTYLE blue R < >
 .SH "NAME"
-get_float \- reads a line of text from stdin and returns the equivalent float.
+get_float \- prompts user for a line of text from stdin and returns the equivalent float.
 .SH "SYNOPSIS"
 .sp
 \fB#include <cs50.h>\fP
 .sp
-\fBfloat get_float(void);\fP
+\fBfloat get_float(string prompt);\fP
 .SH "DESCRIPTION"
 .sp
-Reads a line of text from the standard input and returns the equivalent float as precisely as possible; if text does not represent a float or if value would cause underflow or overflow, user is prompted to retry.
+Prompts user for a line of text from standard input and returns the equivalent float as precisely as possible; if text does not represent a float or if value would cause underflow or overflow, user is prompted to retry.
 .SH "RETURN VALUE"
 .sp
 Returns the equivalent float of the line read from stdin, as precisely as possible. If line can\(cqt be read, returns \fBFLT_MAX\fP.
@@ -38,8 +38,16 @@ Returns the equivalent float of the line read from stdin, as precisely as possib
 .\}
 .nf
 // attempt to read float from stdin
-float f = get_float();
-
+float f = get_float("enter float: ");
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
 // ensure float was read
 if (f != FLT_MAX)
 {
@@ -51,4 +59,13 @@ if (f != FLT_MAX)
 .\}
 .SH "SEE ALSO"
 .sp
-get_char(3), get_double(3), get_int(3), get_long_long(3), get_string(3)
+.if n \{\
+.RS 4
+.\}
+.nf
+get_char(3), get_double(3), get_int(3), get_long_long(3),
+get_string(3)
+.fi
+.if n \{\
+.RE
+.\}

@@ -29,7 +29,7 @@ Returns the read line as a string. If user inputs only a line ending, returns ""
     // ensure string was read
     if (s != NULL)
     {
-        printf("You entered %s\n", s);
+        printf("You entered: %s\n", s);
     }
 
 == SEE ALSO

@@ -29,7 +29,7 @@ Returns the equivalent char of the line read from stdin. If line can't be read, 
     // ensure character was read
     if (c != CHAR_MAX)
     {
-        printf("You entered %c\n", c);
+        printf("You entered: %c\n", c);
     }
 
 == SEE ALSO

@@ -29,7 +29,7 @@ Returns the equivalent double of the line read from stdin, as precisely as possi
     // ensure double was read
     if (d != DBL_MAX)
     {
-        printf("You entered %f\n", d);
+        printf("You entered: %f\n", d);
     }
 
 == SEE ALSO

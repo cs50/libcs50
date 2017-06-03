@@ -29,7 +29,7 @@ Returns the equivalent long long of the line read from stdin in [*LLONG_MIN*, *L
     // ensure long long was read
     if (ll != LLONG_MAX)
     {
-        printf("You entered %ll\n", ll);
+        printf("You entered %lld\n", ll);
     }
 
 == SEE ALSO

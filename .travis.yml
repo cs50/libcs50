@@ -1,7 +1,8 @@
 dist: trusty
 sudo: required
-before_install: sudo apt-get install build-essential debhelper devscripts dh-make
-  lintian
+before_install:
+- sudo apt-get install build-essential debhelper devscripts dh-make lintian
+- gem install asciidoctor
 install: true
 before_script: echo -e $GPG_SECRET | gpg --import
 script: make deb

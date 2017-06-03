@@ -3,5 +3,6 @@
 !.travis.yml
 build/
 debian/docs/
+hackerrank/
 libcs50-*
 libcs50_*

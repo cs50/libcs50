@@ -29,7 +29,7 @@ clean:
 docs:
 	asciidoctor -d manpage -b manpage -D debian/docs/ docs/*.adoc
 
-.PHONY: package
+.PHONY: deb
 deb: build docs
 	mkdir -p $(UPSTREAM)/usr
 	rsync -a build/* $(UPSTREAM)/usr

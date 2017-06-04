@@ -3,7 +3,7 @@ VERSION := 8.0.2
 UPSTREAM := $(NAME)-$(VERSION)
 
 # installation directory (/usr by default)
-DESTDIR ?= /usr
+DESTDIR ?= /usr/local
 
 .PHONY: build
 build: clean

@@ -37,7 +37,8 @@ deb: build docs
 	tar -cvzf $(NAME)_$(VERSION).orig.tar.gz $(UPSTREAM)
 	cp -r debian $(UPSTREAM)
 	cd $(UPSTREAM) && debuild -S -sa --lintian-opts --info --display-info --show-overrides
-
+	mkdir -p build/deb
+	mv libcs50-* libcs50_* build/deb
 .PHONY: hack
 hack:
 	rm -rf build/hack && mkdir -p build/hack

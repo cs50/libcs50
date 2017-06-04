@@ -8,7 +8,7 @@ before_script: echo -e $GPG_SECRET | gpg --import
 script: make deb
 deploy:
   provider: script
-  script: dput ppa:cs50/ppa *.changes
+  script: dput ppa:cs50/ppa build/deb/*.changes
   skip_cleanup: true
   on:
     branch: master

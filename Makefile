@@ -24,7 +24,7 @@ install: build
 
 .PHONY: clean
 clean:
-	rm -rf build debian/docs/ hackerrank libcs50-* libcs50_*
+	rm -rf build debian/docs/ libcs50-* libcs50_*
 
 .PHONY: docs
 docs:
@@ -33,15 +33,15 @@ docs:
 .PHONY: deb
 deb: build docs
 	mkdir -p $(UPSTREAM)/usr
-	rsync -a build/* $(UPSTREAM)/usr
+	rsync -a build/* $(UPSTREAM)/usr --exclude=hack
 	tar -cvzf $(NAME)_$(VERSION).orig.tar.gz $(UPSTREAM)
 	cp -r debian $(UPSTREAM)
 	cd $(UPSTREAM) && debuild -S -sa --lintian-opts --info --display-info --show-overrides
 
-.PHONY: hackerrank
-hackerrank:
-	rm -rf hackerrank && mkdir -p hackerrank
-	cat src/cs50.h > hackerrank/cs50.h
-	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> hackerrank/cs50.h
-	cat src/cs50.c >> hackerrank/cs50.h
-	echo "\n#endif" >> hackerrank/cs50.h
+.PHONY: hack
+hack:
+	rm -rf build/hack && mkdir -p build/hack
+	cat src/cs50.h > build/hack/cs50.h
+	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> build/hack/cs50.h
+	cat src/cs50.c >> build/hack/cs50.h
+	echo "\n#endif" >> build/hack/cs50.h

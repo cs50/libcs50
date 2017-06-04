@@ -2,7 +2,7 @@ NAME := libcs50
 VERSION := 8.0.2
 UPSTREAM := $(NAME)-$(VERSION)
 
-# installation directory (/usr by default)
+# installation directory (/usr/local by default)
 DESTDIR ?= /usr/local
 
 .PHONY: build

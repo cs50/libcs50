@@ -18,9 +18,10 @@ build: clean
 	cp -r src/* build/src/libcs50
 
 .PHONY: install
-install: build
-	mkdir -p $(DESTDIR)
+install: build docs
+	mkdir -p $(DESTDIR) $(DESTDIR)/share/man/man3
 	cp -r build/* $(DESTDIR)
+	cp -r debian/docs/* $(DESTDIR)/share/man/man3
 
 .PHONY: clean
 clean:

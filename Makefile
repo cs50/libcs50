@@ -108,10 +108,7 @@ rpm: build
 	--description "$(DESCRIPTION)" \
 	usr
 
-# TODO: improve test suite
 .PHONY: test
-test: build hackerrank
-	#clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
-	#clang -I "$(BUILD_DIR)" -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
-	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/get_int.c" -L "$(LIB_DIR)" -lcs50 -o "$(BUILD_DIR)"/get_int
-	LD_LIBRARY_PATH="$(LIB_DIR)" "$(BUILD_DIR)"/get_int
+test: build
+	$(TEST_DIR)/testlib.py
+

@@ -1,6 +1,7 @@
-NAME := libcs50
 VERSION := 8.0.2
-UPSTREAM := $(NAME)-$(VERSION)
+
+# soname - libcs50.so.<major_version>
+SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
 
 # installation directory (/usr/local by default)
 DESTDIR ?= /usr/local
@@ -8,10 +9,10 @@ DESTDIR ?= /usr/local
 .PHONY: build
 build: clean
 	$(CC) -c -fPIC -std=gnu99 -Wall -o cs50.o src/cs50.c
-	$(CC) -shared -Wl,-soname,libcs50.so.8 -o libcs50.so.$(VERSION) cs50.o
+	$(CC) -shared -Wl,-soname,$(SONAME) -o libcs50.so.$(VERSION) cs50.o
 	rm -f cs50.o
-	ln -s libcs50.so.$(VERSION) libcs50.so.8
-	ln -s libcs50.so.8 libcs50.so
+	ln -s libcs50.so.$(VERSION) $(SONAME)
+	ln -s $(SONAME) libcs50.so
 	install -D -m 644 src/cs50.h build/include/cs50.h
 	mkdir -p build/lib build/src/libcs50
 	mv libcs50.so* build/lib
@@ -27,17 +28,18 @@ install: build docs
 clean:
 	rm -rf build debian/docs/ libcs50-* libcs50_*
 
+# requires asciidoctor (gem install asciidoctor)
 .PHONY: docs
 docs:
 	asciidoctor -d manpage -b manpage -D debian/docs/ docs/*.adoc
 
 .PHONY: deb
 deb: build docs
-	mkdir -p $(UPSTREAM)/usr
-	rsync -a build/* $(UPSTREAM)/usr --exclude=hack
-	tar -cvzf $(NAME)_$(VERSION).orig.tar.gz $(UPSTREAM)
-	cp -r debian $(UPSTREAM)
-	cd $(UPSTREAM) && debuild -S -sa --lintian-opts --info --display-info --show-overrides
+	mkdir -p libcs50-$(VERSION)/usr
+	rsync -a build/* libcs50-$(VERSION)/usr --exclude=hack
+	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
+	cp -r debian libcs50-$(VERSION)
+	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --info --display-info --show-overrides
 	mkdir -p build/deb
 	mv libcs50-* libcs50_* build/deb
 .PHONY: hack

@@ -1,4 +1,5 @@
-VERSION := 8.0.2
+# parse version from debian/changelog
+VERSION := $(shell dpkg-parsechangelog --show-field Version | sed s/-0ubuntu1//)
 
 # soname - libcs50.so.<major_version>
 SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
@@ -42,6 +43,7 @@ deb: build docs
 	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --info --display-info --show-overrides
 	mkdir -p build/deb
 	mv libcs50-* libcs50_* build/deb
+
 .PHONY: hack
 hack:
 	rm -rf build/hack && mkdir -p build/hack

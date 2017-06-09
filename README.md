@@ -12,32 +12,6 @@
  
 `make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
 
-## Releasing
-
-Requires [Docker Engine](https://docs.docker.com/engine/installation/).
-
-Before merging into `master`, be sure to add an entry to `debian/changelog`:
-
-1. Install `cli50` Python package:
-    ```
-    $ pip install cli50
-    ```
-1. Mount `libcs50` into a `cs50/cli` container:
-    ```
-    $ cd path/to/libcs50
-    $ cli50
-    ```
-1. Run the following commands inside the `cs50/cli` container:
-    ```
-    $ dch -u low -v VERSION-0ubuntu1 # then list your changes, save, and exit
-    $ dch -r trusty
-    ```
-
-    Be sure to replace `VERSION` with the actual version (e.g., `8.0.3`). If, for some reason, you're not using a `cs50/cli` container, be sure to set `DEBFULLNAME` and `DEBEMAIL` to `CS50 Sysadmins` and `sysadmins@cs50.harvard.edu` respectively:
-    ```
-    $ DEBFULLNAME="CS50 Sysadmins" DEBEMAIL="sysadmins@cs50.harvard.edu" dch -u low -v VERSION-0ubuntu1
-    ```
-
 ## Installation
 
 ### Ubuntu

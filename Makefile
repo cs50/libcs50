@@ -1,5 +1,4 @@
-# parse version from debian/changelog
-VERSION := $(shell dpkg-parsechangelog --show-field Version | sed s/-0ubuntu1//)
+VERSION := 8.0.2
 
 # soname - libcs50.so.<major_version>
 SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
@@ -36,6 +35,9 @@ docs:
 
 .PHONY: deb
 deb: build docs
+	@echo "libcs50 ($(VERSION)-0ubuntu1) trusty; urgency=low" > debian/changelog
+	@echo "  * v$(VERSION)" >> debian/changelog
+	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu> $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
 	rsync -a build/* libcs50-$(VERSION)/usr --exclude=hack
 	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)

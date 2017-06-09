@@ -2,6 +2,7 @@
 !.gitignore
 !.travis.yml
 build/
+debian/changelog
 debian/docs/
 hackerrank/
 libcs50-*

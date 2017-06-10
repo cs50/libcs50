@@ -264,7 +264,7 @@ long long get_long_long(string prompt)
     while (true)
     {
         // get line of text, returning LLONG_MAX on failure
-        string line = get_string();
+        string line = get_string(prompt);
         if (line == NULL)
         {
             return LLONG_MAX;

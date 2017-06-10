@@ -1,117 +1,60 @@
-# useful paths
-SRC_DIR = src
-HDR = $(SRC_DIR)/cs50.h
-SRC = $(SRC_DIR)/cs50.c
+VERSION := 8.0.3
 
-BUILD_DIR = build
-OBJ = $(BUILD_DIR)/cs50.o
-USR_DIR = $(BUILD_DIR)/usr
-INCLUDE_DIR = $(USR_DIR)/include
-LIB_DIR = $(USR_DIR)/lib
-MAN_DIR = $(USR_DIR)/share/man/man3
-BUILD_SRC = $(USR_DIR)/src
+# soname - libcs50.so.<major_version>
+SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
 
-# eprintf
-EPRINTF_EXE = $(BUILD_DIR)/eprintf
-
-# HackerRank
-HR_HDR = $(BUILD_DIR)/cs50.h
-HR_EXE = $(BUILD_DIR)/hackerrank
-
-TESTS_DIR = tests
-
-# deb package info
-DESCRIPTION = CS50 Library for C
-MAINTAINER = CS50 <sysadmins@cs50.harvard.edu>
-NAME = libcs50
-OLD_NAMES = lib50-c library50-c
-VERSION = 8.0.2
-
-.PHONY: bash
-bash:
-	docker run -i --rm -t -v "$(PWD):/root" cs50/cli
+# installation directory (/usr/local by default)
+DESTDIR ?= /usr/local
 
 .PHONY: build
-build: clean Makefile $(SRC) $(HDR)
-	mkdir -p "$(INCLUDE_DIR)" "$(LIB_DIR)" "$(MAN_DIR)" "$(BUILD_SRC)"
-	gcc -c -fPIC -std=gnu99 -Wall -o "$(OBJ)" "$(SRC)"
-	gcc -o "$(LIB_DIR)/libcs50.so" -shared "$(OBJ)"
-	rm -f "$(OBJ)"
-	cp "$(HDR)" "$(INCLUDE_DIR)"
-	cp "$(SRC)" "$(BUILD_SRC)"
-	cp -r docs/* "$(MAN_DIR)"
-	find "$(BUILD_DIR)" -type d -exec chmod 0755 {} +
-	find "$(BUILD_DIR)" -type f -exec chmod 0644 {} +
+build: clean
+	$(CC) -c -fPIC -std=gnu99 -Wall -o cs50.o src/cs50.c
+	$(CC) -shared -Wl,-soname,$(SONAME) -o libcs50.so.$(VERSION) cs50.o
+	rm -f cs50.o
+	ln -s libcs50.so.$(VERSION) $(SONAME)
+	ln -s $(SONAME) libcs50.so
+	install -D -m 644 src/cs50.h build/include/cs50.h
+	mkdir -p build/lib build/src/libcs50
+	mv libcs50.so* build/lib
+	cp -r src/* build/src/libcs50
+
+.PHONY: install
+install: build docs
+	mkdir -p $(DESTDIR) $(DESTDIR)/share/man/man3
+	cp -r build/* $(DESTDIR)
+	cp -r debian/docs/* $(DESTDIR)/share/man/man3
 
 .PHONY: clean
 clean:
-	rm -rf "$(BUILD_DIR)"
+	rm -rf build debian/docs/ libcs50-* libcs50_*
+
+# requires asciidoctor (gem install asciidoctor)
+.PHONY: docs
+docs:
+	asciidoctor -d manpage -b manpage -D debian/docs/ docs/*.adoc
 
 .PHONY: deb
-deb: build
-	fpm \
-	-C "$(BUILD_DIR)" \
-	-m "$(MAINTAINER)" \
-	-n "$(NAME)" \
-	-p "$(BUILD_DIR)" \
-	-s dir \
-	-t deb \
-	-v "$(VERSION)" \
-	--conflicts "$(NAME) (<< $(VERSION))" \
-	$(foreach name,$(OLD_NAMES),--conflicts $(name) --provides $(name) --replaces $(name)) \
-	--deb-no-default-config-files \
-	--depends c-compiler \
-	--description "$(DESCRIPTION)" \
-	--provides "$(NAME)" \
-	--replaces "$(NAME) (<= $(VERSION))" \
-	usr
+deb: build docs
+	@echo "libcs50 ($(VERSION)-0ubuntu1) trusty; urgency=low" > debian/changelog
+	@echo "  * v$(VERSION)" >> debian/changelog
+	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu> $$(date --rfc-2822)" >> debian/changelog
+	mkdir -p libcs50-$(VERSION)/usr
+	rsync -a build/* libcs50-$(VERSION)/usr --exclude=hack
+	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
+	cp -r debian libcs50-$(VERSION)
+	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --display-info --info --show-overrides
+	mkdir -p build/deb
+	mv libcs50-* libcs50_* build/deb
 
-.PHONY: hackerrank
-hackerrank: build
-	cat "$(HDR)" > "$(HR_HDR)"
-	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> "$(HR_HDR)"
-	cat "$(SRC)" >> "$(HR_HDR)"
-	echo "\n#endif" >> "$(HR_HDR)"
+.PHONY: hack
+hack:
+	rm -rf build/hack && mkdir -p build/hack
+	cat src/cs50.h > build/hack/cs50.h
+	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> build/hack/cs50.h
+	cat src/cs50.c >> build/hack/cs50.h
+	echo "\n#endif" >> build/hack/cs50.h
 
-.PHONY: install
-install: build
-	cp "$(INCLUDE_DIR)"/* /usr/include
-	cp "$(LIB_DIR)"/* /usr/lib
-
-# TODO: add dependencies
-.PHONY: pacman
-pacman: build
-	rm -f "$(NAME)-$(VERSION)-"*.pkg.tar.xz
-	fpm \
-	-C "$(BUILD_DIR)" \
-	-m "$(MAINTAINER)" \
-	-n "$(NAME)" \
-	-p "$(BUILD_DIR)" \
-	-s dir \
-	-t pacman \
-	-v "$(VERSION)" \
-	--description "$(DESCRIPTION)" \
-	usr
-
-# TODO: add dependencies
-.PHONY: rpm
-rpm: build
-	rm -f "$(NAME)-$(VERSION)-"*.rpm
-	fpm \
-	-C "$(BUILD_DIR)" \
-	-m "$(MAINTAINER)" \
-	-n "$(NAME)" \
-	-p "$(BUILD_DIR)" \
-	-s dir \
-	-t rpm \
-	-v "$(VERSION)" \
-	--description "$(DESCRIPTION)" \
-	usr
-
-# TODO: improve test suite
-.PHONY: test
-test: build hackerrank
-	#clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/eprintf.c" -L "$(LIB_DIR)" -lcs50 -o "$(EPRINTF_EXE)"
-	#clang -I "$(BUILD_DIR)" -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/hackerrank.c" -o "$(HR_EXE)"
-	clang -ggdb3 -I "$(INCLUDE_DIR)" -O0 -Wall -Werror -Wno-deprecated-declarations "$(TESTS_DIR)/get_int.c" -L "$(LIB_DIR)" -lcs50 -o "$(BUILD_DIR)"/get_int
-	LD_LIBRARY_PATH="$(LIB_DIR)" "$(BUILD_DIR)"/get_int
+# used by .travis.yml
+.PHONY: version
+version:
+	@echo $(VERSION)

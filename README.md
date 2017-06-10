@@ -1,17 +1,28 @@
 # CS50 Library for C
 
+[![Build Status](https://travis-ci.org/cs50/libcs50.svg?branch=master)](https://travis-ci.org/cs50/libcs50)
+
 ## Development
 
-Requires [Docker Engine](https://docs.docker.com/engine/installation/).
+`make build`: builds dynamic library
 
-    make bash
-    make build # builds dynamic library
-    make deb # builds .deb
-    make pacman # builds .pkg.tar.xz
-    make rpm # builds .rpm
-    make test # builds test program
+`make deb`: builds source deb
 
-# Installation
+`make hack`: combines library into `cs50.h`
+
+`make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
+
+## Installation
+
+### Ubuntu
+
+```
+$ sudo apt-add-repository ppa:cs50/ppa
+$ sudo apt-get update
+$ sudo apt-get install libcs50
+```
+
+### From Source
 
 1. Download the latest release per https://github.com/cs50/libcs50/releases
 1. Extract `libcs50-*.*`
@@ -32,6 +43,10 @@ Link with `-lcs50`.
     int i = get_int();
     long long ll = get_long_long();
     string s = get_string();
+
+## Documentation
+
+See `man get_*` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
 
 ## TODO
 

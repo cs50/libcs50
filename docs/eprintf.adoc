@@ -22,5 +22,5 @@ Prints an error message, formatted like *printf(3)*, to the standard error, pref
     eprintf("%s\n", "this is an error");
 
 == SEE ALSO
-    
+
     printf(3)

@@ -5,11 +5,11 @@
 ## Development
 
 `make build`: builds dynamic library
- 
+
 `make deb`: builds source deb
- 
+
 `make hack`: combines library into `cs50.h`
- 
+
 `make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
 
 ## Installation

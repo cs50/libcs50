@@ -22,7 +22,7 @@ Prompts user for a line of text from standard input and returns the equivalent d
 Returns the equivalent double of the line read from stdin, as precisely as possible. If line can't be read, returns *DBL_MAX*.
 
 == EXAMPLE
-    
+
     // attempt to read double from stdin
     double d = get_double("Enter double: ");
 

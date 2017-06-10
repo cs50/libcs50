@@ -22,7 +22,7 @@ Prompts user for a line of text from standard input and returns the equivalent c
 Returns the equivalent char of the line read from stdin. If line can't be read, returns *CHAR_MAX*.
 
 == EXAMPLE
-    
+
     // attempt to read character from stdin
     char c = get_char("Enter char: ");
 

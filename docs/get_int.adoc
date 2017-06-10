@@ -22,7 +22,7 @@ Prompts user for a line of text from standard input and returns the equivalent i
 Returns the equivalent int of the line read from stdin in [*INT_MIN*, *INT_MAX*). If line can't be read, returns *INT_MAX*.
 
 == EXAMPLE
-    
+
     // attempt to read int from stdin
     int i = get_int("Enter int: ");
 

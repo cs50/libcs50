@@ -19,10 +19,10 @@ Prompts user for a line of text from standard input and returns it as a string (
 
 == RETURN VALUE
 
-Returns the read line as a string. If user inputs only a line ending, returns "", not NULL. Returns NULL upon error or no input whatsoever (i.e., just EOF). 
+Returns the read line as a string. If user inputs only a line ending, returns "", not NULL. Returns NULL upon error or no input whatsoever (i.e., just EOF).
 
 == EXAMPLE
-    
+
     // attempt to read string from stdin
     string s = get_string("Enter string: ");
 

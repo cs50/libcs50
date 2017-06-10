@@ -22,7 +22,7 @@ Prompts user for a line of text from standard input and returns the equivalent f
 Returns the equivalent float of the line read from stdin, as precisely as possible. If line can't be read, returns *FLT_MAX*.
 
 == EXAMPLE
-    
+
     // attempt to read float from stdin
     float f = get_float("Enter float: ");
 

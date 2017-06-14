@@ -4,6 +4,9 @@
 build/
 debian/changelog
 debian/docs/
+debian/files
+debian/libcs50
+debian/*.log
 hackerrank/
 libcs50-*
 libcs50_*

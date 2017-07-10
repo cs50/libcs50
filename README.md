@@ -22,7 +22,13 @@ $ sudo apt-get update
 $ sudo apt-get install libcs50
 ```
 
-### From Source
+### macOS
+
+```
+$ brew install libcs50
+```
+
+### From Source (Ubuntu Only)
 
 1. Download the latest release per https://github.com/cs50/libcs50/releases
 1. Extract `libcs50-*.*`

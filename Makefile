@@ -1,4 +1,4 @@
-VERSION := 8.0.3
+VERSION := 8.1.0
 
 # soname - libcs50.so.<major_version>
 SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)

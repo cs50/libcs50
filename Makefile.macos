@@ -1,4 +1,4 @@
-VERSION := 8.0.4
+VERSION := $(shell $(MAKE) version)
 MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
 
 PREFIX ?= /usr/local/Cellar

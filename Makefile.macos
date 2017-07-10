@@ -29,7 +29,6 @@ install: build docs
 	$(MAKE) -f Makefile.macos clean
 
 clean:
-	$(shell type -p git) clean -xfd
 	rm -rf $(BUILD_ROOT)
 
 uninstall: clean

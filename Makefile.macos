@@ -13,7 +13,7 @@ build: clean
 	mkdir -p $(BUILD_DIR)/include $(BUILD_DIR)/lib
 	cp src/cs50.h $(BUILD_DIR)/include/
 	ln -sf libcs50-$(VERSION).dylib libcs50-$(MAJOR_VERSION).dylib
-	ln -sf $(DLNAME) libcs50.dylib
+	ln -sf libcs50-$(MAJOR_VERSION).dylib libcs50.dylib
 	mv *.dylib $(BUILD_DIR)/lib/
 
 .PHONY: docs

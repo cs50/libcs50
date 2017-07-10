@@ -19,7 +19,7 @@ build: clean
 .PHONY: docs
 docs: clean
 	mkdir -p $(BUILD_DIR)/$(MAN_DIR)
-	asciidoctor -d manpage -b manpage -D $(BUILD_DIR)/$(MAN_DIR) docs/*.adoc
+	cp -R docs/man/ $(BUILD_DIR)/$(MAN_DIR)
 
 install: build docs
 	cp -R $(BUILD_ROOT) $(PREFIX)

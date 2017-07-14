@@ -8,7 +8,7 @@ DESTDIR ?= /usr/local
 
 .PHONY: build
 build: clean
-	$(CC) -c -fPIC -std=gnu99 -Wall -o cs50.o src/cs50.c
+	$(CC) -c -fPIC -std=c99 -Wall -o cs50.o src/cs50.c
 	$(CC) -shared -Wl,-soname,$(SONAME) -o libcs50.so.$(VERSION) cs50.o
 	rm -f cs50.o
 	ln -s libcs50.so.$(VERSION) $(SONAME)

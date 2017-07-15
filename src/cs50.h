@@ -58,6 +58,12 @@ struct prompt
     string prompt;
 };
 
+/** 
+ * Some compilers warn about the trick we use for optional arguments. This
+ * line overrides this warning.
+ */
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
  * file name and line number from which function was called (which a macro provides).

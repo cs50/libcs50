@@ -1,4 +1,4 @@
-VERSION := 8.0.3
+VERSION := 8.0.4
 
 # soname - libcs50.so.<major_version>
 SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
@@ -8,7 +8,7 @@ DESTDIR ?= /usr/local
 
 .PHONY: build
 build: clean
-	$(CC) -c -fPIC -std=gnu99 -Wall -o cs50.o src/cs50.c
+	$(CC) -c -fPIC -std=c99 -Wall -o cs50.o src/cs50.c
 	$(CC) -shared -Wl,-soname,$(SONAME) -o libcs50.so.$(VERSION) cs50.o
 	rm -f cs50.o
 	ln -s libcs50.so.$(VERSION) $(SONAME)
@@ -37,7 +37,7 @@ docs:
 deb: build docs
 	@echo "libcs50 ($(VERSION)-0ubuntu1) trusty; urgency=low" > debian/changelog
 	@echo "  * v$(VERSION)" >> debian/changelog
-	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu> $$(date --rfc-2822)" >> debian/changelog
+	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
 	rsync -a build/* libcs50-$(VERSION)/usr --exclude=hack
 	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)

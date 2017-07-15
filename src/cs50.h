@@ -4,9 +4,7 @@
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2017,
- * Glenn Holloway <holloway@eecs.harvard.edu>
- * David J. Malan <malan@harvard.edu>
+ * Copyright (c) 2017.
  * All rights reserved.
  *
  * BSD 3-Clause License
@@ -47,23 +45,18 @@
 #include <stdlib.h>
 
 /**
- * Temporarily used to make arguments to get_* (but not Get*) optional.
- * Inspired by https://gustedt.wordpress.com/2010/06/03/default-arguments-for-c99/.
- */
-#ifdef __GNUC__
-#define _ARGS(_0, _1, _2, ...) _2
-#define ARGS(...) _ARGS(, ##__VA_ARGS__, 1, 0)
-#define ARG_0(NAME) NULL
-#define ARG_1(NAME, a) a
-#define __ZERO_OR_ONE_ARG(NAME, N, ...) ARG_ ## N (NAME, ##__VA_ARGS__)
-#define _ZERO_OR_ONE_ARG(NAME, N, ...) __ZERO_OR_ONE_ARG(NAME, N, ##__VA_ARGS__)
-#define ZERO_OR_ONE_ARG(NAME, ...) NAME(_ZERO_OR_ONE_ARG(NAME, ARGS(__VA_ARGS__), ##__VA_ARGS__))
-#endif 
-
-/**
  * Our own data type for string variables.
  */
 typedef char *string;
+
+/**
+ * Temporarily used to make arguments to get_* (but not Get*) optional.
+ */
+struct prompt
+{
+    int _sentinel;
+    string prompt;
+};
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
@@ -89,11 +82,9 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(string prompt);
+char get_char(struct prompt *p);
 char GetChar(void) __attribute__((deprecated));
-#ifdef __GNUC__
-#define get_char(...) ZERO_OR_ONE_ARG(get_char, ##__VA_ARGS__)
-#endif
+#define get_char(...) get_char(&(struct prompt) {0, __VA_ARGS__})
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -101,11 +92,9 @@ char GetChar(void) __attribute__((deprecated));
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(string prompt);
+double get_double(struct prompt *p);
 double GetDouble(void) __attribute__((deprecated));
-#ifdef __GNUC__
-#define get_double(...) ZERO_OR_ONE_ARG(get_double, ##__VA_ARGS__)
-#endif
+#define get_double(...) get_double(&(struct prompt) {0, __VA_ARGS__})
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -113,11 +102,9 @@ double GetDouble(void) __attribute__((deprecated));
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(string prompt);
+float get_float(struct prompt *p);
 float GetFloat(void) __attribute__((deprecated));
-#ifdef __GNUC__
-#define get_float(...) ZERO_OR_ONE_ARG(get_float, ##__VA_ARGS__)
-#endif
+#define get_float(...) get_float(&(struct prompt) {0, __VA_ARGS__})
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -125,11 +112,9 @@ float GetFloat(void) __attribute__((deprecated));
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(string prompt);
+int get_int(struct prompt *p);
 int GetInt(void) __attribute__((deprecated));
-#ifdef __GNUC__
-#define get_int(...) ZERO_OR_ONE_ARG(get_int, ##__VA_ARGS__)
-#endif
+#define get_int(...) get_int(&(struct prompt) {0, __VA_ARGS__})
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -137,11 +122,9 @@ int GetInt(void) __attribute__((deprecated));
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(string prompt);
+long long get_long_long(struct prompt *p);
 long long GetLongLong(void) __attribute__((deprecated));
-#ifdef __GNUC__
-#define get_long_long(...) ZERO_OR_ONE_ARG(get_long_long, ##__VA_ARGS__)
-#endif
+#define get_long_long(...) get_long_long(&(struct prompt) {0, __VA_ARGS__})
 
 /**
  * Prompts user for a line of text from standard input and returns
@@ -151,10 +134,8 @@ long long GetLongLong(void) __attribute__((deprecated));
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(string prompt);
+string get_string(struct prompt *p);
 string GetString(void) __attribute__((deprecated));
-#ifdef __GNUC__
-#define get_string(...) ZERO_OR_ONE_ARG(get_string, ##__VA_ARGS__)
-#endif
+#define get_string(...) get_string(&(struct prompt) {0, __VA_ARGS__})
 
 #endif

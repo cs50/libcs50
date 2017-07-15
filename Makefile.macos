@@ -1,0 +1,39 @@
+VERSION := $(shell $(MAKE) version)
+MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
+
+PREFIX ?= /usr/local/Cellar
+BUILD_ROOT ?= libcs50
+BUILD_DIR ?= $(BUILD_ROOT)/$(VERSION)
+MAN_DIR ?= share/man/man3
+
+build: clean
+	$(CC) -c -fPIC -std=gnu99 -Wall -o cs50.o src/cs50.c
+	$(CC) -shared -Wl,-install_name,libcs50-$(MAJOR_VERSION).dylib -o libcs50-$(VERSION).dylib cs50.o
+	rm cs50.o
+	mkdir -p $(BUILD_DIR)/include $(BUILD_DIR)/lib
+	cp src/cs50.h $(BUILD_DIR)/include/
+	ln -sf libcs50-$(VERSION).dylib libcs50-$(MAJOR_VERSION).dylib
+	ln -sf libcs50-$(MAJOR_VERSION).dylib libcs50.dylib
+	mv *.dylib $(BUILD_DIR)/lib/
+
+.PHONY: docs
+docs: clean
+	mkdir -p $(BUILD_DIR)/$(MAN_DIR)
+	cp -R docs/man/ $(BUILD_DIR)/$(MAN_DIR)
+
+install: build docs
+	cp -R $(BUILD_ROOT) $(PREFIX)
+	ln -sf $(PREFIX)/$(BUILD_DIR)/include/* /usr/local/include
+	ln -sf $(PREFIX)/$(BUILD_DIR)/lib/* /usr/local/lib
+	ln -sf $(PREFIX)/$(BUILD_DIR)/$(MAN_DIR)/* /usr/local/$(MAN_DIR)
+	$(MAKE) -f Makefile.macos clean
+
+clean:
+	rm -rf $(BUILD_ROOT)
+
+uninstall: clean
+	rm -rf $(PREFIX)/$(BUILD_ROOT)
+	rm -f /usr/local/include/cs50.h
+	rm -f /usr/local/lib/libcs50*.dylib
+	rm -f /usr/local/share/man/man3/eprintf.3
+	rm -f /usr/local/share/man/man3/get_*.3

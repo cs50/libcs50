@@ -64,6 +64,15 @@
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
 #undef eprintf
+#undef get_char
+#undef get_float
+#undef get_double
+#undef get_string
+#undef get_long_long
+#undef get_int
+
+#define null_prompt (&(struct OptionalPrompt) {._sentinel = 0})
+
 void eprintf(const char *file, int line, const char *format, ...)
 {
     // print caller's file name and line number
@@ -87,13 +96,14 @@ void eprintf(const char *file, int line, const char *format, ...)
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(string prompt)
+char get_char(struct OptionalPrompt *opt_prompt)
 {
+    string prompt = opt_prompt->prompt;
     // try to get a char from user
     while (true)
     {
         // get line of text, returning CHAR_MAX on failure
-        string line = get_string(prompt);
+        string line = get_string(opt_prompt);
         if (line == NULL)
         {
             return CHAR_MAX;
@@ -115,7 +125,7 @@ char get_char(string prompt)
 }
 char GetChar(void)
 {
-    return get_char(NULL);
+    return get_char(null_prompt);
 }
 
 /**
@@ -124,13 +134,14 @@ char GetChar(void)
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(string prompt)
+double get_double(struct OptionalPrompt *opt_prompt)
 {
+    string prompt = opt_prompt->prompt;
     // try to get a double from user
     while (true)
     {
         // get line of text, returning DBL_MAX on failure
-        string line = get_string(prompt);
+        string line = get_string(opt_prompt);
         if (line == NULL)
         {
             return DBL_MAX;
@@ -161,7 +172,7 @@ double get_double(string prompt)
 }
 double GetDouble(void)
 {
-    return get_double(NULL);
+    return get_double(null_prompt);
 }
 
 /**
@@ -170,13 +181,14 @@ double GetDouble(void)
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(string prompt)
+float get_float(struct OptionalPrompt *opt_prompt)
 {
+    string prompt = opt_prompt->prompt;
     // try to get a float from user
     while (true)
     {
         // get line of text, returning FLT_MAX on failure
-        string line = get_string(prompt);
+        string line = get_string(opt_prompt);
         if (line == NULL)
         {
             return FLT_MAX;
@@ -207,7 +219,7 @@ float get_float(string prompt)
 }
 float GetFloat(void)
 {
-    return get_float(NULL);
+    return get_float(null_prompt);
 }
 
 /**
@@ -216,13 +228,14 @@ float GetFloat(void)
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(string prompt)
+int get_int(struct OptionalPrompt *opt_prompt)
 {
+    string prompt = opt_prompt->prompt;
     // try to get an int from user
     while (true)
     {
         // get line of text, returning INT_MAX on failure
-        string line = get_string(prompt);
+        string line = get_string(opt_prompt);
         if (line == NULL)
         {
             return INT_MAX;
@@ -249,7 +262,7 @@ int get_int(string prompt)
 }
 int GetInt(void)
 {
-    return get_int(NULL);
+    return get_int(null_prompt);
 }
 
 /**
@@ -258,13 +271,14 @@ int GetInt(void)
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(string prompt)
+long long get_long_long(struct OptionalPrompt *opt_prompt)
 {
+    string prompt = opt_prompt->prompt;
     // try to get a long long from user
     while (true)
     {
         // get line of text, returning LLONG_MAX on failure
-        string line = get_string(prompt);
+        string line = get_string(opt_prompt);
         if (line == NULL)
         {
             return LLONG_MAX;
@@ -291,7 +305,7 @@ long long get_long_long(string prompt)
 }
 long long GetLongLong(void)
 {
-    return get_long_long(NULL);
+    return get_long_long(null_prompt);
 }
 
 /**
@@ -312,8 +326,9 @@ static string *strings = NULL;
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(string prompt)
+string get_string(struct OptionalPrompt *opt_prompt)
 {
+    string prompt = opt_prompt->prompt;
     // check whether we have room for another string
     if (allocations * sizeof(string) == SIZE_MAX)
     {

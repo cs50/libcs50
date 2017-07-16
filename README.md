@@ -4,7 +4,7 @@
 
 ## Development
 
-`make build`: builds dynamic library
+`make`: builds dynamic library
 
 `make deb`: builds source deb
 
@@ -22,12 +22,18 @@ $ sudo apt-get update
 $ sudo apt-get install libcs50
 ```
 
-### From Source
+### From Source (Linux and Mac)
 
 1. Download the latest release per https://github.com/cs50/libcs50/releases
 1. Extract `libcs50-*.*`
 1. `cd libcs50-*`
-1. `make install`
+1. `gem install asciidoctor`, as needed
+
+If on Mac:
+* `make install`
+
+If on Linux:
+* `sudo make install`
 
 ## Usage
 
@@ -46,7 +52,7 @@ Link with `-lcs50`.
 
 ## Documentation
 
-See `man get_*` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
+See `man get_*` and `man eprintf` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
 
 ## TODO
 

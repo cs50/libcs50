@@ -93,16 +93,16 @@ void eprintf(char const *file, int line, char const *format, ...)
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(char const *fmt, ...)
+char get_char(char const *format, ...)
 {
     va_list ap;
-    va_start(ap, fmt);
+    va_start(ap, format);
 
     // try to get a char from user
     while (true)
     {
         // get line of text, returning CHAR_MAX on failure
-        string line = get_string(true, fmt, &ap);
+        string line = get_string(true, format, &ap);
         if (line == NULL)
         {
             va_end(ap);
@@ -118,7 +118,7 @@ char get_char(char const *fmt, ...)
         }
 
         // temporarily here for backwards compatibility
-        if (fmt == NULL)
+        if (format == NULL)
         {
             printf("Retry: ");
         }
@@ -135,15 +135,15 @@ char GetChar(void)
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(char const *fmt, ...)
+double get_double(char const *format, ...)
 {
     va_list ap;
-    va_start(ap, fmt);
+    va_start(ap, format);
     // try to get a double from user
     while (true)
     {
         // get line of text, returning DBL_MAX on failure
-        string line = get_string(true, fmt, &ap);
+        string line = get_string(true, format, &ap);
         if (line == NULL)
         {
             va_end(ap);
@@ -168,7 +168,7 @@ double get_double(char const *fmt, ...)
         }
 
         // temporarily here for backwards compatibility
-        if (fmt == NULL)
+        if (format == NULL)
         {
             printf("Retry: ");
         }
@@ -185,15 +185,15 @@ double GetDouble(void)
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(char const *fmt, ...)
+float get_float(char const *format, ...)
 {
     va_list ap;
-    va_start(ap, fmt);
+    va_start(ap, format);
     // try to get a float from user
     while (true)
     {
         // get line of text, returning FLT_MAX on failure
-        string line = get_string(true, fmt, &ap);
+        string line = get_string(true, format, &ap);
         {
             va_end(ap);
             return FLT_MAX;
@@ -217,7 +217,7 @@ float get_float(char const *fmt, ...)
         }
 
         // temporarily here for backwards compatibility
-        if (fmt == NULL)
+        if (format == NULL)
         {
             printf("Retry: ");
         }
@@ -234,15 +234,15 @@ float GetFloat(void)
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(char const *fmt, ...)
+int get_int(char const *format, ...)
 {
     va_list ap;
-    va_start(ap, fmt);
+    va_start(ap, format);
     // try to get an int from user
     while (true)
     {
         // get line of text, returning INT_MAX on failure
-        string line = get_string(true, fmt, &ap);
+        string line = get_string(true, format, &ap);
         if (line == NULL)
         {
             va_end(ap);
@@ -263,7 +263,7 @@ int get_int(char const *fmt, ...)
         }
 
         // temporarily here for backwards compatibility
-        if (fmt == NULL)
+        if (format == NULL)
         {
             printf("Retry: ");
         }
@@ -280,16 +280,16 @@ int GetInt(void)
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(char const *fmt, ...)
+long long get_long_long(char const *format, ...)
 {
     va_list ap;
-    va_start(ap, fmt);
+    va_start(ap, format);
 
     // try to get a long long from user
     while (true)
     {
         // get line of text, returning LLONG_MAX on failure
-        string line = get_string(true, fmt, &ap);
+        string line = get_string(true, format, &ap);
         if (line == NULL)
         {
             va_end(ap);
@@ -310,7 +310,7 @@ long long get_long_long(char const *fmt, ...)
         }
 
         // temporarily here for backwards compatibility
-        if (fmt == NULL)
+        if (format == NULL)
         {
             printf("Retry: ");
         }
@@ -339,7 +339,7 @@ static string *strings = NULL;
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(bool internal, char const *fmt, ...)
+string get_string(bool internal, char const *format, ...)
 {
 
     // check whether we have room for another string
@@ -361,16 +361,28 @@ string get_string(bool internal, char const *fmt, ...)
     int c;
 
     // prompt user
-    if (fmt != NULL)
+    if (format != NULL)
     {
+        // initialize variadic argument list
         va_list ap;
-        va_start(ap, fmt);
-        if (internal) {
+        va_start(ap, format);
+
+        /** If `get_string` is being called by one of the other libary
+         *  functions, its only other argument will be the argument list of
+         *  that function.
+         */
+        if (_internal)
+        {
+            // get argument list
             va_list *temp = va_arg(ap, va_list *);
             va_end(ap);
+
+            // put a copy of argument list in ap so it is not consumed by vprintf
             va_copy(ap, *temp);
         }
-        vprintf(fmt, ap);
+        // print prompt
+        vprintf(format, ap);
+        // cleanup argument list
         va_end(ap);
     }
 

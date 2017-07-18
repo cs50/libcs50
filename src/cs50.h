@@ -51,6 +51,7 @@ typedef char *string;
 
 /**
  * Temporarily used to make arguments to get_* (but not Get*) optional.
+ * Inspired by https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
  */
 
 #define CONCAT(a, b) a ## b 
@@ -67,15 +68,35 @@ typedef char *string;
 #define IF_1_ELSE(...)
 #define IF_0_ELSE(...) __VA_ARGS__
 
-#define ARG(_0, _1, _2, _3, _4, _5, _6, _7, _8,             \
-            _9, _10, _11, _12, _13, _14, _15, _16,          \
-            _17, _18, _19, _20, _21, _22, _23, _24,         \
-            _25, _26, _27, _28, _29, _30, _31, ...) _31
+#define ARG(_0, _1, _2, _3, _4, _5, _6, _7,                 \
+            _8, _9, _10, _11, _12, _13, _14, _15,           \
+            _16, _17, _18, _19, _20, _21, _22, _23,         \
+            _24, _25, _26, _27, _28, _29, _30, _31,         \
+            _32, _33, _34, _35, _36, _37, _38, _39,         \
+            _40, _41, _42, _43, _44, _45, _46, _47,         \
+            _48, _49, _50, _51, _52, _53, _54, _55,         \
+            _56, _57, _58, _59, _60, _61, _62, _63,         \
+            _64, _65, _66, _67, _68, _69, _70, _71,         \
+            _72, _73, _74, _75, _76, _77, _78, _79,         \
+            _80, _81, _82, _83, _84, _85, _86, _87,         \
+            _88, _89, _90, _91, _92, _93, _94, _95,         \
+            _96, _97, _98, _99, _100, _101, _102, _103,     \
+            _104, _105, _106, _107, _108, _109, _110, _111, \
+            _112, _113, _114, _115, _116, _117, _118, _119, \
+            _120, _121, _122,_123, _124, _125, ...) _125
 
-#define HAS_COMMA(...)  ARG(__VA_ARGS__, 1, 1, 1, 1,        \
-                            1, 1, 1, 1, 1, 1, 1, 1, 1,      \
-                            1, 1, 1, 1, 1, 1, 1, 1, 1,      \
-                            1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+#define HAS_COMMA(...) ARG(__VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1,  \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
+                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+                     
 #define TRIGGER(...) ,
  
 #define IS_PAREN(...)       HAS_COMMA(TRIGGER __VA_ARGS__)
@@ -109,14 +130,14 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  * Macro that allows function of the same name to be called without specifying caller's
  * file name or line number explicitly.
  */
-#define eprintf(format, ...) eprintf(__FILE__, __LINE__, format, ##__VA_ARGS__)
+#define eprintf(...) eprintf(__FILE__, __LINE__, __VA_ARGS__)
 
 /**
  * Prompts user for a line of text from standard input and returns the
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
+char get_char(char const *format, ...) __attribute__((format(printf, 1, 2)));
 char GetChar(void) __attribute__((deprecated));
 #define get_char(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_char(NULL))(get_char(__VA_ARGS__))
 
@@ -126,7 +147,7 @@ char GetChar(void) __attribute__((deprecated));
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
+double get_double(char const *format, ...) __attribute__((format(printf, 1, 2)));
 double GetDouble(void) __attribute__((deprecated));
 #define get_double(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_double(NULL))(get_double(__VA_ARGS__))
 
@@ -136,7 +157,7 @@ double GetDouble(void) __attribute__((deprecated));
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
+float get_float(char const *format, ...) __attribute__((format(printf, 1, 2)));
 float GetFloat(void) __attribute__((deprecated));
 #define get_float(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_float(NULL))(get_float(__VA_ARGS__))
 
@@ -146,7 +167,7 @@ float GetFloat(void) __attribute__((deprecated));
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
+int get_int(char const *format, ...) __attribute__((format(printf, 1, 2)));
 int GetInt(void) __attribute__((deprecated));
 #define get_int(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_int(NULL))(get_int(__VA_ARGS__))
 
@@ -156,7 +177,7 @@ int GetInt(void) __attribute__((deprecated));
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
+long long get_long_long(char const *format, ...) __attribute__((format(printf, 1, 2)));
 long long GetLongLong(void) __attribute__((deprecated));
 #define get_long_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_long_long(NULL))(get_long_long(__VA_ARGS__))
 
@@ -168,8 +189,7 @@ long long GetLongLong(void) __attribute__((deprecated));
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-
-string get_string(bool _internal, char const *fmt, ...) __attribute__((format(printf, 2, 3)));
+string get_string(bool _internal, char const *format, ...) __attribute__((format(printf, 2, 3)));
 string GetString(void) __attribute__((deprecated));
 #define get_string(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_string(false, NULL))(get_string(false, __VA_ARGS__))
 

@@ -52,17 +52,45 @@ typedef char *string;
 /**
  * Temporarily used to make arguments to get_* (but not Get*) optional.
  */
-struct prompt
-{
-    int _sentinel;
-    string prompt;
-};
 
-/** 
- * Some compilers warn about the trick we use for optional arguments. This
- * line overrides this warning.
- */
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#define CONCAT(a, b) a ## b 
+#define SECOND(first, second, ...) second
+#define NOT_(...) SECOND(__VA_ARGS__, 0)
+#define NOT_SENTINEL_0 ignore_me, 1
+#define NOT(cond) NOT_(CONCAT(NOT_SENTINEL_, cond))
+#define BOOL(cond) NOT(NOT(cond))
+
+#define IF_ELSE(cond) IF_ELSE_(BOOL(cond))
+#define IF_ELSE_(cond) CONCAT(IF_, cond)
+#define IF_1(...) __VA_ARGS__ IF_1_ELSE
+#define IF_0(...) IF_0_ELSE
+#define IF_1_ELSE(...)
+#define IF_0_ELSE(...) __VA_ARGS__
+
+#define ARG(_0, _1, _2, _3, _4, _5, _6, _7, _8,             \
+            _9, _10, _11, _12, _13, _14, _15, _16,          \
+            _17, _18, _19, _20, _21, _22, _23, _24,         \
+            _25, _26, _27, _28, _29, _30, _31, ...) _31
+
+#define HAS_COMMA(...)  ARG(__VA_ARGS__, 1, 1, 1, 1,        \
+                            1, 1, 1, 1, 1, 1, 1, 1, 1,      \
+                            1, 1, 1, 1, 1, 1, 1, 1, 1,      \
+                            1, 1, 1, 1, 1, 1, 1, 1, 0)
+#define TRIGGER(...) ,
+ 
+#define IS_PAREN(...)       HAS_COMMA(TRIGGER __VA_ARGS__)
+#define IS_CALLABLE(...)    HAS_COMMA(__VA_ARGS__ ())
+#define IS_ANYTHING(...)    NOT(HAS_COMMA(TRIGGER __VA_ARGS__ ()))
+
+#define ISEMPTY(...) ALL_FALSE(HAS_COMMA(__VA_ARGS__),      \
+                               IS_PAREN(__VA_ARGS__),       \
+                               IS_CALLABLE(__VA_ARGS__),    \
+                               IS_ANYTHING(__VA_ARGS__))
+ 
+#define CONCAT5(_0, _1, _2, _3, _4) _0 ## _1 ## _2 ## _3 ## _4
+#define ALL_FALSE(_0, _1, _2, _3) HAS_COMMA(CONCAT5(FALSE_SENTINEL_, _0, _1, _2, _3))
+#define FALSE_SENTINEL_0000 ,
+
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
@@ -88,9 +116,9 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(struct prompt *p);
+char get_char(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
 char GetChar(void) __attribute__((deprecated));
-#define get_char(...) get_char(&(struct prompt) {0, __VA_ARGS__})
+#define get_char(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_char(NULL))(get_char(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -98,9 +126,9 @@ char GetChar(void) __attribute__((deprecated));
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(struct prompt *p);
+double get_double(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
 double GetDouble(void) __attribute__((deprecated));
-#define get_double(...) get_double(&(struct prompt) {0, __VA_ARGS__})
+#define get_double(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_double(NULL))(get_double(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -108,9 +136,9 @@ double GetDouble(void) __attribute__((deprecated));
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(struct prompt *p);
+float get_float(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
 float GetFloat(void) __attribute__((deprecated));
-#define get_float(...) get_float(&(struct prompt) {0, __VA_ARGS__})
+#define get_float(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_float(NULL))(get_float(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -118,9 +146,9 @@ float GetFloat(void) __attribute__((deprecated));
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(struct prompt *p);
+int get_int(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
 int GetInt(void) __attribute__((deprecated));
-#define get_int(...) get_int(&(struct prompt) {0, __VA_ARGS__})
+#define get_int(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_int(NULL))(get_int(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -128,9 +156,9 @@ int GetInt(void) __attribute__((deprecated));
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(struct prompt *p);
+long long get_long_long(char const *fmt, ...) __attribute__((format(printf, 1, 2)));
 long long GetLongLong(void) __attribute__((deprecated));
-#define get_long_long(...) get_long_long(&(struct prompt) {0, __VA_ARGS__})
+#define get_long_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_long_long(NULL))(get_long_long(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns
@@ -140,8 +168,9 @@ long long GetLongLong(void) __attribute__((deprecated));
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(struct prompt *p);
+
+string get_string(bool _internal, char const *fmt, ...) __attribute__((format(printf, 2, 3)));
 string GetString(void) __attribute__((deprecated));
-#define get_string(...) get_string(&(struct prompt) {0, __VA_ARGS__})
+#define get_string(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_string(false, NULL))(get_string(false, __VA_ARGS__))
 
 #endif

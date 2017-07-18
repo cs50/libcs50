@@ -57,7 +57,6 @@
 #undef get_int
 #undef get_long_long
 #undef get_string
-#define null (&(struct prompt) {0})
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
@@ -71,7 +70,7 @@
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
 #undef eprintf
-void eprintf(const char *file, int line, const char *format, ...)
+void eprintf(char const *file, int line, char const *format, ...)
 {
     // print caller's file name and line number
     fprintf(stderr, "%s:%i: ", file, line);
@@ -94,15 +93,19 @@ void eprintf(const char *file, int line, const char *format, ...)
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(struct prompt *p)
+char get_char(char const *fmt, ...)
 {
+    va_list ap;
+    va_start(ap, fmt);
+
     // try to get a char from user
     while (true)
     {
         // get line of text, returning CHAR_MAX on failure
-        string line = get_string(p);
+        string line = get_string(true, fmt, &ap);
         if (line == NULL)
         {
+            va_end(ap);
             return CHAR_MAX;
         }
 
@@ -110,11 +113,12 @@ char get_char(struct prompt *p)
         char c, d;
         if (sscanf(line, "%c%c", &c, &d) == 1)
         {
+            va_end(ap);
             return c;
         }
 
         // temporarily here for backwards compatibility
-        if (p->prompt == NULL)
+        if (fmt == NULL)
         {
             printf("Retry: ");
         }
@@ -122,7 +126,7 @@ char get_char(struct prompt *p)
 }
 char GetChar(void)
 {
-    return get_char(null);
+    return get_char(NULL);
 }
 
 /**
@@ -131,15 +135,18 @@ char GetChar(void)
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(struct prompt *p)
+double get_double(char const *fmt, ...)
 {
+    va_list ap;
+    va_start(ap, fmt);
     // try to get a double from user
     while (true)
     {
         // get line of text, returning DBL_MAX on failure
-        string line = get_string(p);
+        string line = get_string(true, fmt, &ap);
         if (line == NULL)
         {
+            va_end(ap);
             return DBL_MAX;
         }
 
@@ -154,13 +161,14 @@ double get_double(struct prompt *p)
                 // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
+                    va_end(ap);
                     return d;
                 }
             }
         }
 
         // temporarily here for backwards compatibility
-        if (p->prompt == NULL)
+        if (fmt == NULL)
         {
             printf("Retry: ");
         }
@@ -168,7 +176,7 @@ double get_double(struct prompt *p)
 }
 double GetDouble(void)
 {
-    return get_double(null);
+    return get_double(NULL);
 }
 
 /**
@@ -177,15 +185,17 @@ double GetDouble(void)
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(struct prompt *p)
+float get_float(char const *fmt, ...)
 {
+    va_list ap;
+    va_start(ap, fmt);
     // try to get a float from user
     while (true)
     {
         // get line of text, returning FLT_MAX on failure
-        string line = get_string(p);
-        if (line == NULL)
+        string line = get_string(true, fmt, &ap);
         {
+            va_end(ap);
             return FLT_MAX;
         }
 
@@ -200,13 +210,14 @@ float get_float(struct prompt *p)
                 // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
+                    va_end(ap);
                     return f;
                 }
             }
         }
 
         // temporarily here for backwards compatibility
-        if (p->prompt == NULL)
+        if (fmt == NULL)
         {
             printf("Retry: ");
         }
@@ -214,7 +225,7 @@ float get_float(struct prompt *p)
 }
 float GetFloat(void)
 {
-    return get_float(null);
+    return get_float(NULL);
 }
 
 /**
@@ -223,15 +234,18 @@ float GetFloat(void)
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(struct prompt *p)
+int get_int(char const *fmt, ...)
 {
+    va_list ap;
+    va_start(ap, fmt);
     // try to get an int from user
     while (true)
     {
         // get line of text, returning INT_MAX on failure
-        string line = get_string(p);
+        string line = get_string(true, fmt, &ap);
         if (line == NULL)
         {
+            va_end(ap);
             return INT_MAX;
         }
 
@@ -243,12 +257,13 @@ int get_int(struct prompt *p)
             long n = strtol(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)
             {
+                va_end(ap);
                 return n;
             }
         }
 
         // temporarily here for backwards compatibility
-        if (p->prompt == NULL)
+        if (fmt == NULL)
         {
             printf("Retry: ");
         }
@@ -256,7 +271,7 @@ int get_int(struct prompt *p)
 }
 int GetInt(void)
 {
-    return get_int(null);
+    return get_int(NULL);
 }
 
 /**
@@ -265,15 +280,19 @@ int GetInt(void)
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(struct prompt *p)
+long long get_long_long(char const *fmt, ...)
 {
+    va_list ap;
+    va_start(ap, fmt);
+
     // try to get a long long from user
     while (true)
     {
         // get line of text, returning LLONG_MAX on failure
-        string line = get_string(p);
+        string line = get_string(true, fmt, &ap);
         if (line == NULL)
         {
+            va_end(ap);
             return LLONG_MAX;
         }
 
@@ -285,12 +304,13 @@ long long get_long_long(struct prompt *p)
             long long n = strtoll(line, &tail, 10);
             if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
             {
+                va_end(ap);
                 return n;
             }
         }
 
         // temporarily here for backwards compatibility
-        if (p->prompt == NULL)
+        if (fmt == NULL)
         {
             printf("Retry: ");
         }
@@ -298,7 +318,7 @@ long long get_long_long(struct prompt *p)
 }
 long long GetLongLong(void)
 {
-    return get_long_long(null);
+    return get_long_long(NULL);
 }
 
 /**
@@ -319,8 +339,9 @@ static string *strings = NULL;
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(struct prompt *p)
+string get_string(bool internal, char const *fmt, ...)
 {
+
     // check whether we have room for another string
     if (allocations * sizeof(string) == SIZE_MAX)
     {
@@ -340,9 +361,17 @@ string get_string(struct prompt *p)
     int c;
 
     // prompt user
-    if (p->prompt != NULL)
+    if (fmt != NULL)
     {
-        printf("%s", p->prompt);
+        va_list ap;
+        va_start(ap, fmt);
+        if (internal) {
+            va_list *temp = va_arg(ap, va_list *);
+            va_end(ap);
+            va_copy(ap, *temp);
+        }
+        vprintf(fmt, ap);
+        va_end(ap);
     }
 
     // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)

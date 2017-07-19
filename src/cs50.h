@@ -41,6 +41,7 @@
 
 #include <float.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -112,6 +113,13 @@ typedef char *string;
 #define ALL_FALSE(_0, _1, _2, _3) HAS_COMMA(CONCAT5(FALSE_SENTINEL_, _0, _1, _2, _3))
 #define FALSE_SENTINEL_0000 ,
 
+#define WARN_MSG "GCC warning \"As of Jan 1, 2018 all 'get_' functions require at least one argument (a prompt). Please see reference.cs50.net/cs50 for more information.\""
+#define WARN(func)  do { _Pragma(WARN_MSG); func; } while (0)
+
+// TODO: Remove these two lines once no-argument function calls are deprecated
+#undef WARN
+#define WARN(func) func
+
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
@@ -139,7 +147,7 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  */
 char get_char(char const *format, ...) __attribute__((format(printf, 1, 2)));
 char GetChar(void) __attribute__((deprecated));
-#define get_char(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_char(NULL))(get_char(__VA_ARGS__))
+#define get_char(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_char(NULL)))(get_char(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -149,7 +157,7 @@ char GetChar(void) __attribute__((deprecated));
  */
 double get_double(char const *format, ...) __attribute__((format(printf, 1, 2)));
 double GetDouble(void) __attribute__((deprecated));
-#define get_double(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_double(NULL))(get_double(__VA_ARGS__))
+#define get_double(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_double(NULL)))(get_double(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -159,7 +167,7 @@ double GetDouble(void) __attribute__((deprecated));
  */
 float get_float(char const *format, ...) __attribute__((format(printf, 1, 2)));
 float GetFloat(void) __attribute__((deprecated));
-#define get_float(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_float(NULL))(get_float(__VA_ARGS__))
+#define get_float(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_float(NULL)))(get_float(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -169,7 +177,7 @@ float GetFloat(void) __attribute__((deprecated));
  */
 int get_int(char const *format, ...) __attribute__((format(printf, 1, 2)));
 int GetInt(void) __attribute__((deprecated));
-#define get_int(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_int(NULL))(get_int(__VA_ARGS__))
+#define get_int(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_int(NULL)))(get_int(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -179,7 +187,7 @@ int GetInt(void) __attribute__((deprecated));
  */
 long long get_long_long(char const *format, ...) __attribute__((format(printf, 1, 2)));
 long long GetLongLong(void) __attribute__((deprecated));
-#define get_long_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_long_long(NULL))(get_long_long(__VA_ARGS__))
+#define get_long_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long_long(NULL)))(get_long_long(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns
@@ -189,8 +197,8 @@ long long GetLongLong(void) __attribute__((deprecated));
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(bool _internal, char const *format, ...) __attribute__((format(printf, 2, 3)));
+string get_string(va_list *args, char const *format, ...) __attribute__((format(printf, 2, 3)));
 string GetString(void) __attribute__((deprecated));
-#define get_string(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(get_string(false, NULL))(get_string(false, __VA_ARGS__))
+#define get_string(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_string(NULL, NULL)))(get_string(NULL, __VA_ARGS__))
 
 #endif

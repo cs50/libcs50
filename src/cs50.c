@@ -40,15 +40,22 @@
 
 #include <ctype.h>
 #include <errno.h>
+#include <float.h>
 #include <limits.h>
 #include <math.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "cs50.h"
+
+// Some compilers warn about the way we use variadic arguments in these
+// functions. This disable those warnings.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-security"
 
 // temporarily here for backwards compatibility
 #undef get_char
@@ -88,238 +95,6 @@ void eprintf(char const *file, int line, char const *format, ...)
     va_end(ap);
 }
 
-/**
- * Prompts user for a line of text from standard input and returns the
- * equivalent char; if text is not a single char, user is prompted
- * to retry. If line can't be read, returns CHAR_MAX.
- */
-char get_char(char const *format, ...)
-{
-    va_list ap;
-    va_start(ap, format);
-
-    // try to get a char from user
-    while (true)
-    {
-        // get line of text, returning CHAR_MAX on failure
-        string line = get_string(true, format, &ap);
-        if (line == NULL)
-        {
-            va_end(ap);
-            return CHAR_MAX;
-        }
-
-        // return a char if only a char was provided
-        char c, d;
-        if (sscanf(line, "%c%c", &c, &d) == 1)
-        {
-            va_end(ap);
-            return c;
-        }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
-    }
-}
-char GetChar(void)
-{
-    return get_char(NULL);
-}
-
-/**
- * Prompts user for a line of text from standard input and returns the
- * equivalent double as precisely as possible; if text does not represent
- * a double or if value would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns DBL_MAX.
- */
-double get_double(char const *format, ...)
-{
-    va_list ap;
-    va_start(ap, format);
-    // try to get a double from user
-    while (true)
-    {
-        // get line of text, returning DBL_MAX on failure
-        string line = get_string(true, format, &ap);
-        if (line == NULL)
-        {
-            va_end(ap);
-            return DBL_MAX;
-        }
-
-        // return a double if only a double was provided
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *tail;
-            errno = 0;
-            double d = strtod(line, &tail);
-            if (errno == 0 && *tail == '\0' && isfinite(d) != 0 && d < DBL_MAX)
-            {
-                // disallow hexadecimal and exponents
-                if (strcspn(line, "XxEePp") == strlen(line))
-                {
-                    va_end(ap);
-                    return d;
-                }
-            }
-        }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
-    }
-}
-double GetDouble(void)
-{
-    return get_double(NULL);
-}
-
-/**
- * Prompts user for a line of text from standard input and returns the
- * equivalent float as precisely as possible; if text does not represent
- * a float or if value would cause underflow or overflow, user is prompted
- * to retry. If line can't be read, returns FLT_MAX.
- */
-float get_float(char const *format, ...)
-{
-    va_list ap;
-    va_start(ap, format);
-    // try to get a float from user
-    while (true)
-    {
-        // get line of text, returning FLT_MAX on failure
-        string line = get_string(true, format, &ap);
-        {
-            va_end(ap);
-            return FLT_MAX;
-        }
-
-        // return a float if only a float was provided
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *tail;
-            errno = 0;
-            float f = strtof(line, &tail);
-            if (errno == 0 && *tail == '\0' && isfinite(f) != 0 && f < FLT_MAX)
-            {
-                // disallow hexadecimal and exponents
-                if (strcspn(line, "XxEePp") == strlen(line))
-                {
-                    va_end(ap);
-                    return f;
-                }
-            }
-        }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
-    }
-}
-float GetFloat(void)
-{
-    return get_float(NULL);
-}
-
-/**
- * Prompts user for a line of text from standard input and returns the
- * equivalent int; if text does not represent an int in [-2^31, 2^31 - 1)
- * or would cause underflow or overflow, user is prompted to retry. If line
- * can't be read, returns INT_MAX.
- */
-int get_int(char const *format, ...)
-{
-    va_list ap;
-    va_start(ap, format);
-    // try to get an int from user
-    while (true)
-    {
-        // get line of text, returning INT_MAX on failure
-        string line = get_string(true, format, &ap);
-        if (line == NULL)
-        {
-            va_end(ap);
-            return INT_MAX;
-        }
-
-        // return an int if only an int (in range) was provided
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *tail;
-            errno = 0;
-            long n = strtol(line, &tail, 10);
-            if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)
-            {
-                va_end(ap);
-                return n;
-            }
-        }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
-    }
-}
-int GetInt(void)
-{
-    return get_int(NULL);
-}
-
-/**
- * Prompts user for a line of text from standard input and returns the
- * equivalent long long; if text does not represent a long long in
- * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns LLONG_MAX.
- */
-long long get_long_long(char const *format, ...)
-{
-    va_list ap;
-    va_start(ap, format);
-
-    // try to get a long long from user
-    while (true)
-    {
-        // get line of text, returning LLONG_MAX on failure
-        string line = get_string(true, format, &ap);
-        if (line == NULL)
-        {
-            va_end(ap);
-            return LLONG_MAX;
-        }
-
-        // return a long long if only a long long (in range) was provided
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *tail;
-            errno = 0;
-            long long n = strtoll(line, &tail, 10);
-            if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
-            {
-                va_end(ap);
-                return n;
-            }
-        }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
-    }
-}
-long long GetLongLong(void)
-{
-    return get_long_long(NULL);
-}
 
 /**
  * Number of strings allocated by get_string.
@@ -339,11 +114,11 @@ static string *strings = NULL;
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(bool internal, char const *format, ...)
+string get_string(va_list *args, char const *format, ...)
 {
 
     // check whether we have room for another string
-    if (allocations * sizeof(string) == SIZE_MAX)
+    if (allocations * sizeof (string) == SIZE_MAX)
     {
         return NULL;
     }
@@ -365,20 +140,24 @@ string get_string(bool internal, char const *format, ...)
     {
         // initialize variadic argument list
         va_list ap;
-        va_start(ap, format);
 
-        /** If `get_string` is being called by one of the other libary
-         *  functions, its only other argument will be the argument list of
-         *  that function.
+        /** Student code will pass in printf-like arguments as variadic
+         *  parameters. The student-facing get_string macro always sets args to
+         *  NULL. In this case, we initialize the list of variadic parameters
+         *  the standard way with va_start.
          */
-        if (_internal)
+        if (args == NULL)
         {
-            // get argument list
-            va_list *temp = va_arg(ap, va_list *);
-            va_end(ap);
-
+            va_start(ap, format);
+        }
+        /** When functions in this library call get_string they will have
+         *  already stored their variadic parameters in a `va_list` and so they
+         *  just pass that in by pointer.
+         */
+        else
+        {
             // put a copy of argument list in ap so it is not consumed by vprintf
-            va_copy(ap, *temp);
+            va_copy(ap, *args);
         }
         // print prompt
         vprintf(format, ap);
@@ -461,7 +240,7 @@ string get_string(bool internal, char const *format, ...)
     s[size] = '\0';
 
     // resize array so as to append string
-    string *tmp = realloc(strings, sizeof(string) * (allocations + 1));
+    string *tmp = realloc(strings, sizeof (string) * (allocations + 1));
     if (tmp == NULL)
     {
         free(s);
@@ -568,20 +347,243 @@ string GetString(void)
     return s;
 }
 
+
 /**
- * Called automatically before execution enters main.
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent char; if text is not a single char, user is prompted
+ * to retry. If line can't be read, returns CHAR_MAX.
  */
-__attribute__((constructor))
-static void setup(void)
+char get_char(char const *format, ...)
 {
-    // disable buffering for standard output
-    setvbuf(stdout, NULL, _IONBF, 0);
+    va_list ap;
+    va_start(ap, format);
+
+    // try to get a char from user
+    while (true)
+    {
+        // get line of text, returning CHAR_MAX on failure
+        string line = get_string(&ap, format);
+        if (line == NULL)
+        {
+            va_end(ap);
+            return CHAR_MAX;
+        }
+
+        // return a char if only a char was provided
+        char c, d;
+        if (sscanf(line, "%c%c", &c, &d) == 1)
+        {
+            va_end(ap);
+            return c;
+        }
+
+        // temporarily here for backwards compatibility
+        if (format == NULL)
+        {
+            printf("Retry: ");
+        }
+    }
+}
+char GetChar(void)
+{
+    return get_char(NULL);
+}
+
+/**
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent double as precisely as possible; if text does not represent
+ * a double or if value would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns DBL_MAX.
+ */
+double get_double(char const *format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    // try to get a double from user
+    while (true)
+    {
+        // get line of text, returning DBL_MAX on failure
+        string line = get_string(&ap, format);
+        if (line == NULL)
+        {
+            va_end(ap);
+            return DBL_MAX;
+        }
+
+        // return a double if only a double was provided
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *tail;
+            errno = 0;
+            double d = strtod(line, &tail);
+            if (errno == 0 && *tail == '\0' && isfinite(d) != 0 && d < DBL_MAX)
+            {
+                // disallow hexadecimal and exponents
+                if (strcspn(line, "XxEePp") == strlen(line))
+                {
+                    va_end(ap);
+                    return d;
+                }
+            }
+        }
+
+        // temporarily here for backwards compatibility
+        if (format == NULL)
+        {
+            printf("Retry: ");
+        }
+    }
+}
+double GetDouble(void)
+{
+    return get_double(NULL);
+}
+
+/**
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent float as precisely as possible; if text does not represent
+ * a float or if value would cause underflow or overflow, user is prompted
+ * to retry. If line can't be read, returns FLT_MAX.
+ */
+float get_float(char const *format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    // try to get a float from user
+    while (true)
+    {
+        // get line of text, returning FLT_MAX on failure
+        string line = get_string(&ap, format);
+        {
+            va_end(ap);
+            return FLT_MAX;
+        }
+
+        // return a float if only a float was provided
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *tail;
+            errno = 0;
+            float f = strtof(line, &tail);
+            if (errno == 0 && *tail == '\0' && isfinite(f) != 0 && f < FLT_MAX)
+            {
+                // disallow hexadecimal and exponents
+                if (strcspn(line, "XxEePp") == strlen(line))
+                {
+                    va_end(ap);
+                    return f;
+                }
+            }
+        }
+
+        // temporarily here for backwards compatibility
+        if (format == NULL)
+        {
+            printf("Retry: ");
+        }
+    }
+}
+float GetFloat(void)
+{
+    return get_float(NULL);
+}
+
+/**
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent int; if text does not represent an int in [-2^31, 2^31 - 1)
+ * or would cause underflow or overflow, user is prompted to retry. If line
+ * can't be read, returns INT_MAX.
+ */
+int get_int(char const *format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    // try to get an int from user
+    while (true)
+    {
+        // get line of text, returning INT_MAX on failure
+        string line = get_string(&ap, format);
+        if (line == NULL)
+        {
+            va_end(ap);
+            return INT_MAX;
+        }
+
+        // return an int if only an int (in range) was provided
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *tail;
+            errno = 0;
+            long n = strtol(line, &tail, 10);
+            if (errno == 0 && *tail == '\0' && n >= INT_MIN && n < INT_MAX)
+            {
+                va_end(ap);
+                return n;
+            }
+        }
+
+        // temporarily here for backwards compatibility
+        if (format == NULL)
+        {
+            printf("Retry: ");
+        }
+    }
+}
+int GetInt(void)
+{
+    return get_int(NULL);
+}
+
+/**
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent long long; if text does not represent a long long in
+ * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns LLONG_MAX.
+ */
+long long get_long_long(char const *format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+
+    // try to get a long long from user
+    while (true)
+    {
+        // get line of text, returning LLONG_MAX on failure
+        string line = get_string(&ap, format);
+        if (line == NULL)
+        {
+            va_end(ap);
+            return LLONG_MAX;
+        }
+
+        // return a long long if only a long long (in range) was provided
+        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
+        {
+            char *tail;
+            errno = 0;
+            long long n = strtoll(line, &tail, 10);
+            if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
+            {
+                va_end(ap);
+                return n;
+            }
+        }
+
+        // temporarily here for backwards compatibility
+        if (format == NULL)
+        {
+            printf("Retry: ");
+        }
+    }
+}
+long long GetLongLong(void)
+{
+    return get_long_long(NULL);
 }
 
 /**
  * Called automatically after execution exits main.
  */
-__attribute__((destructor))
 static void teardown(void)
 {
     // free library's strings
@@ -594,3 +596,41 @@ static void teardown(void)
         free(strings);
     }
 }
+
+/**
+ * Preprocessor magic to make initializers work somewhat portably
+ * Modified from http://stackoverflow.com/questions/1113409/attribute-constructor-equivalent-in-vc
+ */
+#if defined (_MSC_VER) // MSVC
+    #pragma section(".CRT$XCU",read)
+    #define INITIALIZER_(FUNC,PREFIX) \
+        static void FUNC(void); \
+        __declspec(allocate(".CRT$XCU")) void (*FUNC##_)(void) = FUNC; \
+        __pragma(comment(linker,"/include:" PREFIX #FUNC "_")) \
+        static void FUNC(void)
+    #ifdef _WIN64
+        #define INITIALIZER(FUNC) INITIALIZER_(FUNC,"")
+    #else
+        #define INITIALIZER(FUNC) INITIALIZER_(FUNC,"_")
+    #endif
+#elif defined (__GNUC__) // GCC, Clang, MinGW
+    #define INITIALIZER(FUNC) \
+        static void FUNC(void) __attribute__((constructor)); \
+        static void FUNC(void)
+#else
+    #error The CS50 library requires some compiler-specific features, \
+           but we do not recognize this compiler/version. Please file an issue at \
+           github.com/cs50/libcs50
+#endif
+
+/**
+ * Called automatically before execution enters main.
+ */
+INITIALIZER(setup)
+{
+    // disable buffering for standard output
+    setvbuf(stdout, NULL, _IONBF, 0);
+    atexit(teardown);
+}
+
+#pragma GCC diagnostic pop

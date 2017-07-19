@@ -48,11 +48,11 @@ deb: build docs
 
 .PHONY: hack
 hack:
-	rm -rf build/hack && mkdir -p build/hack
-	cat src/cs50.h > build/hack/cs50.h
-	echo "\n#ifndef _CS50_C\n#define _CS50_C\n" >> build/hack/cs50.h
-	cat src/cs50.c >> build/hack/cs50.h
+	mkdir -p build/hack
+	echo "\n#ifndef _CS50_C\n#define _CS50_C\ntypedef char *string;\n" > build/hack/cs50.h
+	grep -v '^#include "cs50.h"' src/cs50.c >> build/hack/cs50.h
 	echo "\n#endif" >> build/hack/cs50.h
+	cat src/cs50.h >> build/hack/cs50.h
 
 # used by .travis.yml
 .PHONY: version

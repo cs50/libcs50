@@ -39,7 +39,7 @@ deb: build docs
 	@echo "  * v$(VERSION)" >> debian/changelog
 	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
-	rsync -a build/* libcs50-$(VERSION)/usr --exclude=hack
+	cp -r build/* libcs50-$(VERSION)/usr
 	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
 	cp -r debian libcs50-$(VERSION)
 	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --display-info --info --show-overrides

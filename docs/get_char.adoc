@@ -25,14 +25,28 @@ Returns char equivalent to the line read from stdin. If line can't be read, retu
 
 == EXAMPLE
 
+....
+int main(void)
+{
     // attempt to read character from stdin
-    char c = get_char("%s: ", "Enter char");
+    char c = get_char("Enter char: ");
 
     // ensure character was read
-    if (c != CHAR_MAX)
+    if (c == CHAR_MAX)
     {
-        printf("You entered: %c\n", c);
+        return 1;
     }
+
+    char next = get_char("You just entered %c. Enter another char: ", c);
+
+    if (next == CHAR_MAX)
+    {
+        return 1;
+    }
+
+    printf("The last char you entered was %c\n", next);
+}
+....
 
 == SEE ALSO
 

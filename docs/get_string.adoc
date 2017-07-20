@@ -25,14 +25,27 @@ Returns the read line as a string. If user inputs only a line ending, returns ""
 
 == EXAMPLE
 
-    // attempt to read string from stdin
-    string s = get_string("%s: ", "Enter string");
+....
+int main(void)
+{
+    string s = get_string("Enter string: ");
 
     // ensure string was read
-    if (s != NULL)
+    if (s == NULL)
     {
-        printf("You entered: %s\n", s);
+        return 1;
     }
+
+    string next = get_string("You just entered %s. Enter a new string: ", s);
+
+    if (next == NULL)
+    {
+        return 1;
+    }
+
+    printf("Your last string was %s\n", s);
+}
+....
 
 == SEE ALSO
 

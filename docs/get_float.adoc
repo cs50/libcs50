@@ -25,14 +25,29 @@ Returns the float equivalent to the line read from stdin in [*FLT_MIN*, *FLT_MAX
 
 == EXAMPLE
 
-    // attempt to read float from stdin
-    float f = get_float("%s: ", "Enter float");
+....
+// Returns the product of two floats, or FLT_MAX on error
+float multiply_floats(void)
+{
+    // Read float from stdin
+    float f = get_float("Enter a float: ");
 
-    // ensure float was read
-    if (f != FLT_MAX)
+    // Make sure we read one
+    if (f == FLT_MAX)
     {
-        printf("You entered: %f\n", f);
+        return FLT_MAX;
     }
+
+    float g = get_float("What do you want to multiply %f by? ", f);
+
+    if (g == FLT_MAX)
+    {
+        return FLT_MAX;
+    }
+
+    return i * j;
+}
+....
 
 == SEE ALSO
 

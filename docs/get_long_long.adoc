@@ -25,14 +25,29 @@ Returns the long long equivalent to the line read from stdin in [*LLONG_MIN*, *L
 
 == EXAMPLE
 
-    // attempt to read long long from stdin
-    long long ll = get_long_long("%s: ", "Enter long long");
+....
+// Returns the difference of two long longs read from stdin, or LLONG_MAX if there was an error
+long long subtract_long_longs(void)
+{
+    // Read long long from stdin
+    long long i = get_long_long("Enter a long long: ");
 
-    // ensure long long was read
-    if (ll != LLONG_MAX)
+    // Make sure we read one
+    if (i == LLONG_MAX)
     {
-        printf("You entered: %lld\n", ll);
+        return LLONG_MAX;
     }
+
+    long long j = get_long_long("What do you want to subtract from %lld? ", i);
+
+    if (j == LLONG_MAX)
+    {
+        return LLONG_MAX;
+    }
+
+    return i - j;
+}
+....
 
 == SEE ALSO
 

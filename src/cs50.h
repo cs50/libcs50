@@ -132,7 +132,7 @@ typedef char *string;
  * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
-void eprintf(const char *file, int line, const char *format, ...) __attribute__((format(printf, 3, 4)));
+void eprintf(const string file, int line, const string format, ...) __attribute__((format(printf, 3, 4)));
 
 /**
  * Macro that allows function of the same name to be called without specifying caller's
@@ -145,7 +145,7 @@ void eprintf(const char *file, int line, const char *format, ...) __attribute__(
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(char const *format, ...) __attribute__((format(printf, 1, 2)));
+char get_char(const string format, ...) __attribute__((format(printf, 1, 2)));
 char GetChar(void) __attribute__((deprecated));
 #define get_char(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_char(NULL)))(get_char(__VA_ARGS__))
 
@@ -155,7 +155,7 @@ char GetChar(void) __attribute__((deprecated));
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(char const *format, ...) __attribute__((format(printf, 1, 2)));
+double get_double(const string format, ...) __attribute__((format(printf, 1, 2)));
 double GetDouble(void) __attribute__((deprecated));
 #define get_double(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_double(NULL)))(get_double(__VA_ARGS__))
 
@@ -165,7 +165,7 @@ double GetDouble(void) __attribute__((deprecated));
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(char const *format, ...) __attribute__((format(printf, 1, 2)));
+float get_float(const string format, ...) __attribute__((format(printf, 1, 2)));
 float GetFloat(void) __attribute__((deprecated));
 #define get_float(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_float(NULL)))(get_float(__VA_ARGS__))
 
@@ -175,7 +175,7 @@ float GetFloat(void) __attribute__((deprecated));
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(char const *format, ...) __attribute__((format(printf, 1, 2)));
+int get_int(const string format, ...) __attribute__((format(printf, 1, 2)));
 int GetInt(void) __attribute__((deprecated));
 #define get_int(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_int(NULL)))(get_int(__VA_ARGS__))
 
@@ -185,7 +185,7 @@ int GetInt(void) __attribute__((deprecated));
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(char const *format, ...) __attribute__((format(printf, 1, 2)));
+long long get_long_long(const string format, ...) __attribute__((format(printf, 1, 2)));
 long long GetLongLong(void) __attribute__((deprecated));
 #define get_long_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long_long(NULL)))(get_long_long(__VA_ARGS__))
 
@@ -197,7 +197,7 @@ long long GetLongLong(void) __attribute__((deprecated));
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(va_list *args, char const *format, ...) __attribute__((format(printf, 2, 3)));
+string get_string(va_list *args, const string format, ...) __attribute__((format(printf, 2, 3)));
 string GetString(void) __attribute__((deprecated));
 #define get_string(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_string(NULL, NULL)))(get_string(NULL, __VA_ARGS__))
 

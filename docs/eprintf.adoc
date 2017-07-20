@@ -15,7 +15,7 @@ eprintf - prints an error message to stderr
 
 == DESCRIPTION
 
-Prints an error message, formatted like *printf(3)*, to the standard error, prefixing it with file and line number from which the function was called. See *printf(3)* for more on formatting.
+Prints an error message, formatted like *printf(3)*, to standard error, prefixing it with file and line number from which the function was called. See *printf(3)* for more on formatting.
 
 == EXAMPLE
 

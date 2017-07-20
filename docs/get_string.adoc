@@ -11,11 +11,13 @@ get_string - prompts user for a line of text from stdin and returns it as a stri
 
 *#include <cs50.h>*
 
-*string get_string(string prompt);*
+*string get_string(const string format, ...);*
 
 == DESCRIPTION
 
 Prompts user for a line of text from standard input and returns it as a string (char *), sans trailing line ending. Supports CR (\r), LF (\n), and CRLF (\r\n) as line endings. Stores string on heap, but library's destructor frees memory on program's exit.
+
+The prompt is formatted like *printf(3)*.
 
 == RETURN VALUE
 
@@ -24,7 +26,7 @@ Returns the read line as a string. If user inputs only a line ending, returns ""
 == EXAMPLE
 
     // attempt to read string from stdin
-    string s = get_string("Enter string: ");
+    string s = get_string("%s: ", "Enter string");
 
     // ensure string was read
     if (s != NULL)
@@ -35,4 +37,4 @@ Returns the read line as a string. If user inputs only a line ending, returns ""
 == SEE ALSO
 
     get_char(3), get_double(3), get_float(3), get_int(3),
-    get_long_long(3)
+    get_long_long(3), printf(3)

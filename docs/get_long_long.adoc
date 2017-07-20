@@ -11,20 +11,22 @@ get_long_long - prompts user for a line of text from stdin and returns the equiv
 
 *#include <cs50.h>*
 
-*long long get_long_long(string prompt);*
+*long long get_long_long(const string format, ...);*
 
 == DESCRIPTION
 
-Prompts user for a line of text from standard input and returns the equivalent long long; if text does not represent a long long in [*LLONG_MIN*, *LLONG_MAX*) or would cause underflow or overflow, user is prompted to retry.
+Prompts user for a line of text from standard input and returns the equivalent long long; if the text does not represent a long long or would cause overflow, user is reprompted.
+
+The prompt is formatted like *printf(3)*.
 
 == RETURN VALUE
 
-Returns the equivalent long long of the line read from stdin in [*LLONG_MIN*, *LLONG_MAX*). If line can't be read, returns *LLONG_MAX*.
+Returns the long long equivalent to the line read from stdin in [*LLONG_MIN*, *LLONG_MAX*). If line can't be read, returns *LLONG_MAX*.
 
 == EXAMPLE
 
     // attempt to read long long from stdin
-    long long ll = get_long_long("Enter long long: ");
+    long long ll = get_long_long("%s: ", "Enter long long");
 
     // ensure long long was read
     if (ll != LLONG_MAX)
@@ -34,4 +36,5 @@ Returns the equivalent long long of the line read from stdin in [*LLONG_MIN*, *L
 
 == SEE ALSO
 
-    get_char(3), get_double(3), get_float(3), get_int(3), get_string(3)
+    get_char(3), get_double(3), get_float(3), get_int(3), get_string(3),
+    printf(3)

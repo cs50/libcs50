@@ -11,15 +11,17 @@ get_double - prompts user for a line of text from stdin and returns the equivale
 
 *#include <cs50.h>*
 
-*double get_double(string prompt);*
+*double get_double(const string format, ...);*
 
 == DESCRIPTION
 
-Prompts user for a line of text from standard input and returns the equivalent double as precisely as possible; if text does not represent a double or if value would cause underflow or overflow, user is prompted to retry.
+Prompts user for a line of text from standard input and returns the equivalent double as precisely as possible; if text does not represent a double or would cause underflow or overflow, user is reprompted.
+
+The prompt is formatted like *printf(3)*.
 
 == RETURN VALUE
 
-Returns the equivalent double of the line read from stdin, as precisely as possible. If line can't be read, returns *DBL_MAX*.
+Returns the double equivalent to the line read from stdin in [*DBL_MIN*, *DBL_MAX*), as precisely as possible. If line can't be read, returns *DBL_MAX*.
 
 == EXAMPLE
 
@@ -35,4 +37,4 @@ Returns the equivalent double of the line read from stdin, as precisely as possi
 == SEE ALSO
 
     get_char(3), get_float(3), get_int(3), get_long_long(3),
-    get_string(3)
+    get_string(3), printf(3)

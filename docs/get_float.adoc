@@ -11,20 +11,22 @@ get_float - prompts user for a line of text from stdin and returns the equivalen
 
 *#include <cs50.h>*
 
-*float get_float(string prompt);*
+*float get_float(const string format, ...);*
 
 == DESCRIPTION
 
-Prompts user for a line of text from standard input and returns the equivalent float as precisely as possible; if text does not represent a float or if value would cause underflow or overflow, user is prompted to retry.
+Prompts user for a line of text from standard input and returns the equivalent float as precisely as possible; if text does not represent a float or would cause underflow or overflow, user is reprompted.
+
+The prompt is formatted like *printf(3)*.
 
 == RETURN VALUE
 
-Returns the equivalent float of the line read from stdin, as precisely as possible. If line can't be read, returns *FLT_MAX*.
+Returns the float equivalent to the line read from stdin in [*FLT_MIN*, *FLT_MAX*), as precisely as possible. If line can't be read, returns *FLT_MAX*.
 
 == EXAMPLE
 
     // attempt to read float from stdin
-    float f = get_float("Enter float: ");
+    float f = get_float("%s: ", "Enter float");
 
     // ensure float was read
     if (f != FLT_MAX)

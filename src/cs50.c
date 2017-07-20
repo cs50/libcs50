@@ -454,6 +454,8 @@ float get_float(char const *format, ...)
     {
         // get line of text, returning FLT_MAX on failure
         string line = get_string(&ap, format);
+
+        if (line == NULL)
         {
             va_end(ap);
             return FLT_MAX;

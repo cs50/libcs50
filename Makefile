@@ -61,7 +61,7 @@ $(MANS): $(DOCS) Makefile
 
 .PHONY: deb
 deb: $(LIBS) $(MANS)
-	@echo "libcs50 ($(VERSION)-0ubuntu1) $(DIST); urgency=low" > debian/changelog
+	@echo "libcs50 ($(VERSION)-0ubuntu$(DIST_VERSION)) $(DIST); urgency=low" > debian/changelog
 	@echo "  * v$(VERSION)" >> debian/changelog
 	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr

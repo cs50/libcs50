@@ -68,7 +68,7 @@ deb: $(LIBS) $(MANS)
 	cp -r build/* libcs50-$(VERSION)/usr
 	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
 	cp -r debian libcs50-$(VERSION)
-	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --display-info --info --show-overrides
+	cd libcs50-$(VERSION) && debuild $(SIGNING_OPTS) -S -sa --lintian-opts --display-info --info --show-overrides
 	mkdir -p build/deb
 	mv libcs50-* libcs50_* build/deb
 

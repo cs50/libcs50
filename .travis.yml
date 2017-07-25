@@ -2,6 +2,14 @@ dist: trusty
 sudo: required
 branches:
   except: "/^v\\d/"
+env:
+  matrix:
+  - DIST=precise
+  - DIST=raring
+  - DIST=trusty
+  - DIST=vivid
+  - DIST=xenial
+  - DIST=zesty
 before_install:
 - sudo apt-get install build-essential debhelper devscripts dh-make lintian
 - gem install asciidoctor

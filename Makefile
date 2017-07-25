@@ -6,6 +6,9 @@ SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
 # installation directory (/usr/local by default)
 DESTDIR ?= /usr/local
 
+# default package distribution
+DIST ?= trusty
+
 .PHONY: build
 build: clean
 	$(CC) -c -fPIC -std=c99 -Wall -o cs50.o src/cs50.c
@@ -35,14 +38,14 @@ docs:
 
 .PHONY: deb
 deb: build docs
-	@echo "libcs50 ($(VERSION)-0ubuntu1) trusty; urgency=low" > debian/changelog
+	@echo "libcs50 ($(VERSION)-0ubuntu1) $(DIST); urgency=low" > debian/changelog
 	@echo "  * v$(VERSION)" >> debian/changelog
 	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
 	cp -r build/* libcs50-$(VERSION)/usr
 	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
 	cp -r debian libcs50-$(VERSION)
-	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --display-info --info --show-overrides
+	cd libcs50-$(VERSION) && debuild $(SIGNING_OPTS) -S -sa --lintian-opts --display-info --info --show-overrides
 	mkdir -p build/deb
 	mv libcs50-* libcs50_* build/deb
 

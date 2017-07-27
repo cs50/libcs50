@@ -8,7 +8,7 @@ MANDIR ?= share/man/man3
 SRC := src/cs50.c
 INCLUDE := src/cs50.h
 DOCS := $(wildcard docs/*.adoc)
-MANS := $(addprefix debian/, $(DOCS:%.adoc=%.3)) 
+MANS := $(addprefix debian/, $(DOCS:%.adoc=%.3))
 
 CFLAGS=-Wall -Wextra -Werror -pedantic -std=c99
 
@@ -61,12 +61,13 @@ $(MANS): $(DOCS) Makefile
 
 .PHONY: deb
 deb: $(LIBS) $(MANS)
+	rm -rf build/deb &>/dev/null
 	@echo "libcs50 ($(VERSION)-0ubuntu$(DIST_VERSION)) $(DIST); urgency=low" > debian/changelog
 	@echo "  * v$(VERSION)" >> debian/changelog
 	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
 	cp -r build/* libcs50-$(VERSION)/usr
-	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
+	GZIP=-n tar --mtime='1970-01-01' -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
 	cp -r debian libcs50-$(VERSION)
 	cd libcs50-$(VERSION) && debuild $(SIGNING_OPTS) -S -sa --lintian-opts --display-info --info --show-overrides
 	mkdir -p build/deb

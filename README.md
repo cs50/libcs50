@@ -33,7 +33,21 @@ If on Mac:
 * `make install`
 
 If on Linux:
+* `make`
 * `sudo make install`
+
+By default, we install to `/usr/local`. If you'd like to change the installation location, run
+`sudo DESTDIR=/path/to/install make install` as desired.
+
+## Troubleshooting
+1. If, when compiling a program, you see `/usr/bin/ld: cannot find -lcs50`:
+Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
+1. If, when compiling a program, you see `fatal error: 'cs50.h' file not found`:
+Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
+1. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
+Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
+
+Close and reopen any terminal windows.
 
 ## Usage
 

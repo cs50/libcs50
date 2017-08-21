@@ -18,13 +18,7 @@ before_script: if [ "$TRAVIS_BRANCH" != "master" ]; then export SIGNING_OPTS="-u
 script: make deb
 before_deploy: echo -e $GPG_SECRET | gpg --import
 deploy:
-- provider: script
-  script: 'curl --fail --data "{ \"tag_name\": \"v$(make version)\",
-    \"target_commitish\": \"$TRAVIS_COMMIT\", \"name\": \"v$(make version)\"
-  }" --user bot50:$GITHUB_TOKEN https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases'
-  on:
-    branch: master
-- provider: script
+  provider: script
   script: dput ppa:cs50/ppa build/deb/*.changes
   skip_cleanup: true
   on:

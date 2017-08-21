@@ -11,7 +11,7 @@ get_int - prompts user for a line of text from stdin and returns the equivalent 
 
 *#include <cs50.h>*
 
-*int get_int(const string format, ...);*
+*int get_int(const char *format, ...);*
 
 == DESCRIPTION
 
@@ -26,13 +26,15 @@ Returns the int equivalent to the line read from stdin in [*INT_MIN*, *INT_MAX*)
 == EXAMPLE
 
 ....
-// Returns the sum of two ints read from stdin, or INT_MAX if there was an error
+/**
+ * Returns the sum of two ints read from stdin, or INT_MAX if there was an error.
+ */
 int add_ints(void)
 {
-    // Read int from stdin
+    // read int from stdin
     int i = get_int("Enter an int: ");
 
-    // Make sure we read an int
+    // make sure we read one successfully
     if (i == INT_MAX)
     {
         return INT_MAX;

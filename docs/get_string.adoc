@@ -11,7 +11,7 @@ get_string - prompts user for a line of text from stdin and returns it as a stri
 
 *#include <cs50.h>*
 
-*string get_string(const string format, ...);*
+*char *get_string(const char *format, ...);*
 
 == DESCRIPTION
 

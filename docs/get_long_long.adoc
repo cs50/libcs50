@@ -11,7 +11,7 @@ get_long_long - prompts user for a line of text from stdin and returns the equiv
 
 *#include <cs50.h>*
 
-*long long get_long_long(const string format, ...);*
+*long long get_long_long(const char *format, ...);*
 
 == DESCRIPTION
 
@@ -26,13 +26,15 @@ Returns the long long equivalent to the line read from stdin in [*LLONG_MIN*, *L
 == EXAMPLE
 
 ....
-// Returns the difference of two long longs read from stdin, or LLONG_MAX if there was an error
+/**
+ * Returns the difference of two long longs read from stdin, or LLONG_MAX if there was an error.
+ */
 long long subtract_long_longs(void)
 {
-    // Read long long from stdin
+    // read long long from stdin
     long long i = get_long_long("Enter a long long: ");
 
-    // Make sure we read one
+    // make sure we read one successfully
     if (i == LLONG_MAX)
     {
         return LLONG_MAX;

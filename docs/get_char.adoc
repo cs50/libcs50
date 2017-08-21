@@ -11,7 +11,7 @@ get_char - prompts user for a line of text from stdin and returns the equivalent
 
 *#include <cs50.h>*
 
-*char get_char(const string format, ...);*
+*char get_char(const char *format, ...);*
 
 == DESCRIPTION
 
@@ -31,7 +31,7 @@ int main(void)
     // attempt to read character from stdin
     char c = get_char("Enter char: ");
 
-    // ensure character was read
+    // ensure character was read successfully
     if (c == CHAR_MAX)
     {
         return 1;

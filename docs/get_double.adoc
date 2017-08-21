@@ -11,7 +11,7 @@ get_double - prompts user for a line of text from stdin and returns the equivale
 
 *#include <cs50.h>*
 
-*double get_double(const string format, ...);*
+*double get_double(const char *format, ...);*
 
 == DESCRIPTION
 
@@ -26,13 +26,15 @@ Returns the double equivalent to the line read from stdin in [*DBL_MIN*, *DBL_MA
 == EXAMPLE
 
 ....
-// Returns the quotient of two doubles, or DBL_MAX on error
+/** 
+ * Returns the quotient of two doubles, or DBL_MAX on error.
+ */
 double divide_doubles(void)
 {
-    // Read double from stdin
+    // read double from stdin
     double d = get_double("Enter a double: ");
 
-    // Make sure we read one
+    // make sure we read one successfully
     if (d == DBL_MAX)
     {
         return DBL_MAX;
@@ -40,7 +42,7 @@ double divide_doubles(void)
 
     double e = get_double("What do you want to divide %lf by? ", d);
 
-    // Make sure we don't divide by zero
+    // make sure we don't divide by zero
     if (e == DBL_MAX || e == 0.0)
     {
         return DBL_MAX;

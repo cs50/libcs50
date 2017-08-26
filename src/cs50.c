@@ -77,7 +77,7 @@
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
 #undef eprintf
-void eprintf(char const *file, int line, char const *format, ...)
+void eprintf(const string file, int line, const string format, ...)
 {
     // print caller's file name and line number
     fprintf(stderr, "%s:%i: ", file, line);
@@ -114,7 +114,7 @@ static string *strings = NULL;
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(va_list *args, char const *format, ...)
+string get_string(va_list *args, const string format, ...)
 {
 
     // check whether we have room for another string
@@ -353,7 +353,7 @@ string GetString(void)
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(char const *format, ...)
+char get_char(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -395,7 +395,7 @@ char GetChar(void)
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(char const *format, ...)
+double get_double(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -445,7 +445,7 @@ double GetDouble(void)
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(char const *format, ...)
+float get_float(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -496,7 +496,7 @@ float GetFloat(void)
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(char const *format, ...)
+int get_int(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -542,7 +542,7 @@ int GetInt(void)
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(char const *format, ...)
+long long get_long_long(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);

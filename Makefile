@@ -67,7 +67,7 @@ deb: $(LIBS) $(MANS)
 	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
 	cp -r build/* libcs50-$(VERSION)/usr
-	GZIP=-n tar --mtime='1970-01-01' -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
+	GZIP=-n tar --mtime='2017-01-01' -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
 	cp -r debian libcs50-$(VERSION)
 	cd libcs50-$(VERSION) && debuild $(SIGNING_OPTS) -S -sa --lintian-opts --display-info --info --show-overrides
 	mkdir -p build/deb

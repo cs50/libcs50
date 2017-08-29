@@ -1,48 +1,75 @@
-VERSION := 8.0.5
-
-# soname - libcs50.so.<major_version>
-SONAME := libcs50.so.$(shell echo $(VERSION) | head -c 1)
+VERSION := 8.0.6
+MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
 
 # installation directory (/usr/local by default)
 DESTDIR ?= /usr/local
+MANDIR ?= share/man/man3
 
-.PHONY: build
-build: clean
-	$(CC) -c -fPIC -std=c99 -Wall -o cs50.o src/cs50.c
-	$(CC) -shared -Wl,-soname,$(SONAME) -o libcs50.so.$(VERSION) cs50.o
-	rm -f cs50.o
-	ln -s libcs50.so.$(VERSION) $(SONAME)
-	ln -s $(SONAME) libcs50.so
-	install -D -m 644 src/cs50.h build/include/cs50.h
+SRC := src/cs50.c
+INCLUDE := src/cs50.h
+DOCS := $(wildcard docs/*.adoc)
+MANS := $(addprefix debian/, $(DOCS:%.adoc=%.3))
+
+CFLAGS=-Wall -Wextra -Werror -pedantic -std=c99
+
+OS := $(shell uname)
+# Linux
+ifeq ($(OS),Linux)
+	LIB_BASE := libcs50.so
+	LIB_MAJOR := libcs50.so.$(MAJOR_VERSION)
+	LIB_VERSION := libcs50.so.$(VERSION)
+	LINKER_FLAGS := -Wl,-soname,$(LIB_MAJOR)
+# Mac
+else ifeq ($(OS),Darwin)
+	LIB_BASE := libcs50.dylib
+	LIB_MAJOR := libcs50-$(MAJOR_VERSION).dylib
+	LIB_VERSION := libcs50-$(VERSION).dylib
+	LINKER_FLAGS := -Wl,-install_name,$(LIB_MAJOR)
+endif
+
+LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
+
+.PHONY: all
+all: $(LIBS) $(MANS)
+
+$(LIBS): $(SRC) $(INCLUDE) Makefile
+	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)
+	ln -s $(LIB_VERSION) $(LIB_MAJOR)
+	ln -s $(LIB_MAJOR) $(LIB_BASE)
+	mkdir -p src build/include
+	install -m 644 src/cs50.h build/include/cs50.h
 	mkdir -p build/lib build/src/libcs50
-	mv libcs50.so* build/lib
-	cp -r src/* build/src/libcs50
+	mv $(LIB_VERSION) $(LIB_MAJOR) $(LIB_BASE) build/lib
+	cp -r $(SRC) $(INCLUDE) build/src/libcs50
 
 .PHONY: install
-install: build docs
-	mkdir -p $(DESTDIR) $(DESTDIR)/share/man/man3
+install: all
+	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
 	cp -r build/* $(DESTDIR)
-	cp -r debian/docs/* $(DESTDIR)/share/man/man3
+	cp debian/docs/* $(DESTDIR)/$(MANDIR)
+ifeq ($(OS),Linux)
+	ldconfig
+endif
 
 .PHONY: clean
 clean:
-	rm -rf build debian/docs/ libcs50-* libcs50_*
+	rm -rf build debian/docs/
 
 # requires asciidoctor (gem install asciidoctor)
-.PHONY: docs
-docs:
-	asciidoctor -d manpage -b manpage -D debian/docs/ docs/*.adoc
+$(MANS): $(DOCS) Makefile
+	asciidoctor -d manpage -b manpage -D debian/docs/ $(DOCS)
 
 .PHONY: deb
-deb: build docs
-	@echo "libcs50 ($(VERSION)-0ubuntu1) trusty; urgency=low" > debian/changelog
+deb: $(LIBS) $(MANS)
+	rm -rf build/deb &>/dev/null
+	@echo "libcs50 ($(VERSION)-0ubuntu$(DIST_VERSION)) $(DIST); urgency=low" > debian/changelog
 	@echo "  * v$(VERSION)" >> debian/changelog
 	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
 	mkdir -p libcs50-$(VERSION)/usr
 	cp -r build/* libcs50-$(VERSION)/usr
-	tar -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
+	GZIP=-n tar --mtime='1970-01-01' -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
 	cp -r debian libcs50-$(VERSION)
-	cd libcs50-$(VERSION) && debuild -S -sa --lintian-opts --display-info --info --show-overrides
+	cd libcs50-$(VERSION) && debuild $(SIGNING_OPTS) -S -sa --lintian-opts --display-info --info --show-overrides
 	mkdir -p build/deb
 	mv libcs50-* libcs50_* build/deb
 
@@ -58,3 +85,10 @@ hack:
 .PHONY: version
 version:
 	@echo $(VERSION)
+
+.PHONY: uninstall
+uninstall:
+	rm -f $(DESTDIR)/include/cs50.h
+	rm -rf $(DESTDIR)/src/libcs50
+	rm -f $(addprefix $(DESTDIR)/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
+	rm -f $(addprefix $(DESTDIR)/$(MANDIR)/, eprintf.3 get_*.3)

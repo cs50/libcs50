@@ -15,11 +15,24 @@ eprintf - prints an error message to stderr
 
 == DESCRIPTION
 
-Prints an error message, formatted like *printf(3)*, to the standard error, prefixing it with file and line number from which the function was called. See *printf(3)* for more on formatting.
+Prints an error message formatted like *printf(3)* to standard error, prefixing it with file and line number from which the function was called. See *printf(3)* for more on formatting.
 
 == EXAMPLE
 
-    eprintf("%s\n", "this is an error");
+....
+int main(void)
+{
+    eprintf("This line of code should be executed\n");
+
+    int i;
+    for (i = 0; i < 50; i++)
+    {
+        printf("i is %d\n", i);
+    }
+
+    eprintf("Expected i to be 49 but it is actually %d\n", i);
+}
+....
 
 == SEE ALSO
 

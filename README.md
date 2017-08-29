@@ -4,7 +4,7 @@
 
 ## Development
 
-`make build`: builds dynamic library
+`make`: builds dynamic library
 
 `make deb`: builds source deb
 
@@ -22,12 +22,32 @@ $ sudo apt-get update
 $ sudo apt-get install libcs50
 ```
 
-### From Source
+### From Source (Linux and Mac)
 
 1. Download the latest release per https://github.com/cs50/libcs50/releases
 1. Extract `libcs50-*.*`
 1. `cd libcs50-*`
-1. `make install`
+1. `gem install asciidoctor`, as needed
+
+If on Mac:
+* `make install`
+
+If on Linux:
+* `make`
+* `sudo make install`
+
+By default, we install to `/usr/local`. If you'd like to change the installation location, run
+`sudo DESTDIR=/path/to/install make install` as desired.
+
+## Troubleshooting
+1. If, when compiling a program, you see `/usr/bin/ld: cannot find -lcs50`:
+Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
+1. If, when compiling a program, you see `fatal error: 'cs50.h' file not found`:
+Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
+1. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
+Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
+
+Close and reopen any terminal windows.
 
 ## Usage
 
@@ -46,7 +66,7 @@ Link with `-lcs50`.
 
 ## Documentation
 
-See `man get_*` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
+See `man get_*` and `man eprintf` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
 
 ## TODO
 

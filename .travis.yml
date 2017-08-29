@@ -14,9 +14,10 @@ before_install:
 - sudo apt-get install build-essential debhelper devscripts dh-make lintian
 - gem install asciidoctor
 install: true
-before_script: if [ "$TRAVIS_BRANCH" != "master" ]; then export SIGNING_OPTS="-uc -us"; fi
-script: make deb
-before_deploy: echo -e $GPG_SECRET | gpg --import
+script: if [ "$TRAVIS_BRANCH" != "master" ]; then SIGNING_OPTS="-uc -us" make deb; fi
+before_deploy:
+  - echo -e $GPG_SECRET | gpg --import
+  - make deb
 deploy:
   provider: script
   script: dput ppa:cs50/ppa build/deb/*.changes

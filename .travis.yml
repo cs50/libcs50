@@ -5,7 +5,6 @@ branches:
 env:
   matrix:
   - DIST=precise DIST_VERSION=12.04
-  - DIST=raring DIST_VERSION=13.04
   - DIST=trusty DIST_VERSION=14.04
   - DIST=vivid DIST_VERSION=15.04
   - DIST=xenial DIST_VERSION=16.04

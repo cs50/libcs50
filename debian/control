@@ -7,7 +7,7 @@ Section: libs
 Vcs-Git: https://github.com/cs50/libcs50.git
 
 Package: libcs50
-Architecture: any
+Architecture: amd64
 Conflicts: lib50-c, libcs50, library50-c
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Provides: lib50-c, libcs50, library50-c

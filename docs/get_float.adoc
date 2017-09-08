@@ -53,5 +53,5 @@ float multiply_floats(void)
 
 == SEE ALSO
 
-    get_char(3), get_double(3), get_int(3), get_long_long(3),
+    get_char(3), get_double(3), get_int(3), get_long(3),
     get_string(3)

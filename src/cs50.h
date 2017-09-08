@@ -191,10 +191,21 @@ int GetInt(void) __attribute__((deprecated));
  * equivalent long long; if text does not represent a long long in
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
+ *
+ * This will be deprecated in favor of get_long.
  */
 long long get_long_long(const string format, ...) __attribute__((format(printf, 1, 2)));
 long long GetLongLong(void) __attribute__((deprecated));
 #define get_long_long(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long_long(NULL)))(get_long_long(__VA_ARGS__))
+
+/**
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent long; if text does not represent a long in
+ * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns LONG_MAX.
+ */
+long get_long(const string format, ...) __attribute__((format(printf, 1, 2)));
+#define get_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long(NULL)))(get_long(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns

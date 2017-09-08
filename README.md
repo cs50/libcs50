@@ -56,13 +56,15 @@ Link with `-lcs50`.
     #include <cs50.h>
 
     ...
+    char c = get_char("Prompt: ");
+    double d = get_double("Prompt: ");
+    float f = get_float("Prompt: ");
+    int i = get_int("Prompt: ");
+    long l = get_long("Prompt: ");
+    string s = get_string("Prompt: ");
 
-    char c = get_char();
-    double d = get_double();
-    float f = get_float();
-    int i = get_int();
-    long long ll = get_long_long();
-    string s = get_string();
+    // deprecated as of fall 2017
+    long long ll = get_long_long("Prompt: ");
 
 ## Documentation
 

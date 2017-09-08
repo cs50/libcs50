@@ -53,5 +53,5 @@ int add_ints(void)
 
 == SEE ALSO
 
-    get_char(3), get_double(3), get_float(3), get_long_long(3),
+    get_char(3), get_double(3), get_float(3), get_long(3),
     get_string(3), printf(3)

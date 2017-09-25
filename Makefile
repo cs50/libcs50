@@ -18,13 +18,13 @@ ifeq ($(OS),Linux)
 	LIB_BASE := libcs50.so
 	LIB_MAJOR := libcs50.so.$(MAJOR_VERSION)
 	LIB_VERSION := libcs50.so.$(VERSION)
-	LINKER_FLAGS := -Wl,-soname,$(LIB_MAJOR)
+	LINKER_FLAGS := -Wl,-soname,$(LIB_VERSION)
 # Mac
 else ifeq ($(OS),Darwin)
 	LIB_BASE := libcs50.dylib
 	LIB_MAJOR := libcs50-$(MAJOR_VERSION).dylib
 	LIB_VERSION := libcs50-$(VERSION).dylib
-	LINKER_FLAGS := -Wl,-install_name,$(LIB_MAJOR)
+	LINKER_FLAGS := -Wl,-install_name,$(LIB_VERSION)
 endif
 
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))

@@ -17,7 +17,7 @@
 ### Ubuntu
 
 ```
-sudo apt-get install software-properties-common
+sudo apt-get install software-properties-common whiptail
 sudo apt-add-repository ppa:cs50/ppa
 sudo apt-get update
 sudo apt-get install libcs50

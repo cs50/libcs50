@@ -66,6 +66,13 @@ deploy:
   # 18.04
   - <<: *packagecloud
     dist: ubuntu/bionic
+
+  - provider: script
+    script: 'curl --fail --data "{ \"tag_name\": \"v$(make version)\",
+      \"target_commitish\": \"$TRAVIS_COMMIT\", \"name\": \"v$(make version)\"
+    }" --user bot50:$GITHUB_TOKEN https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases'
+    on:
+      branch: master
 notifications:
   slack:
     secure: ISOGlNSGXOrMBrKTnjTWQXVjjoBn78++xF1mUv/PYZxn3J4L4WpybLLjAuBENsD7YeHSaXUnSbIV5mDzlx5Q1cyrS+auGOHqi5xGV01zNBB1Fig1SkUf7zJS8KyjiPKyi+DexnTt1BY4xaA1uGzq9hoGZEPXKHNlz4v1I6f6fHQ=

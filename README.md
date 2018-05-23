@@ -24,13 +24,7 @@ sudo apt-get install libcs50
 1. Download the latest release from https://github.com/cs50/libcs50/releases
 1. Extract `libcs50-*.*`
 1. `cd libcs50-*`
-
-If on Mac:
-* `make install`
-
-If on Linux:
-* `make`
-* `sudo make install`
+1. `sudo make install`
 
 By default, we install to `/usr/local`. If you'd like to change the installation location, run
 `sudo DESTDIR=/path/to/install make install` as desired.

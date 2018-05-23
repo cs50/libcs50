@@ -8,8 +8,6 @@
 
 `make deb`: builds source deb
 
-`make hack`: combines library into `cs50.h`
-
 `make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
 
 ## Installation
@@ -17,18 +15,15 @@
 ### Ubuntu
 
 ```
-sudo apt-get install software-properties-common whiptail
-sudo apt-add-repository ppa:cs50/ppa
-sudo apt-get update
+curl -s https://packagecloud.io/install/repositories/cs50/libcs50/script.deb.sh | sudo bash
 sudo apt-get install libcs50
 ```
 
 ### From Source (Linux and Mac)
 
-1. Download the latest release per https://github.com/cs50/libcs50/releases
+1. Download the latest release from https://github.com/cs50/libcs50/releases
 1. Extract `libcs50-*.*`
 1. `cd libcs50-*`
-1. `gem install asciidoctor`, as needed
 
 If on Mac:
 * `make install`

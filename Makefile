@@ -30,7 +30,7 @@ endif
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
 
 .PHONY: all
-all: $(LIBS)
+all: $(LIBS) $(MANS)
 
 $(LIBS): $(SRC) $(INCLUDE) Makefile
 	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)

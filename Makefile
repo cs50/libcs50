@@ -65,6 +65,8 @@ deb: $(LIBS) $(MANS)
 	mkdir -p build/deb/libcs50/usr/local/share/man/man3
 	cp -r $(MANS) build/deb/libcs50/usr/local/share/man/man3
 	fpm \
+	    --after-install postinst \
+	    --after-remove postrm \
 	    --category libs \
 	    --chdir build/deb/libcs50 \
 	    --conflicts lib50-c \
@@ -90,6 +92,32 @@ deb: $(LIBS) $(MANS)
 	    .
 
 	rm -rf build/deb/libcs50
+
+rpm: $(LIBS) $(MANS)
+	rm -rf build/rpm
+
+	# temporary fpm source
+	mkdir -p build/rpm/libcs50/usr/local
+	cp -r $(addprefix build/, include lib src) build/rpm/libcs50/usr/local
+	mkdir -p build/rpm/libcs50/usr/local/share/man/man3
+	cp -r $(MANS) build/rpm/libcs50/usr/local/share/man/man3
+	fpm \
+	    --category libs \
+	    --chdir build/rpm/libcs50 \
+	    --description "CS50 library for C" \
+	    --input-type dir \
+	    --license "" \
+	    --maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
+	    --name libcs50 \
+	    --output-type rpm \
+	    --package build/rpm \
+	    --provides libcs50 \
+	    --url https://github.com/cs50/libcs50 \
+	    --vendor CS50 \
+	    --version $(VERSION) \
+	    .
+
+	rm -rf build/rpm/libcs50
 
 # used by .travis.yml
 .PHONY: version

@@ -65,29 +65,29 @@ deb: $(LIBS) $(MANS)
 	mkdir -p build/deb/libcs50/usr/local/share/man/man3
 	cp -r $(MANS) build/deb/libcs50/usr/local/share/man/man3
 	fpm \
-		--category libs \
-		--chdir build/deb/libcs50 \
-		--conflicts lib50-c \
-		--conflicts libcs50 \
-		--conflicts library50-c \
-		--deb-priority optional \
-		--description "CS50 library for C" \
-		--input-type dir \
-		--license "" \
-		--maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
-		--name libcs50 \
-		--output-type deb \
-		--package build/deb \
-		--provides lib50-c \
-		--provides libcs50 \
-		--provides library50-c \
-		--replaces lib50-c \
-		--replaces libcs50 \
-		--replaces library50-c \
-		--url https://github.com/cs50/libcs50 \
-		--vendor CS50 \
-		--version $(VERSION) \
-		.
+	    --category libs \
+	    --chdir build/deb/libcs50 \
+	    --conflicts lib50-c \
+	    --conflicts libcs50 \
+	    --conflicts library50-c \
+	    --deb-priority optional \
+	    --description "CS50 library for C" \
+	    --input-type dir \
+	    --license "" \
+	    --maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
+	    --name libcs50 \
+	    --output-type deb \
+	    --package build/deb \
+	    --provides lib50-c \
+	    --provides libcs50 \
+	    --provides library50-c \
+	    --replaces lib50-c \
+	    --replaces libcs50 \
+	    --replaces library50-c \
+	    --url https://github.com/cs50/libcs50 \
+	    --vendor CS50 \
+	    --version $(VERSION) \
+	    .
 
 	rm -rf build/deb/libcs50
 

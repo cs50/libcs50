@@ -89,6 +89,8 @@ deb: $(LIBS) $(MANS)
 		--version $(VERSION) \
 		.
 
+	rm -rf build/deb/libcs50
+
 # used by .travis.yml
 .PHONY: version
 version:

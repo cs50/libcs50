@@ -7,12 +7,12 @@ MANDIR ?= share/man/man3
 
 SRC := src/cs50.c
 INCLUDE := src/cs50.h
-DOCS := $(wildcard docs/*.adoc)
-MANS := $(addprefix debian/, $(DOCS:%.adoc=%.3))
+MANS := $(wildcard docs/*.3)
 
 CFLAGS=-Wall -Wextra -Werror -pedantic -std=c99
 
 OS := $(shell uname)
+
 # Linux
 ifeq ($(OS),Linux)
 	LIB_BASE := libcs50.so
@@ -30,56 +30,64 @@ endif
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
 
 .PHONY: all
-all: $(LIBS) $(MANS)
+all: $(LIBS)
 
 $(LIBS): $(SRC) $(INCLUDE) Makefile
 	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)
 	ln -s $(LIB_VERSION) $(LIB_MAJOR)
 	ln -s $(LIB_MAJOR) $(LIB_BASE)
-	mkdir -p src build/include
-	install -m 644 src/cs50.h build/include/cs50.h
-	mkdir -p build/lib build/src/libcs50
+	mkdir -p $(addprefix build/, include lib src)
+	install -m 644 $(SRC) build/src
+	install -m 644 $(INCLUDE) build/include
 	mv $(LIB_VERSION) $(LIB_MAJOR) $(LIB_BASE) build/lib
-	cp -r $(SRC) $(INCLUDE) build/src/libcs50
 
 .PHONY: install
 install: all
 	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
-	cp -r build/* $(DESTDIR)
-	cp debian/docs/* $(DESTDIR)/$(MANDIR)
+	cp -r $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
+	cp -r $(MANS) $(DESTDIR)/$(MANDIR)
+
 ifeq ($(OS),Linux)
 	ldconfig
 endif
 
 .PHONY: clean
 clean:
-	rm -rf build debian/docs/
-
-# requires asciidoctor (gem install asciidoctor)
-$(MANS): $(DOCS) Makefile
-	asciidoctor -d manpage -b manpage -D debian/docs/ $(DOCS)
+	rm -rf build
 
 .PHONY: deb
 deb: $(LIBS) $(MANS)
-	rm -rf build/deb &>/dev/null
-	@echo "libcs50 ($(VERSION)-0ubuntu$(DIST_VERSION)) $(DIST); urgency=low" > debian/changelog
-	@echo "  * v$(VERSION)" >> debian/changelog
-	@echo " -- CS50 Sysadmins <sysadmins@cs50.harvard.edu>  $$(date --rfc-2822)" >> debian/changelog
-	mkdir -p libcs50-$(VERSION)/usr
-	cp -r build/* libcs50-$(VERSION)/usr
-	GZIP=-n tar --mtime='2017-01-01' -cvzf libcs50_$(VERSION).orig.tar.gz libcs50-$(VERSION)
-	cp -r debian libcs50-$(VERSION)
-	cd libcs50-$(VERSION) && debuild $(SIGNING_OPTS) -S -sa --lintian-opts --display-info --info --show-overrides
-	mkdir -p build/deb
-	mv libcs50-* libcs50_* build/deb
+	rm -rf build/deb
 
-.PHONY: hack
-hack:
-	mkdir -p build/hack
-	echo "\n#ifndef _CS50_C\n#define _CS50_C\ntypedef char *string;\n" > build/hack/cs50.h
-	grep -v '^#include "cs50.h"' src/cs50.c >> build/hack/cs50.h
-	echo "\n#endif" >> build/hack/cs50.h
-	cat src/cs50.h >> build/hack/cs50.h
+	# temporary fpm source
+	mkdir -p build/deb/libcs50/usr/local
+	cp -r $(addprefix build/, include lib src) build/deb/libcs50/usr/local
+	mkdir -p build/deb/libcs50/usr/local/share/man/man3
+	cp -r $(MANS) build/deb/libcs50/usr/local/share/man/man3
+	fpm \
+		--category libs \
+		--chdir build/deb/libcs50 \
+		--conflicts lib50-c \
+		--conflicts libcs50 \
+		--conflicts library50-c \
+		--deb-priority optional \
+		--description "CS50 library for C" \
+		--input-type dir \
+		--license "" \
+		--maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
+		--name libcs50 \
+		--output-type deb \
+		--package build/deb \
+		--provides lib50-c \
+		--provides libcs50 \
+		--provides library50-c \
+		--replaces lib50-c \
+		--replaces libcs50 \
+		--replaces library50-c \
+		--url https://github.com/cs50/libcs50 \
+		--vendor CS50 \
+		--version $(VERSION) \
+		.
 
 # used by .travis.yml
 .PHONY: version

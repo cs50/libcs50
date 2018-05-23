@@ -1,28 +1,71 @@
-dist: trusty
-sudo: required
-branches:
-  except: "/^v\\d/"
-env:
-  matrix:
-  - DIST=precise DIST_VERSION=12.04
-  - DIST=trusty DIST_VERSION=14.04
-  - DIST=vivid DIST_VERSION=15.04
-  - DIST=xenial DIST_VERSION=16.04
-  - DIST=zesty DIST_VERSION=17.04
-before_install:
-- sudo apt-get install build-essential debhelper devscripts dh-make lintian
-- gem install asciidoctor
-install: true
-script: if [ "$TRAVIS_BRANCH" != "master" ]; then SIGNING_OPTS="-uc -us" make deb; fi
-before_deploy:
-  - echo -e $GPG_SECRET | gpg --import
-  - make deb
-deploy:
-  provider: script
-  script: dput ppa:cs50/ppa build/deb/*.changes
+packagecloud: &packagecloud
+  provider: packagecloud
+  username: cs50
+  repository: libcs50
+  token: $PACKAGECLOUD_TOKEN
+  local-dir: build/deb
+  package_glob: *.deb
   skip_cleanup: true
   on:
     branch: master
+
+branches:
+  except: "/^v\\d/"
+before_install: gem install fpm
+install: true
+script: make deb
+deploy:
+  # 12.04
+  - <<: *packagecloud
+    dist: ubuntu/precise
+
+  # 12.10
+  - <<: *packagecloud
+    dist: ubuntu/quantal
+
+  # 13.04
+  - <<: *packagecloud
+    dist: ubuntu/raring
+
+  # 13.10
+  - <<: *packagecloud
+    dist: ubuntu/saucy
+
+  # 14.04
+  - <<: *packagecloud
+    dist: ubuntu/trusty
+
+  # 14.10
+  - <<: *packagecloud
+    dist: ubuntu/utopic
+
+  # 15.04
+  - <<: *packagecloud
+    dist: ubuntu/vivid
+
+  # 15.10
+  - <<: *packagecloud
+    dist: ubuntu/wily
+
+  # 16.04
+  - <<: *packagecloud
+    dist: ubuntu/xenial
+
+  # 16.10
+  - <<: *packagecloud
+    dist: ubuntu/yakkety
+
+  # 17.04
+  - <<: *packagecloud
+    dist: ubuntu/zesty
+
+  # 17.10
+  - <<: *packagecloud
+    dist: ubuntu/artful
+
+  # 18.04
+  - <<: *packagecloud
+    dist: ubuntu/bionic
 notifications:
   slack:
     secure: ISOGlNSGXOrMBrKTnjTWQXVjjoBn78++xF1mUv/PYZxn3J4L4WpybLLjAuBENsD7YeHSaXUnSbIV5mDzlx5Q1cyrS+auGOHqi5xGV01zNBB1Fig1SkUf7zJS8KyjiPKyi+DexnTt1BY4xaA1uGzq9hoGZEPXKHNlz4v1I6f6fHQ=

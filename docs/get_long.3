@@ -1,0 +1,81 @@
+'\" t
+.\"     Title: get_long
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 1.5.7.1
+.\"      Date: 2017-09-16
+.\"    Manual: CS50 Programmer's Manual
+.\"    Source: CS50
+.\"  Language: English
+.\"
+.TH "GET_LONG" "3" "2017-09-16" "CS50" "CS50 Programmer\(aqs Manual"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+get_long \- prompts user for a line of text from stdin and returns the equivalent long
+.SH "SYNOPSIS"
+.sp
+\fB#include <cs50.h>\fP
+.sp
+\fBlong get_long(const char *format, ...);\fP
+.SH "DESCRIPTION"
+.sp
+Prompts user for a line of text from standard input and returns the equivalent long; if the text does not represent a long or would cause overflow, user is reprompted.
+.sp
+The prompt is formatted like \fBprintf(3)\fP.
+.SH "RETURN VALUE"
+.sp
+Returns the long equivalent to the line read from stdin in [\fBLONG_MIN\fP, \fBLONG_MAX\fP). If line can\(cqt be read, returns \fBLONG_MAX\fP.
+.SH "EXAMPLE"
+.sp
+.if n .RS 4
+.nf
+/**
+ * Returns the difference of two longs read from stdin, or LONG_MAX if there was an error.
+ */
+long subtract_longs(void)
+{
+    // read long from stdin
+    long i = get_long("Enter a long: ");
+
+    // make sure we read one successfully
+    if (i == LONG_MAX)
+    {
+        return LONG_MAX;
+    }
+
+    long j = get_long("What do you want to subtract from %ld? ", i);
+
+    if (j == LONG_MAX)
+    {
+        return LONG_MAX;
+    }
+
+    return i \- j;
+}
+.fi
+.if n .RE
+.SH "SEE ALSO"
+.sp
+.if n .RS 4
+.nf
+get_char(3), get_double(3), get_float(3), get_int(3), get_string(3),
+printf(3)
+.fi
+.if n .RE

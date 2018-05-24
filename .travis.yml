@@ -101,7 +101,7 @@ deploy:
     api_key: $GITHUB_TOKEN
     skip_cleanup: true
     on:
-      branch: libcs50
+      branch: master
 notifications:
   slack:
     secure: ISOGlNSGXOrMBrKTnjTWQXVjjoBn78++xF1mUv/PYZxn3J4L4WpybLLjAuBENsD7YeHSaXUnSbIV5mDzlx5Q1cyrS+auGOHqi5xGV01zNBB1Fig1SkUf7zJS8KyjiPKyi+DexnTt1BY4xaA1uGzq9hoGZEPXKHNlz4v1I6f6fHQ=

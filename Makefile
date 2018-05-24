@@ -75,7 +75,7 @@ deb: $(LIBS) $(MANS)
 	    --deb-priority optional \
 	    --description "CS50 library for C" \
 	    --input-type dir \
-	    --license "" \
+	    --license "MIT" \
 	    --maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
 	    --name libcs50 \
 	    --output-type deb \
@@ -97,8 +97,8 @@ rpm: $(LIBS) $(MANS)
 	rm -rf build/rpm
 
 	# temporary fpm source
-	mkdir -p build/rpm/libcs50/usr/local
-	cp -r $(addprefix build/, include lib src) build/rpm/libcs50/usr/local
+	mkdir -p build/rpm/libcs50/usr
+	cp -r $(addprefix build/, include lib src) build/rpm/libcs50/usr
 	mkdir -p build/rpm/libcs50/usr/local/share/man/man3
 	cp -r $(MANS) build/rpm/libcs50/usr/local/share/man/man3
 	fpm \
@@ -106,7 +106,7 @@ rpm: $(LIBS) $(MANS)
 	    --chdir build/rpm/libcs50 \
 	    --description "CS50 library for C" \
 	    --input-type dir \
-	    --license "" \
+	    --license "MIT" \
 	    --maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
 	    --name libcs50 \
 	    --output-type rpm \

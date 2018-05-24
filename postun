@@ -1,0 +1,12 @@
+#!/bin/sh
+
+case "$1" in
+	# uninstallation
+	0)
+		ldconfig /usr/local/lib
+	;;
+
+	# upgrade
+	1)
+	;;
+esac

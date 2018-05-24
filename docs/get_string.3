@@ -1,0 +1,77 @@
+'\" t
+.\"     Title: get_string
+.\"    Author: [see the "AUTHOR(S)" section]
+.\" Generator: Asciidoctor 1.5.7.1
+.\"      Date: 2017-09-16
+.\"    Manual: CS50 Programmer's Manual
+.\"    Source: CS50
+.\"  Language: English
+.\"
+.TH "GET_STRING" "3" "2017-09-16" "CS50" "CS50 Programmer\(aqs Manual"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\fI\\$2\fP <\\$1>\\$3
+..
+.als MTO URL
+.if \n[.g] \{\
+.  mso www.tmac
+.  am URL
+.    ad l
+.  .
+.  am MTO
+.    ad l
+.  .
+.  LINKSTYLE blue R < >
+.\}
+.SH "NAME"
+get_string \- prompts user for a line of text from stdin and returns it as a string
+.SH "SYNOPSIS"
+.sp
+\fB#include <cs50.h>\fP
+.sp
+\fBchar *get_string(const char *format, ...);\fP
+.SH "DESCRIPTION"
+.sp
+Prompts user for a line of text from standard input and returns it as a string (char *), sans trailing line ending. Supports CR (\(rsr), LF (\(rsn), and CRLF (\(rsr\(rsn) as line endings. Stores string on heap, but library\(cqs destructor frees memory on program\(cqs exit.
+.sp
+The prompt is formatted like \fBprintf(3)\fP.
+.SH "RETURN VALUE"
+.sp
+Returns the read line as a string. If user inputs only a line ending, returns "", not NULL. Returns NULL upon error or no input whatsoever (i.e., just EOF).
+.SH "EXAMPLE"
+.sp
+.if n .RS 4
+.nf
+int main(void)
+{
+    string s = get_string("Enter string: ");
+
+    // ensure string was read
+    if (s == NULL)
+    {
+        return 1;
+    }
+
+    string next = get_string("You just entered %s. Enter a new string: ", s);
+
+    if (next == NULL)
+    {
+        return 1;
+    }
+
+    printf("Your last string was %s\(rsn", s);
+}
+.fi
+.if n .RE
+.SH "SEE ALSO"
+.sp
+.if n .RS 4
+.nf
+get_char(3), get_double(3), get_float(3), get_int(3),
+get_long(3), printf(3)
+.fi
+.if n .RE

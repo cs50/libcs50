@@ -10,105 +10,98 @@ packagecloud: &packagecloud
 deb: &deb
   <<: *packagecloud
   local-dir: build/deb
-  package_glob: *.deb
 
 rpm: &rpm
   <<: *packagecloud
   local-dir: build/rpm
-  package_glob: *.rpm
 
 branches:
   except: "/^v\\d/"
 addons:
   apt:
     packages: rpm
-jobs:
-  include:
-    - stage: build
-      before_install: gem install fpm
-      install: skip
-      script: make deb
-      script: make rpm
+before_install: gem install fpm
+script:
+  - make deb
+  - make rpm
+before_deploy: |
+  if [ -z "$(git tag --list "v$(make version)")" ]; then \
+      git config --local user.name "bot50"; \
+      git config --local user.email "bot@cs50.harvard.edu"; \
+      git tag "v$(make version)"; \
+  fi
+deploy:
+  # Ubuntu
+  # 12.04
+  - <<: *deb
+    dist: ubuntu/precise
 
-    - stage: deploy
-      install: skip
-      script: skip
-      before_deploy:
-        - git config --local user.name "bot50"
-        - git config --local user.email "bot@cs50.harvard.edu"
-        - git tag "v$(make version)"
-      deploy:
-        # Ubuntu
-        # 12.04
-        - <<: *deb
-          dist: ubuntu/precise
+  # 12.10
+  - <<: *deb
+    dist: ubuntu/quantal
 
-        # 12.10
-        - <<: *deb
-          dist: ubuntu/quantal
+  # 13.04
+  - <<: *deb
+    dist: ubuntu/raring
 
-        # 13.04
-        - <<: *deb
-          dist: ubuntu/raring
+  # 13.10
+  - <<: *deb
+    dist: ubuntu/saucy
 
-        # 13.10
-        - <<: *deb
-          dist: ubuntu/saucy
+  # 14.04
+  - <<: *deb
+    dist: ubuntu/trusty
 
-        # 14.04
-        - <<: *deb
-          dist: ubuntu/trusty
+  # 14.10
+  - <<: *deb
+    dist: ubuntu/utopic
 
-        # 14.10
-        - <<: *deb
-          dist: ubuntu/utopic
+  # 15.04
+  - <<: *deb
+    dist: ubuntu/vivid
 
-        # 15.04
-        - <<: *deb
-          dist: ubuntu/vivid
+  # 15.10
+  - <<: *deb
+    dist: ubuntu/wily
 
-        # 15.10
-        - <<: *deb
-          dist: ubuntu/wily
+  # 16.04
+  - <<: *deb
+    dist: ubuntu/xenial
 
-        # 16.04
-        - <<: *deb
-          dist: ubuntu/xenial
+  # 16.10
+  - <<: *deb
+    dist: ubuntu/yakkety
 
-        # 16.10
-        - <<: *deb
-          dist: ubuntu/yakkety
+  # 17.04
+  - <<: *deb
+    dist: ubuntu/zesty
 
-        # 17.04
-        - <<: *deb
-          dist: ubuntu/zesty
+  # 17.10
+  - <<: *deb
+    dist: ubuntu/artful
 
-        # 17.10
-        - <<: *deb
-          dist: ubuntu/artful
+  # 18.04
+  - <<: *deb
+    dist: ubuntu/bionic
 
-        # 18.04
-        - <<: *deb
-          dist: ubuntu/bionic
+  # Fedora
+  - <<: *rpm
+    dist: fedora/24
+  - <<: *rpm
+    dist: fedora/25
+  - <<: *rpm
+    dist: fedora/26
+  - <<: *rpm
+    dist: fedora/27
+  - <<: *rpm
+    dist: fedora/28
 
-        # Fedora
-        - <<: *rpm
-          dist: fedora/24
-        - <<: *rpm
-          dist: fedora/25
-        - <<: *rpm
-          dist: fedora/26
-        - <<: *rpm
-          dist: fedora/27
-        - <<: *rpm
-          dist: fedora/28
-
-        # GitHub release
-        - provider: releases
-          api_key: $GITHUB_TOKEN
-          skip_cleanup: true
-          on:
-            branch: master
+  # GitHub release
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    skip_cleanup: true
+    on:
+      branch: libcs50
 notifications:
   slack:
     secure: ISOGlNSGXOrMBrKTnjTWQXVjjoBn78++xF1mUv/PYZxn3J4L4WpybLLjAuBENsD7YeHSaXUnSbIV5mDzlx5Q1cyrS+auGOHqi5xGV01zNBB1Fig1SkUf7zJS8KyjiPKyi+DexnTt1BY4xaA1uGzq9hoGZEPXKHNlz4v1I6f6fHQ=

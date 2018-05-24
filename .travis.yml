@@ -8,10 +8,12 @@ packagecloud: &packagecloud
     branch: master
 
 deb: &deb
+  <<: *packagecloud
   local-dir: build/deb
   package_glob: *.deb
 
 rpm: &rpm
+  <<: *packagecloud
   local-dir: build/rpm
   package_glob: *.rpm
 

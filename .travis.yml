@@ -1,7 +1,7 @@
 packagecloud: &packagecloud
   provider: packagecloud
   username: cs50
-  repository: libcs50
+  repository: repo
   token: $PACKAGECLOUD_TOKEN
   skip_cleanup: true
   on:

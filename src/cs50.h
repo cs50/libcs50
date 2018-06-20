@@ -55,78 +55,6 @@ typedef char *string;
  * Inspired by https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
  */
 
-#define CONCAT(a, b) a ## b 
-#define SECOND(first, second, ...) second
-#define NOT_(...) SECOND(__VA_ARGS__, 0)
-#define NOT_SENTINEL_0 ignore_me, 1
-#define NOT(cond) NOT_(CONCAT(NOT_SENTINEL_, cond))
-#define BOOL(cond) NOT(NOT(cond))
-
-#define IF_ELSE(cond) IF_ELSE_(BOOL(cond))
-#define IF_ELSE_(cond) CONCAT(IF_, cond)
-#define IF_1(...) __VA_ARGS__ IF_1_ELSE
-#define IF_0(...) IF_0_ELSE
-#define IF_1_ELSE(...)
-#define IF_0_ELSE(...) __VA_ARGS__
-
-#define ARG(_0, _1, _2, _3, _4, _5, _6, _7,                 \
-            _8, _9, _10, _11, _12, _13, _14, _15,           \
-            _16, _17, _18, _19, _20, _21, _22, _23,         \
-            _24, _25, _26, _27, _28, _29, _30, _31,         \
-            _32, _33, _34, _35, _36, _37, _38, _39,         \
-            _40, _41, _42, _43, _44, _45, _46, _47,         \
-            _48, _49, _50, _51, _52, _53, _54, _55,         \
-            _56, _57, _58, _59, _60, _61, _62, _63,         \
-            _64, _65, _66, _67, _68, _69, _70, _71,         \
-            _72, _73, _74, _75, _76, _77, _78, _79,         \
-            _80, _81, _82, _83, _84, _85, _86, _87,         \
-            _88, _89, _90, _91, _92, _93, _94, _95,         \
-            _96, _97, _98, _99, _100, _101, _102, _103,     \
-            _104, _105, _106, _107, _108, _109, _110, _111, \
-            _112, _113, _114, _115, _116, _117, _118, _119, \
-            _120, _121, _122,_123, _124, _125, ...) _125
-
-
-#define HAS_COMMA(...) ARG(__VA_ARGS__, 1, 1, 1, 1, 1, 1, 1, 1, 1,  \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
-                           1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
-                     
-#define TRIGGER(...) ,
- 
-#define IS_PAREN(...)       HAS_COMMA(TRIGGER __VA_ARGS__)
-#define IS_CALLABLE(...)    HAS_COMMA(__VA_ARGS__ ())
-#define IS_ANYTHING(...)    NOT(HAS_COMMA(TRIGGER __VA_ARGS__ ()))
-
-#define ISEMPTY(...) ALL_FALSE(HAS_COMMA(__VA_ARGS__),      \
-                               IS_PAREN(__VA_ARGS__),       \
-                               IS_CALLABLE(__VA_ARGS__),    \
-                               IS_ANYTHING(__VA_ARGS__))
- 
-#define CONCAT5(_0, _1, _2, _3, _4) _0 ## _1 ## _2 ## _3 ## _4
-#define ALL_FALSE(_0, _1, _2, _3) HAS_COMMA(CONCAT5(FALSE_SENTINEL_, _0, _1, _2, _3))
-#define FALSE_SENTINEL_0000 ,
-
-#define WARN_MSG "GCC warning \"As of Jan 1, 2018 all 'get_' functions require at least one argument (a prompt). Please see reference.cs50.net/cs50 for more information.\""
-#define WARN(func)  do { _Pragma(WARN_MSG); func; } while (0)
-
-// TODO: Remove these two lines once no-argument function calls are deprecated
-#undef WARN
-#define WARN(func) func
-
-/** 
- * If compiler isn't GCC or Clang it may not support __extension__, 
- * better to suppress this error and hope for the best 
- */
-#ifndef __GNUC__
-    #define __extension__
-#endif
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
@@ -153,8 +81,6 @@ void eprintf(const string file, int line, const string format, ...) __attribute_
  * to retry. If line can't be read, returns CHAR_MAX.
  */
 char get_char(const string format, ...) __attribute__((format(printf, 1, 2)));
-char GetChar(void) __attribute__((deprecated));
-#define get_char(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_char(NULL)))(get_char(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -163,8 +89,6 @@ char GetChar(void) __attribute__((deprecated));
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
 double get_double(const string format, ...) __attribute__((format(printf, 1, 2)));
-double GetDouble(void) __attribute__((deprecated));
-#define get_double(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_double(NULL)))(get_double(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -173,8 +97,6 @@ double GetDouble(void) __attribute__((deprecated));
  * to retry. If line can't be read, returns FLT_MAX.
  */
 float get_float(const string format, ...) __attribute__((format(printf, 1, 2)));
-float GetFloat(void) __attribute__((deprecated));
-#define get_float(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_float(NULL)))(get_float(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -183,8 +105,6 @@ float GetFloat(void) __attribute__((deprecated));
  * can't be read, returns INT_MAX.
  */
 int get_int(const string format, ...) __attribute__((format(printf, 1, 2)));
-int GetInt(void) __attribute__((deprecated));
-#define get_int(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_int(NULL)))(get_int(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -194,9 +114,7 @@ int GetInt(void) __attribute__((deprecated));
  *
  * This will be deprecated in favor of get_long.
  */
-long long get_long_long(const string format, ...) __attribute__((format(printf, 1, 2)));
-long long GetLongLong(void) __attribute__((deprecated));
-#define get_long_long(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long_long(NULL)))(get_long_long(__VA_ARGS__))
+long long get_long_long(const string format, ...) __attribute__((format(printf, 1, 2))) __attribute__((deprecated));
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -205,7 +123,6 @@ long long GetLongLong(void) __attribute__((deprecated));
  * prompted to retry. If line can't be read, returns LONG_MAX.
  */
 long get_long(const string format, ...) __attribute__((format(printf, 1, 2)));
-#define get_long(...) IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long(NULL)))(get_long(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns
@@ -216,7 +133,6 @@ long get_long(const string format, ...) __attribute__((format(printf, 1, 2)));
  * on heap, but library's destructor frees memory on program's exit.
  */
 string get_string(va_list *args, const string format, ...) __attribute__((format(printf, 2, 3)));
-string GetString(void) __attribute__((deprecated));
-#define get_string(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_string(NULL, NULL)))(get_string(NULL, __VA_ARGS__))
+#define get_string(...) get_string(NULL, __VA_ARGS__)
 
 #endif

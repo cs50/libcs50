@@ -57,14 +57,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
 
-// temporarily here for backwards compatibility
-#undef get_char
-#undef get_double
-#undef get_float
-#undef get_int
-#undef get_long
-#undef get_long_long
 #undef get_string
+#undef eprintf
 
 /**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
@@ -77,7 +71,6 @@
  * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
-#undef eprintf
 void eprintf(const string file, int line, const string format, ...)
 {
     // print caller's file name and line number
@@ -256,97 +249,6 @@ string get_string(va_list *args, const string format, ...)
     // return string
     return s;
 }
-string GetString(void)
-{
-    // growable buffer for characters
-    string buffer = NULL;
-
-    // capacity of buffer
-    size_t capacity = 0;
-
-    // number of characters actually in buffer
-    size_t size = 0;
-
-    // character read or EOF
-    int c;
-
-    // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
-    while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
-    {
-        // grow buffer if necessary
-        if (size + 1 > capacity)
-        {
-            // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
-            if (capacity == 0)
-            {
-                capacity = 16;
-            }
-            else if (capacity <= (SIZE_MAX / 2))
-            {
-                capacity *= 2;
-            }
-            else if (capacity < SIZE_MAX)
-            {
-                capacity = SIZE_MAX;
-            }
-            else
-            {
-                free(buffer);
-                return NULL;
-            }
-
-            // extend buffer's capacity
-            string temp = realloc(buffer, capacity);
-            if (temp == NULL)
-            {
-                free(buffer);
-                return NULL;
-            }
-            buffer = temp;
-        }
-
-        // append current character to buffer
-        buffer[size++] = c;
-    }
-
-    // check whether user provided no input
-    if (size == 0 && c == EOF)
-    {
-        return NULL;
-    }
-
-    // check whether user provided too much input (leaving no room for trailing NUL)
-    if (size == SIZE_MAX)
-    {
-        free(buffer);
-        return NULL;
-    }
-
-    // if last character read was CR, try to read LF as well
-    if (c == '\r' && (c = fgetc(stdin)) != '\n')
-    {
-        // return NULL if character can't be pushed back onto standard input
-        if (c != EOF && ungetc(c, stdin) == EOF)
-        {
-            free(buffer);
-            return NULL;
-        }
-    }
-
-    // minimize buffer
-    string s = realloc(buffer, size + 1);
-    if (s == NULL)
-    {
-        free(buffer);
-        return NULL;
-    }
-
-    // terminate string
-    s[size] = '\0';
-
-    // return string
-    return s;
-}
 
 
 /**
@@ -377,17 +279,7 @@ char get_char(const string format, ...)
             va_end(ap);
             return c;
         }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
     }
-}
-char GetChar(void)
-{
-    return get_char(NULL);
 }
 
 /**
@@ -427,17 +319,7 @@ double get_double(const string format, ...)
                 }
             }
         }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
     }
-}
-double GetDouble(void)
-{
-    return get_double(NULL);
 }
 
 /**
@@ -478,17 +360,7 @@ float get_float(const string format, ...)
                 }
             }
         }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
     }
-}
-float GetFloat(void)
-{
-    return get_float(NULL);
 }
 
 /**
@@ -524,17 +396,7 @@ int get_int(const string format, ...)
                 return n;
             }
         }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
     }
-}
-int GetInt(void)
-{
-    return get_int(NULL);
 }
 
 /**
@@ -543,7 +405,7 @@ int GetInt(void)
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  *
- * Will be deprecated in favor of get_long.
+ * DEPRECATED in favor of get_long
  */
 long long get_long_long(const string format, ...)
 {
@@ -573,27 +435,14 @@ long long get_long_long(const string format, ...)
                 return n;
             }
         }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
     }
 }
-long long GetLongLong(void)
-{
-    return get_long_long(NULL);
-}
-
 
 /**
  * Prompts user for a line of text from standard input and returns the
  * equivalent long; if text does not represent a long in
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LONG_MAX.
- *
- * This will replace get_long_long in the future
  */
 long get_long(const string format, ...)
 {
@@ -622,12 +471,6 @@ long get_long(const string format, ...)
                 va_end(ap);
                 return n;
             }
-        }
-
-        // temporarily here for backwards compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
         }
     }
 }

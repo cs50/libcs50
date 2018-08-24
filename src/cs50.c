@@ -77,9 +77,16 @@
  * http://www.gnu.org/software/libc/manual/html_node/Error-Messages.html#Error-Messages, and
  * https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html.
  */
+
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
 #undef eprintf
 void eprintf(const string file, int line, const string format, ...)
 {
+    // print special string that causes following text to be yellow
+    fprintf(stderr, "%s", ANSI_COLOR_YELLOW);
+
     // print caller's file name and line number
     fprintf(stderr, "%s:%i: ", file, line);
 
@@ -91,6 +98,9 @@ void eprintf(const string file, int line, const string format, ...)
 
     // print error message, formatted like printf
     vfprintf(stderr, format, ap);
+
+    // print special string that causes text color to be reset
+    fprintf(stderr, "%s", ANSI_COLOR_RESET);
 
     // invalidate variable argument list
     va_end(ap);

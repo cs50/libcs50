@@ -1,4 +1,4 @@
-VERSION := 8.1.1
+VERSION := 8.1.2
 MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
 
 # installation directory (/usr/local by default)
@@ -18,7 +18,7 @@ ifeq ($(OS),Linux)
 	LIB_BASE := libcs50.so
 	LIB_MAJOR := libcs50.so.$(MAJOR_VERSION)
 	LIB_VERSION := libcs50.so.$(VERSION)
-	LINKER_FLAGS := -Wl,-soname,$(LIB_VERSION)
+	LINKER_FLAGS := -Wl,-soname,$(LIB_MAJOR)
 # Mac
 else ifeq ($(OS),Darwin)
 	LIB_BASE := libcs50.dylib
@@ -34,12 +34,11 @@ all: $(LIBS) $(MANS)
 
 $(LIBS): $(SRC) $(INCLUDE) Makefile
 	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)
-	ln -s $(LIB_VERSION) $(LIB_MAJOR)
-	ln -s $(LIB_MAJOR) $(LIB_BASE)
+	ln -sf $(LIB_MAJOR) $(LIB_BASE)
 	mkdir -p $(addprefix build/, include lib src)
 	install -m 644 $(SRC) build/src
 	install -m 644 $(INCLUDE) build/include
-	mv $(LIB_VERSION) $(LIB_MAJOR) $(LIB_BASE) build/lib
+	mv $(LIB_VERSION) $(LIB_BASE) build/lib
 
 .PHONY: install
 install: all

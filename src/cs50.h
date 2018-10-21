@@ -51,12 +51,6 @@
 typedef char *string;
 
 /**
- * Temporarily used to make arguments to get_* (but not Get*) optional.
- * Inspired by https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
- */
-
-
-/**
  * Prints an error message, formatted like printf, to standard error, prefixing it with
  * file name and line number from which function was called (which a macro provides).
  *

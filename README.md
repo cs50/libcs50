@@ -60,9 +60,6 @@ Link with `-lcs50`.
     long l = get_long("Prompt: ");
     string s = get_string("Prompt: ");
 
-    // deprecated as of fall 2017
-    long long ll = get_long_long("Prompt: ");
-
 ## Documentation
 
 See `man get_*` and `man eprintf` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!

@@ -52,7 +52,7 @@
 
 #include "cs50.h"
 
-// Disable warnings from some compilers about the way we use variadic arguments 
+// Disable warnings from some compilers about the way we use variadic arguments
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
 
@@ -62,7 +62,6 @@
 #undef get_float
 #undef get_int
 #undef get_long
-#undef get_long_long
 #undef get_string
 
 /**
@@ -541,61 +540,9 @@ int GetInt(void)
 
 /**
  * Prompts user for a line of text from standard input and returns the
- * equivalent long long; if text does not represent a long long in
- * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns LLONG_MAX.
- *
- * Will be deprecated in favor of get_long.
- */
-long long get_long_long(const string format, ...)
-{
-    va_list ap;
-    va_start(ap, format);
-
-    // Try to get a long long from user
-    while (true)
-    {
-        // Get line of text, returning LLONG_MAX on failure
-        string line = get_string(&ap, format);
-        if (line == NULL)
-        {
-            va_end(ap);
-            return LLONG_MAX;
-        }
-
-        // Return a long long if only a long long (in range) was provided
-        if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
-        {
-            char *tail;
-            errno = 0;
-            long long n = strtoll(line, &tail, 10);
-            if (errno == 0 && *tail == '\0' && n < LLONG_MAX)
-            {
-                va_end(ap);
-                return n;
-            }
-        }
-
-        // Temporarily here for backward compatibility
-        if (format == NULL)
-        {
-            printf("Retry: ");
-        }
-    }
-}
-long long GetLongLong(void)
-{
-    return get_long_long(NULL);
-}
-
-
-/**
- * Prompts user for a line of text from standard input and returns the
  * equivalent long; if text does not represent a long in
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LONG_MAX.
- *
- * This will replace get_long_long in the future
  */
 long get_long(const string format, ...)
 {

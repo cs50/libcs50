@@ -55,7 +55,7 @@ typedef char *string;
  * Inspired by https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
  */
 
-#define CONCAT(a, b) a ## b 
+#define CONCAT(a, b) a ## b
 #define SECOND(first, second, ...) second
 #define NOT_(...) SECOND(__VA_ARGS__, 0)
 #define NOT_SENTINEL_0 ignore_me, 1
@@ -97,9 +97,9 @@ typedef char *string;
                            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
                            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,   \
                            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
-                     
+
 #define TRIGGER(...) ,
- 
+
 #define IS_PAREN(...)       HAS_COMMA(TRIGGER __VA_ARGS__)
 #define IS_CALLABLE(...)    HAS_COMMA(__VA_ARGS__ ())
 #define IS_ANYTHING(...)    NOT(HAS_COMMA(TRIGGER __VA_ARGS__ ()))
@@ -108,7 +108,7 @@ typedef char *string;
                                IS_PAREN(__VA_ARGS__),       \
                                IS_CALLABLE(__VA_ARGS__),    \
                                IS_ANYTHING(__VA_ARGS__))
- 
+
 #define CONCAT5(_0, _1, _2, _3, _4) _0 ## _1 ## _2 ## _3 ## _4
 #define ALL_FALSE(_0, _1, _2, _3) HAS_COMMA(CONCAT5(FALSE_SENTINEL_, _0, _1, _2, _3))
 #define FALSE_SENTINEL_0000 ,
@@ -120,9 +120,9 @@ typedef char *string;
 #undef WARN
 #define WARN(func) func
 
-/** 
- * If compiler isn't GCC or Clang it may not support __extension__, 
- * better to suppress this error and hope for the best 
+/**
+ * If compiler isn't GCC or Clang it may not support __extension__,
+ * better to suppress this error and hope for the best
  */
 #ifndef __GNUC__
     #define __extension__
@@ -185,18 +185,6 @@ float GetFloat(void) __attribute__((deprecated));
 int get_int(const string format, ...) __attribute__((format(printf, 1, 2)));
 int GetInt(void) __attribute__((deprecated));
 #define get_int(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_int(NULL)))(get_int(__VA_ARGS__))
-
-/**
- * Prompts user for a line of text from standard input and returns the
- * equivalent long long; if text does not represent a long long in
- * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
- * prompted to retry. If line can't be read, returns LLONG_MAX.
- *
- * This will be deprecated in favor of get_long.
- */
-long long get_long_long(const string format, ...) __attribute__((format(printf, 1, 2)));
-long long GetLongLong(void) __attribute__((deprecated));
-#define get_long_long(...) __extension__ IF_ELSE(ISEMPTY(__VA_ARGS__))(WARN(get_long_long(NULL)))(get_long_long(__VA_ARGS__))
 
 /**
  * Prompts user for a line of text from standard input and returns the

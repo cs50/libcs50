@@ -1,0 +1,8 @@
+debian/docs/eprintf.3
+debian/docs/get_char.3
+debian/docs/get_double.3
+debian/docs/get_float.3
+debian/docs/get_int.3
+debian/docs/get_long.3
+debian/docs/get_long_long.3
+debian/docs/get_string.3

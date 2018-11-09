@@ -1,0 +1,53 @@
+= get_string(3)
+:manmanual: CS50 Programmer's Manual
+:mansource: CS50
+:man-linkstyle: pass:[blue R < >]
+
+== NAME
+
+get_string - prompts user for a line of text from stdin and returns it as a string
+
+== SYNOPSIS
+
+*#include <cs50.h>*
+
+*char *get_string(const char *format, ...);*
+
+== DESCRIPTION
+
+Prompts user for a line of text from standard input and returns it as a string (char *), sans trailing line ending. Supports CR (\r), LF (\n), and CRLF (\r\n) as line endings. Stores string on heap, but library's destructor frees memory on program's exit.
+
+The prompt is formatted like *printf(3)*.
+
+== RETURN VALUE
+
+Returns the read line as a string. If user inputs only a line ending, returns "", not NULL. Returns NULL upon error or no input whatsoever (i.e., just EOF).
+
+== EXAMPLE
+
+....
+int main(void)
+{
+    string s = get_string("Enter string: ");
+
+    // ensure string was read
+    if (s == NULL)
+    {
+        return 1;
+    }
+
+    string next = get_string("You just entered %s. Enter a new string: ", s);
+
+    if (next == NULL)
+    {
+        return 1;
+    }
+
+    printf("Your last string was %s\n", s);
+}
+....
+
+== SEE ALSO
+
+    get_char(3), get_double(3), get_float(3), get_int(3),
+    get_long(3), printf(3)

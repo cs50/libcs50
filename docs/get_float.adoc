@@ -1,0 +1,57 @@
+= get_float(3)
+:manmanual: CS50 Programmer's Manual
+:mansource: CS50
+:man-linkstyle: pass:[blue R < >]
+
+== NAME
+
+get_float - prompts user for a line of text from stdin and returns the equivalent float
+
+== SYNOPSIS
+
+*#include <cs50.h>*
+
+*float get_float(const char *format, ...);*
+
+== DESCRIPTION
+
+Prompts user for a line of text from standard input and returns the equivalent float as precisely as possible; if text does not represent a float or would cause underflow or overflow, user is reprompted.
+
+The prompt is formatted like *printf(3)*.
+
+== RETURN VALUE
+
+Returns the float equivalent to the line read from stdin in [*FLT_MIN*, *FLT_MAX*), as precisely as possible. If line can't be read, returns *FLT_MAX*.
+
+== EXAMPLE
+
+....
+/**
+ * Returns the product of two floats, or FLT_MAX on error.
+ */
+float multiply_floats(void)
+{
+    // read float from stdin
+    float f = get_float("Enter a float: ");
+
+    // make sure we read one successfully
+    if (f == FLT_MAX)
+    {
+        return FLT_MAX;
+    }
+
+    float g = get_float("What do you want to multiply %f by? ", f);
+
+    if (g == FLT_MAX)
+    {
+        return FLT_MAX;
+    }
+
+    return i * j;
+}
+....
+
+== SEE ALSO
+
+    get_char(3), get_double(3), get_int(3), get_long(3),
+    get_string(3)

@@ -1,0 +1,54 @@
+= get_char(3)
+:manmanual: CS50 Programmer's Manual
+:mansource: CS50
+:man-linkstyle: pass:[blue R < >]
+
+== NAME
+
+get_char - prompts user for a line of text from stdin and returns the equivalent char
+
+== SYNOPSIS
+
+*#include <cs50.h>*
+
+*char get_char(const char *format, ...);*
+
+== DESCRIPTION
+
+Prompts user for a line of text from standard input and returns the equivalent char; if text is not a single char, user is reprompted. 
+
+The prompt is formatted like *printf(3)*.
+
+== RETURN VALUE
+
+Returns char equivalent to the line read from stdin. If line can't be read, returns *CHAR_MAX*.
+
+== EXAMPLE
+
+....
+int main(void)
+{
+    // attempt to read character from stdin
+    char c = get_char("Enter char: ");
+
+    // ensure character was read successfully
+    if (c == CHAR_MAX)
+    {
+        return 1;
+    }
+
+    char next = get_char("You just entered %c. Enter another char: ", c);
+
+    if (next == CHAR_MAX)
+    {
+        return 1;
+    }
+
+    printf("The last char you entered was %c\n", next);
+}
+....
+
+== SEE ALSO
+
+    get_double(3), get_float(3), get_int(3), get_long(3),
+    get_string(3), printf(3)

@@ -52,11 +52,12 @@
 
 #include "cs50.h"
 
-// Disable warnings from some compilers about the way we use variadic arguments 
+// Some compilers warn about the way we use variadic arguments in these
+// functions. This disable those warnings.
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
 
-// Temporarily here for backward compatibility
+// temporarily here for backwards compatibility
 #undef get_char
 #undef get_double
 #undef get_float
@@ -79,19 +80,19 @@
 #undef eprintf
 void eprintf(const string file, int line, const string format, ...)
 {
-    // Print caller's file name and line number
+    // print caller's file name and line number
     fprintf(stderr, "%s:%i: ", file, line);
 
-    // Variable argument list
+    // variable argument list
     va_list ap;
 
-    // Last parameter before variable argument list is format
+    // last parameter before variable argument list is format
     va_start(ap, format);
 
-    // Print error message, formatted like printf
+    // print error message, formatted like printf
     vfprintf(stderr, format, ap);
 
-    // Invalidate variable argument list
+    // invalidate variable argument list
     va_end(ap);
 }
 
@@ -116,62 +117,62 @@ static string *strings = NULL;
  */
 string get_string(va_list *args, const string format, ...)
 {
-    // Check whether we have room for another string
+
+    // check whether we have room for another string
     if (allocations * sizeof (string) == SIZE_MAX)
     {
         return NULL;
     }
 
-    // Growable buffer for characters
+    // growable buffer for characters
     string buffer = NULL;
 
-    // Capacity of buffer
+    // capacity of buffer
     size_t capacity = 0;
 
-    // Number of characters actually in buffer
+    // number of characters actually in buffer
     size_t size = 0;
 
-    // Character read or EOF
+    // character read or EOF
     int c;
 
-    // Prompt user
+    // prompt user
     if (format != NULL)
     {
-        // Initialize variadic argument list
+        // initialize variadic argument list
         va_list ap;
 
-        // Students' code will pass in printf-like arguments as variadic
-        // parameters. The student-facing get_string macro always sets args to
-        // NULL. In this case, we initialize the list of variadic parameters
-        // the standard way with va_start.
+        /** Student code will pass in printf-like arguments as variadic
+         *  parameters. The student-facing get_string macro always sets args to
+         *  NULL. In this case, we initialize the list of variadic parameters
+         *  the standard way with va_start.
+         */
         if (args == NULL)
         {
             va_start(ap, format);
         }
-
-        // When functions in this library call get_string they will have
-        // already stored their variadic parameters in a `va_list` and so they
-        // just pass that in by pointer.
+        /** When functions in this library call get_string they will have
+         *  already stored their variadic parameters in a `va_list` and so they
+         *  just pass that in by pointer.
+         */
         else
         {
-            // Put a copy of argument list in ap so it is not consumed by vprintf
+            // put a copy of argument list in ap so it is not consumed by vprintf
             va_copy(ap, *args);
         }
-
-        // Print prompt
+        // print prompt
         vprintf(format, ap);
-
-        // Clean up argument list
+        // cleanup argument list
         va_end(ap);
     }
 
-    // Iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
+    // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
     {
-        // Grow buffer if necessary
+        // grow buffer if necessary
         if (size + 1 > capacity)
         {
-            // Initialize capacity to 16 (as reasonable for most inputs) and double thereafter
+            // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
             if (capacity == 0)
             {
                 capacity = 16;
@@ -190,7 +191,7 @@ string get_string(va_list *args, const string format, ...)
                 return NULL;
             }
 
-            // Extend buffer's capacity
+            // extend buffer's capacity
             string temp = realloc(buffer, capacity);
             if (temp == NULL)
             {
@@ -200,27 +201,27 @@ string get_string(va_list *args, const string format, ...)
             buffer = temp;
         }
 
-        // Append current character to buffer
+        // append current character to buffer
         buffer[size++] = c;
     }
 
-    // Check whether user provided no input
+    // check whether user provided no input
     if (size == 0 && c == EOF)
     {
         return NULL;
     }
 
-    // Check whether user provided too much input (leaving no room for trailing NUL)
+    // check whether user provided too much input (leaving no room for trailing NUL)
     if (size == SIZE_MAX)
     {
         free(buffer);
         return NULL;
     }
 
-    // If last character read was CR, try to read LF as well
+    // if last character read was CR, try to read LF as well
     if (c == '\r' && (c = fgetc(stdin)) != '\n')
     {
-        // Return NULL if character can't be pushed back onto standard input
+        // return NULL if character can't be pushed back onto standard input
         if (c != EOF && ungetc(c, stdin) == EOF)
         {
             free(buffer);
@@ -228,7 +229,7 @@ string get_string(va_list *args, const string format, ...)
         }
     }
 
-    // Minimize buffer
+    // minimize buffer
     string s = realloc(buffer, size + 1);
     if (s == NULL)
     {
@@ -236,10 +237,10 @@ string get_string(va_list *args, const string format, ...)
         return NULL;
     }
 
-    // Terminate string
+    // terminate string
     s[size] = '\0';
 
-    // Resize array so as to append string
+    // resize array so as to append string
     string *tmp = realloc(strings, sizeof (string) * (allocations + 1));
     if (tmp == NULL)
     {
@@ -248,34 +249,34 @@ string get_string(va_list *args, const string format, ...)
     }
     strings = tmp;
 
-    // Append string to array
+    // append string to array
     strings[allocations] = s;
     allocations++;
 
-    // Return string
+    // return string
     return s;
 }
 string GetString(void)
 {
-    // Growable buffer for characters
+    // growable buffer for characters
     string buffer = NULL;
 
-    // Capacity of buffer
+    // capacity of buffer
     size_t capacity = 0;
 
-    // Number of characters actually in buffer
+    // number of characters actually in buffer
     size_t size = 0;
 
-    // Character read or EOF
+    // character read or EOF
     int c;
 
-    // Iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
+    // iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
     while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
     {
-        // Grow buffer if necessary
+        // grow buffer if necessary
         if (size + 1 > capacity)
         {
-            // Initialize capacity to 16 (as reasonable for most inputs) and double thereafter
+            // initialize capacity to 16 (as reasonable for most inputs) and double thereafter
             if (capacity == 0)
             {
                 capacity = 16;
@@ -294,7 +295,7 @@ string GetString(void)
                 return NULL;
             }
 
-            // Extend buffer's capacity
+            // extend buffer's capacity
             string temp = realloc(buffer, capacity);
             if (temp == NULL)
             {
@@ -304,27 +305,27 @@ string GetString(void)
             buffer = temp;
         }
 
-        // Append current character to buffer
+        // append current character to buffer
         buffer[size++] = c;
     }
 
-    // Check whether user provided no input
+    // check whether user provided no input
     if (size == 0 && c == EOF)
     {
         return NULL;
     }
 
-    // Check whether user provided too much input (leaving no room for trailing NUL)
+    // check whether user provided too much input (leaving no room for trailing NUL)
     if (size == SIZE_MAX)
     {
         free(buffer);
         return NULL;
     }
 
-    // If last character read was CR, try to read LF as well
+    // if last character read was CR, try to read LF as well
     if (c == '\r' && (c = fgetc(stdin)) != '\n')
     {
-        // Return NULL if character can't be pushed back onto standard input
+        // return NULL if character can't be pushed back onto standard input
         if (c != EOF && ungetc(c, stdin) == EOF)
         {
             free(buffer);
@@ -332,7 +333,7 @@ string GetString(void)
         }
     }
 
-    // Minimize buffer
+    // minimize buffer
     string s = realloc(buffer, size + 1);
     if (s == NULL)
     {
@@ -340,10 +341,10 @@ string GetString(void)
         return NULL;
     }
 
-    // Terminate string
+    // terminate string
     s[size] = '\0';
 
-    // Return string
+    // return string
     return s;
 }
 
@@ -358,10 +359,10 @@ char get_char(const string format, ...)
     va_list ap;
     va_start(ap, format);
 
-    // Try to get a char from user
+    // try to get a char from user
     while (true)
     {
-        // Get line of text, returning CHAR_MAX on failure
+        // get line of text, returning CHAR_MAX on failure
         string line = get_string(&ap, format);
         if (line == NULL)
         {
@@ -369,7 +370,7 @@ char get_char(const string format, ...)
             return CHAR_MAX;
         }
 
-        // Return a char if only a char was provided
+        // return a char if only a char was provided
         char c, d;
         if (sscanf(line, "%c%c", &c, &d) == 1)
         {
@@ -377,7 +378,7 @@ char get_char(const string format, ...)
             return c;
         }
 
-        // Temporarily here for backward compatibility
+        // temporarily here for backwards compatibility
         if (format == NULL)
         {
             printf("Retry: ");
@@ -399,11 +400,10 @@ double get_double(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
-
-    // Try to get a double from user
+    // try to get a double from user
     while (true)
     {
-        // Get line of text, returning DBL_MAX on failure
+        // get line of text, returning DBL_MAX on failure
         string line = get_string(&ap, format);
         if (line == NULL)
         {
@@ -411,7 +411,7 @@ double get_double(const string format, ...)
             return DBL_MAX;
         }
 
-        // Return a double if only a double was provided
+        // return a double if only a double was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
@@ -419,7 +419,7 @@ double get_double(const string format, ...)
             double d = strtod(line, &tail);
             if (errno == 0 && *tail == '\0' && isfinite(d) != 0 && d < DBL_MAX)
             {
-                // Disallow hexadecimal and exponents
+                // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
                     va_end(ap);
@@ -428,7 +428,7 @@ double get_double(const string format, ...)
             }
         }
 
-        // Temporarily here for backward compatibility
+        // temporarily here for backwards compatibility
         if (format == NULL)
         {
             printf("Retry: ");
@@ -450,11 +450,10 @@ float get_float(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
-
-    // Try to get a float from user
+    // try to get a float from user
     while (true)
     {
-        // Get line of text, returning FLT_MAX on failure
+        // get line of text, returning FLT_MAX on failure
         string line = get_string(&ap, format);
 
         if (line == NULL)
@@ -463,7 +462,7 @@ float get_float(const string format, ...)
             return FLT_MAX;
         }
 
-        // Return a float if only a float was provided
+        // return a float if only a float was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
@@ -471,7 +470,7 @@ float get_float(const string format, ...)
             float f = strtof(line, &tail);
             if (errno == 0 && *tail == '\0' && isfinite(f) != 0 && f < FLT_MAX)
             {
-                // Disallow hexadecimal and exponents
+                // disallow hexadecimal and exponents
                 if (strcspn(line, "XxEePp") == strlen(line))
                 {
                     va_end(ap);
@@ -480,7 +479,7 @@ float get_float(const string format, ...)
             }
         }
 
-        // Temporarily here for backward compatibility
+        // temporarily here for backwards compatibility
         if (format == NULL)
         {
             printf("Retry: ");
@@ -502,11 +501,10 @@ int get_int(const string format, ...)
 {
     va_list ap;
     va_start(ap, format);
-
-    // Try to get an int from user
+    // try to get an int from user
     while (true)
     {
-        // Get line of text, returning INT_MAX on failure
+        // get line of text, returning INT_MAX on failure
         string line = get_string(&ap, format);
         if (line == NULL)
         {
@@ -514,7 +512,7 @@ int get_int(const string format, ...)
             return INT_MAX;
         }
 
-        // Return an int if only an int (in range) was provided
+        // return an int if only an int (in range) was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
@@ -527,7 +525,7 @@ int get_int(const string format, ...)
             }
         }
 
-        // Temporarily here for backward compatibility
+        // temporarily here for backwards compatibility
         if (format == NULL)
         {
             printf("Retry: ");
@@ -552,10 +550,10 @@ long long get_long_long(const string format, ...)
     va_list ap;
     va_start(ap, format);
 
-    // Try to get a long long from user
+    // try to get a long long from user
     while (true)
     {
-        // Get line of text, returning LLONG_MAX on failure
+        // get line of text, returning LLONG_MAX on failure
         string line = get_string(&ap, format);
         if (line == NULL)
         {
@@ -563,7 +561,7 @@ long long get_long_long(const string format, ...)
             return LLONG_MAX;
         }
 
-        // Return a long long if only a long long (in range) was provided
+        // return a long long if only a long long (in range) was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
@@ -576,7 +574,7 @@ long long get_long_long(const string format, ...)
             }
         }
 
-        // Temporarily here for backward compatibility
+        // temporarily here for backwards compatibility
         if (format == NULL)
         {
             printf("Retry: ");
@@ -602,10 +600,10 @@ long get_long(const string format, ...)
     va_list ap;
     va_start(ap, format);
 
-    // Try to get a long from user
+    // try to get a long from user
     while (true)
     {
-        // Get line of text, returning LLONG_MAX on failure
+        // get line of text, returning LLONG_MAX on failure
         string line = get_string(&ap, format);
         if (line == NULL)
         {
@@ -613,7 +611,7 @@ long get_long(const string format, ...)
             return LONG_MAX;
         }
 
-        // Return a long if only a long (in range) was provided
+        // return a long if only a long (in range) was provided
         if (strlen(line) > 0 && !isspace((unsigned char) line[0]))
         {
             char *tail;
@@ -626,7 +624,7 @@ long get_long(const string format, ...)
             }
         }
 
-        // Temporarily here for backward compatibility
+        // temporarily here for backwards compatibility
         if (format == NULL)
         {
             printf("Retry: ");
@@ -634,12 +632,13 @@ long get_long(const string format, ...)
     }
 }
 
+
 /**
  * Called automatically after execution exits main.
  */
 static void teardown(void)
 {
-    // Free library's strings
+    // free library's strings
     if (strings != NULL)
     {
         for (size_t i = 0; i < allocations; i++)
@@ -681,7 +680,7 @@ static void teardown(void)
  */
 INITIALIZER(setup)
 {
-    // Disable buffering for standard output
+    // disable buffering for standard output
     setvbuf(stdout, NULL, _IONBF, 0);
     atexit(teardown);
 }

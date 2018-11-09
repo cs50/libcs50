@@ -1,0 +1,39 @@
+= eprintf(3)
+:manmanual: CS50 Programmer's Manual
+:mansource: CS50
+:man-linkstyle: pass:[blue R < >]
+
+== NAME
+
+eprintf - prints an error message to stderr
+
+== SYNOPSIS
+
+*#include <cs50.h>*
+
+*void eprintf(const string format, ...);*
+
+== DESCRIPTION
+
+Prints an error message formatted like *printf(3)* to standard error, prefixing it with file and line number from which the function was called. See *printf(3)* for more on formatting.
+
+== EXAMPLE
+
+....
+int main(void)
+{
+    eprintf("This line of code should be executed\n");
+
+    int i;
+    for (i = 0; i < 50; i++)
+    {
+        printf("i is %d\n", i);
+    }
+
+    eprintf("Expected i to be 49 but it is actually %d\n", i);
+}
+....
+
+== SEE ALSO
+
+    printf(3)

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-case "$1" in
-    # initial installation or upgrade
-    1|2)
-        ldconfig /usr/local/lib
-    ;;
-esac

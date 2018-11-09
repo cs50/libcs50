@@ -1,0 +1,16 @@
+Source: libcs50
+Priority: optional
+Maintainer: CS50 Sysadmins <sysadmins@cs50.harvard.edu>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Section: libs
+Vcs-Git: https://github.com/cs50/libcs50.git
+
+Package: libcs50
+Architecture: amd64
+Conflicts: lib50-c, libcs50, library50-c
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: lib50-c, libcs50, library50-c
+Replaces: lib50-c, libcs50, library50-c
+Description: CS50 library for C
+ makes it easier to write programs that prompt the users for input

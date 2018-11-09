@@ -1,0 +1,57 @@
+= get_int(3)
+:manmanual: CS50 Programmer's Manual
+:mansource: CS50
+:man-linkstyle: pass:[blue R < >]
+
+== NAME
+
+get_int - prompts user for a line of text from stdin and returns the equivalent int
+
+== SYNOPSIS
+
+*#include <cs50.h>*
+
+*int get_int(const char *format, ...);*
+
+== DESCRIPTION
+
+Prompts user for a line of text from standard input and returns the equivalent int; if text does not represent an int or would cause overflow, user is reprompted.
+
+The prompt is formatted like *printf(3)*.
+
+== RETURN VALUE
+
+Returns the int equivalent to the line read from stdin in [*INT_MIN*, *INT_MAX*). If line can't be read, returns *INT_MAX*.
+
+== EXAMPLE
+
+....
+/**
+ * Returns the sum of two ints read from stdin, or INT_MAX if there was an error.
+ */
+int add_ints(void)
+{
+    // read int from stdin
+    int i = get_int("Enter an int: ");
+
+    // make sure we read one successfully
+    if (i == INT_MAX)
+    {
+        return INT_MAX;
+    }
+
+    int j = get_int("What do you want to add %d to? ", i);
+
+    if (j == INT_MAX)
+    {
+        return INT_MAX;
+    }
+
+    return i + j;
+}
+....
+
+== SEE ALSO
+
+    get_char(3), get_double(3), get_float(3), get_long(3),
+    get_string(3), printf(3)

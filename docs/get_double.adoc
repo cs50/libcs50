@@ -1,0 +1,58 @@
+= get_double(3)
+:manmanual: CS50 Programmer's Manual
+:mansource: CS50
+:man-linkstyle: pass:[blue R < >]
+
+== NAME
+
+get_double - prompts user for a line of text from stdin and returns the equivalent double
+
+== SYNOPSIS
+
+*#include <cs50.h>*
+
+*double get_double(const char *format, ...);*
+
+== DESCRIPTION
+
+Prompts user for a line of text from standard input and returns the equivalent double as precisely as possible; if text does not represent a double or would cause underflow or overflow, user is reprompted.
+
+The prompt is formatted like *printf(3)*.
+
+== RETURN VALUE
+
+Returns the double equivalent to the line read from stdin in [*DBL_MIN*, *DBL_MAX*), as precisely as possible. If line can't be read, returns *DBL_MAX*.
+
+== EXAMPLE
+
+....
+/** 
+ * Returns the quotient of two doubles, or DBL_MAX on error.
+ */
+double divide_doubles(void)
+{
+    // read double from stdin
+    double d = get_double("Enter a double: ");
+
+    // make sure we read one successfully
+    if (d == DBL_MAX)
+    {
+        return DBL_MAX;
+    }
+
+    double e = get_double("What do you want to divide %lf by? ", d);
+
+    // make sure we don't divide by zero
+    if (e == DBL_MAX || e == 0.0)
+    {
+        return DBL_MAX;
+    }
+
+    return i / j;
+}
+....
+
+== SEE ALSO
+
+    get_char(3), get_float(3), get_int(3), get_long(3),
+    get_string(3), printf(3)

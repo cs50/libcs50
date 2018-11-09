@@ -1,28 +1,107 @@
-dist: trusty
-sudo: required
-branches:
-  except: "/^v\\d/"
-env:
-  matrix:
-  - DIST=precise DIST_VERSION=12.04
-  - DIST=trusty DIST_VERSION=14.04
-  - DIST=vivid DIST_VERSION=15.04
-  - DIST=xenial DIST_VERSION=16.04
-  - DIST=zesty DIST_VERSION=17.04
-before_install:
-- sudo apt-get install build-essential debhelper devscripts dh-make lintian
-- gem install asciidoctor
-install: true
-script: if [ "$TRAVIS_BRANCH" != "master" ]; then SIGNING_OPTS="-uc -us" make deb; fi
-before_deploy:
-  - echo -e $GPG_SECRET | gpg --import
-  - make deb
-deploy:
-  provider: script
-  script: dput ppa:cs50/ppa build/deb/*.changes
+packagecloud: &packagecloud
+  provider: packagecloud
+  username: cs50
+  repository: repo
+  token: $PACKAGECLOUD_TOKEN
   skip_cleanup: true
   on:
     branch: master
+
+deb: &deb
+  <<: *packagecloud
+  local-dir: build/deb
+
+rpm: &rpm
+  <<: *packagecloud
+  local-dir: build/rpm
+
+branches:
+  except: "/^v\\d/"
+addons:
+  apt:
+    packages: rpm
+before_install: gem install fpm
+script:
+  - make deb
+  - make rpm
+before_deploy: |
+  if [ -z "$(git tag --list "v$(make version)")" ]; then \
+      git config --local user.name "bot50"; \
+      git config --local user.email "bot@cs50.harvard.edu"; \
+      git tag "v$(make version)"; \
+  fi
+deploy:
+  # Ubuntu
+  # 12.04
+  - <<: *deb
+    dist: ubuntu/precise
+
+  # 12.10
+  - <<: *deb
+    dist: ubuntu/quantal
+
+  # 13.04
+  - <<: *deb
+    dist: ubuntu/raring
+
+  # 13.10
+  - <<: *deb
+    dist: ubuntu/saucy
+
+  # 14.04
+  - <<: *deb
+    dist: ubuntu/trusty
+
+  # 14.10
+  - <<: *deb
+    dist: ubuntu/utopic
+
+  # 15.04
+  - <<: *deb
+    dist: ubuntu/vivid
+
+  # 15.10
+  - <<: *deb
+    dist: ubuntu/wily
+
+  # 16.04
+  - <<: *deb
+    dist: ubuntu/xenial
+
+  # 16.10
+  - <<: *deb
+    dist: ubuntu/yakkety
+
+  # 17.04
+  - <<: *deb
+    dist: ubuntu/zesty
+
+  # 17.10
+  - <<: *deb
+    dist: ubuntu/artful
+
+  # 18.04
+  - <<: *deb
+    dist: ubuntu/bionic
+
+  # Fedora
+  - <<: *rpm
+    dist: fedora/24
+  - <<: *rpm
+    dist: fedora/25
+  - <<: *rpm
+    dist: fedora/26
+  - <<: *rpm
+    dist: fedora/27
+  - <<: *rpm
+    dist: fedora/28
+
+  # GitHub release
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    skip_cleanup: true
+    on:
+      branch: master
 notifications:
   slack:
     secure: ISOGlNSGXOrMBrKTnjTWQXVjjoBn78++xF1mUv/PYZxn3J4L4WpybLLjAuBENsD7YeHSaXUnSbIV5mDzlx5Q1cyrS+auGOHqi5xGV01zNBB1Fig1SkUf7zJS8KyjiPKyi+DexnTt1BY4xaA1uGzq9hoGZEPXKHNlz4v1I6f6fHQ=

@@ -132,18 +132,10 @@ string get_string(va_list *args, const string format, ...)
         // Grow buffer if necessary
         if (size + 1 > capacity)
         {
-            // Initialize capacity to 16 (as reasonable for most inputs) and double thereafter
-            if (capacity == 0)
+            // Increment buffer's capacity if possible
+            if (capacity < SIZE_MAX)
             {
-                capacity = 16;
-            }
-            else if (capacity <= (SIZE_MAX / 2))
-            {
-                capacity *= 2;
-            }
-            else if (capacity < SIZE_MAX)
-            {
-                capacity = SIZE_MAX;
+                capacity++;
             }
             else
             {

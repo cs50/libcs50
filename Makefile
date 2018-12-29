@@ -47,7 +47,7 @@ install: all
 	cp -r $(MANS) $(DESTDIR)/$(MANDIR)
 
 ifeq ($(OS),Linux)
-	ldconfig
+	ldconfig $(DESTDIR)/lib
 endif
 
 .PHONY: clean

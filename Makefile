@@ -1,4 +1,4 @@
-VERSION := 8.1.3
+VERSION := 8.2.0
 MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
 
 # installation directory (/usr/local by default)

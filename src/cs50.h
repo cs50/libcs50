@@ -46,7 +46,12 @@
 #include <stdlib.h>
 
 /**
- * Our own data type for string variables.
+ * Our own type for bytes.
+ */
+typedef unsigned char byte;
+
+/**
+ * Our own type for strings.
  */
 typedef char *string;
 

@@ -78,7 +78,7 @@ static string *strings = NULL;
 string get_string(va_list *args, const string format, ...)
 {
     // Check whether we have room for another string
-    if (allocations * sizeof (string) == SIZE_MAX)
+    if (allocations == SIZE_MAX / sizeof (string))
     {
         return NULL;
     }

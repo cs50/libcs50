@@ -1,4 +1,4 @@
-VERSION := 8.1.2
+VERSION := 9.0.0
 MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
 
 # installation directory (/usr/local by default)
@@ -47,7 +47,7 @@ install: all
 	cp -r $(MANS) $(DESTDIR)/$(MANDIR)
 
 ifeq ($(OS),Linux)
-	ldconfig
+	ldconfig $(DESTDIR)/lib
 endif
 
 .PHONY: clean

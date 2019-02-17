@@ -71,6 +71,10 @@ See `man get_*` and `man eprintf` after installation, or [CS50 Reference](https:
 
 *   Add tests.
 
+## Related
+
+- [`abranhe/cs50`](https://github.com/abranhe/cs50): The CS50 Library for C ready to use with [clib](https://github.com/clibs/clib).
+
 ## Contributors
 
 *   [Chad Sharp](https://github.com/crossroads1112)

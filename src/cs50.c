@@ -374,7 +374,7 @@ long get_long(const string format, ...)
     // Try to get a long from user
     while (true)
     {
-        // Get line of text, returning LLONG_MAX on failure
+        // Get line of text, returning LONG_MAX on failure
         string line = get_string(&ap, format);
         if (line == NULL)
         {

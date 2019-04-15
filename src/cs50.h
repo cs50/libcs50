@@ -51,7 +51,7 @@
 typedef unsigned char byte;
 
 /**
- * Our own type for strings.
+ * Our own type for (pointers to) strings.
  */
 typedef char *string;
 

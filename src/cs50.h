@@ -36,8 +36,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _CS50_H
-#define _CS50_H
+#ifndef CS50_H
+#define CS50_H
 
 #include <float.h>
 #include <limits.h>

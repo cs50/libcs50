@@ -43,8 +43,8 @@ $(LIBS): $(SRC) $(INCLUDE) Makefile
 .PHONY: install
 install: all
 	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
-	cp -r $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
-	cp -r $(MANS) $(DESTDIR)/$(MANDIR)
+	cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
+	cp -R $(MANS) $(DESTDIR)/$(MANDIR)
 
 ifeq ($(OS),Linux)
 	ldconfig $(DESTDIR)/lib

@@ -128,6 +128,6 @@ version:
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)/include/cs50.h
-	rm -rf $(DESTDIR)/src/libcs50
+	rm -rf $(DESTDIR)/src/cs50.c
 	rm -f $(addprefix $(DESTDIR)/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
 	rm -f $(addprefix $(DESTDIR)/$(MANDIR)/, eprintf.3 get_*.3)

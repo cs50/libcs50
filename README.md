@@ -48,7 +48,7 @@ Close and reopen any terminal windows.
 
 ## Usage
 
-Link with `-lcs50`.
+Link with `-lcs50`: `clang filename.c -o filename -lcs50`.
 
     #include <cs50.h>
 

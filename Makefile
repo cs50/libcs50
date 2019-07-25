@@ -34,11 +34,12 @@ all: $(LIBS) $(MANS)
 
 $(LIBS): $(SRC) $(INCLUDE) Makefile
 	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)
+	ln -sf $(LIB_VERSION) $(LIB_MAJOR)
 	ln -sf $(LIB_MAJOR) $(LIB_BASE)
 	mkdir -p $(addprefix build/, include lib src)
 	install -m 644 $(SRC) build/src
 	install -m 644 $(INCLUDE) build/include
-	mv $(LIB_VERSION) $(LIB_BASE) build/lib
+	mv $(LIB_MAJOR) $(LIB_VERSION) $(LIB_BASE) build/lib
 
 .PHONY: install
 install: all

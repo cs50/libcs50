@@ -34,7 +34,7 @@ all: $(LIBS) $(MANS)
 
 $(LIBS): $(SRC) $(INCLUDE) Makefile
 	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)
-	ln -sf $(LIB_MAJOR) $(LIB_BASE)
+	ln -sf $(LIB_VERSION) $(LIB_BASE)
 	mkdir -p $(addprefix build/, include lib src)
 	install -m 644 $(SRC) build/src
 	install -m 644 $(INCLUDE) build/include
@@ -43,8 +43,8 @@ $(LIBS): $(SRC) $(INCLUDE) Makefile
 .PHONY: install
 install: all
 	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
-	cp -r $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
-	cp -r $(MANS) $(DESTDIR)/$(MANDIR)
+	cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
+	cp -R $(MANS) $(DESTDIR)/$(MANDIR)
 
 ifeq ($(OS),Linux)
 	ldconfig $(DESTDIR)/lib

@@ -60,7 +60,7 @@ typedef char *string;
  * equivalent char; if text is not a single char, user is prompted
  * to retry. If line can't be read, returns CHAR_MAX.
  */
-char get_char(const string format, ...) __attribute__((format(printf, 1, 2)));
+char get_char(const char *format, ...) __attribute__((format(printf, 1, 2)));
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -68,7 +68,7 @@ char get_char(const string format, ...) __attribute__((format(printf, 1, 2)));
  * a double or if value would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns DBL_MAX.
  */
-double get_double(const string format, ...) __attribute__((format(printf, 1, 2)));
+double get_double(const char *format, ...) __attribute__((format(printf, 1, 2)));
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -76,7 +76,7 @@ double get_double(const string format, ...) __attribute__((format(printf, 1, 2))
  * a float or if value would cause underflow or overflow, user is prompted
  * to retry. If line can't be read, returns FLT_MAX.
  */
-float get_float(const string format, ...) __attribute__((format(printf, 1, 2)));
+float get_float(const char *format, ...) __attribute__((format(printf, 1, 2)));
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -84,7 +84,7 @@ float get_float(const string format, ...) __attribute__((format(printf, 1, 2)));
  * or would cause underflow or overflow, user is prompted to retry. If line
  * can't be read, returns INT_MAX.
  */
-int get_int(const string format, ...) __attribute__((format(printf, 1, 2)));
+int get_int(const char *format, ...) __attribute__((format(printf, 1, 2)));
 
 /**
  * Prompts user for a line of text from standard input and returns the
@@ -92,7 +92,7 @@ int get_int(const string format, ...) __attribute__((format(printf, 1, 2)));
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LONG_MAX.
  */
-long get_long(const string format, ...) __attribute__((format(printf, 1, 2)));
+long get_long(const char *format, ...) __attribute__((format(printf, 1, 2)));
 
 /**
  * Prompts user for a line of text from standard input and returns
@@ -102,7 +102,7 @@ long get_long(const string format, ...) __attribute__((format(printf, 1, 2)));
  * upon error or no input whatsoever (i.e., just EOF). Stores string
  * on heap, but library's destructor frees memory on program's exit.
  */
-string get_string(va_list *args, const string format, ...) __attribute__((format(printf, 2, 3)));
+string get_string(va_list *args, const char *format, ...) __attribute__((format(printf, 2, 3)));
 #define get_string(...) get_string(NULL, __VA_ARGS__)
 
 #endif

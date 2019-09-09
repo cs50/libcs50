@@ -1,4 +1,4 @@
-VERSION := 9.0.3
+VERSION := 9.1.0
 MAJOR_VERSION := $(shell echo $(VERSION) | head -c 1)
 
 # installation directory (/usr/local by default)

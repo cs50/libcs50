@@ -95,6 +95,14 @@ int get_int(const char *format, ...) __attribute__((format(printf, 1, 2)));
 long get_long(const char *format, ...) __attribute__((format(printf, 1, 2)));
 
 /**
+ * Prompts user for a line of text from standard input and returns the
+ * equivalent long long; if text does not represent a long long in
+ * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
+ * prompted to retry. If line can't be read, returns LLONG_MAX.
+ */
+long long get_long_long(const string format, ...) __attribute__((format(printf, 1, 2)));
+
+/**
  * Prompts user for a line of text from standard input and returns
  * it as a string (char *), sans trailing line ending. Supports
  * CR (\r), LF (\n), and CRLF (\r\n) as line endings. If user

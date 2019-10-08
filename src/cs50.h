@@ -43,12 +43,7 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
-#include <stdlib.h>
-
-/**
- * Our own type for bytes.
- */
-typedef unsigned char byte;
+#include <stddef.h>
 
 /**
  * Our own type for (pointers to) strings.

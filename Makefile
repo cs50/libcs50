@@ -22,7 +22,7 @@ ifeq ($(OS),Linux)
 # Mac
 else ifeq ($(OS),Darwin)
 	LIB_BASE := libcs50.dylib
-	LIB_MAJOR := libcs50-$(MAJOR_VERSION).dylib
+	LIB_MAJOR := libcs50-$(VERSION).dylib
 	LIB_VERSION := libcs50-$(VERSION).dylib
 	LINKER_FLAGS := -Wl,-install_name,$(LIB_VERSION)
 endif

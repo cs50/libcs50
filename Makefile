@@ -69,7 +69,9 @@ deb: $(LIBS) $(MANS)
 	mkdir -p build/deb/$(BASENAME)/usr/local
 	cp -r $(addprefix build/, include lib src) build/deb/$(BASENAME)/usr/local
 	mkdir -p build/deb/$(BASENAME)/usr/local/share/man/man3
+	chmod 755 build/deb/$(BASENAME)/usr/local/share/man/man3
 	cp -r $(MANS) build/deb/$(BASENAME)/usr/local/share/man/man3
+	chmod 644 build/deb/$(BASENAME)/usr/local/share/man/man3/*
 	fpm \
 	    --after-install postinst \
 	    --after-remove postrm \
@@ -103,7 +105,7 @@ deb: $(LIBS) $(MANS)
 rpm: $(LIBS) $(MANS)
 	rm -rf build/rpm
 
-	# temporary fpm source
+	# Temporary fpm source
 	mkdir -p build/rpm/$(BASENAME)/usr/local
 	cp -r $(addprefix build/, include lib src) build/rpm/$(BASENAME)/usr/local
 	mkdir -p build/rpm/$(BASENAME)/usr/local/share/man/man3
@@ -128,7 +130,7 @@ rpm: $(LIBS) $(MANS)
 
 	rm -rf build/rpm/$(BASENAME)
 
-# used by .travis.yml
+# Used by .travis.yml
 .PHONY: version
 version:
 	@echo $(VERSION)

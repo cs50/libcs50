@@ -78,6 +78,7 @@ deb: $(LIBS) $(MANS)
 	    --conflicts lib50-c \
 	    --conflicts $(BASENAME) \
 	    --conflicts library50-c \
+		--deb-no-default-config-files \
 	    --deb-priority optional \
 	    --description "CS50 library for C" \
 	    --input-type dir \

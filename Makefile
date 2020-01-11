@@ -47,6 +47,10 @@ $(LIBS): $(SRC) $(INCLUDE) Makefile
 	install -m 644 $(INCLUDE) build/include
 	mv $(LIB_VERSION) $(LIB_BASE) $(LIB_STATIC) build/lib
 
+build/lib/$(LIB_BASE): build/lib/$(LIB_MAJOR)
+
+build/lib/$(LIB_MAJOR): build/lib/$(LIB_VERSION)
+
 .PHONY: install
 install: all
 	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))

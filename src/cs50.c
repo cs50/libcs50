@@ -4,7 +4,7 @@
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2019
+ * Copyright (c) 2020
  * All rights reserved
  *
  * BSD 3-Clause License
@@ -403,7 +403,7 @@ long get_long(const char *format, ...)
  * [-2^63, 2^63 - 1) or would cause underflow or overflow, user is
  * prompted to retry. If line can't be read, returns LLONG_MAX.
  */
-long long get_long_long(const string format, ...)
+long long get_long_long(const char *format, ...)
 {
     va_list ap;
     va_start(ap, format);

@@ -38,6 +38,12 @@
 
 #define _GNU_SOURCE
 
+// Suppresses a warning about sscanf being unsafe
+#if defined _WIN32 || defined _WIN64
+    #define  _CRT_SECURE_NO_WARNINGS
+#endif
+
+
 #include <ctype.h>
 #include <errno.h>
 #include <float.h>
@@ -52,9 +58,11 @@
 
 #include "cs50.h"
 
-// Disable warnings from some compilers about the way we use variadic arguments 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-security"
+// Disable warnings from some compilers about the way we use variadic arguments
+#ifndef _MSC_VER 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wformat-security"
+#endif
 
 /**
  * Number of strings allocated by get_string.
@@ -486,5 +494,6 @@ INITIALIZER(setup)
     atexit(teardown);
 }
 
-// Re-enable warnings
-#pragma GCC diagnostic pop
+#ifndef _MSC_VER
+    #pragma GCC diagnostic pop
+#endif

@@ -75,7 +75,7 @@ static string *strings = NULL;
  * on heap, but library's destructor frees memory on program's exit.
  */
 #undef get_string
-string get_string(va_list *args, const char *format, ...)
+string get_string(va_list *args, const char *format, ...);
 {
     // Check whether we have room for another string
     if (allocations == SIZE_MAX / sizeof (string))

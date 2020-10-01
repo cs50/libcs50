@@ -41,7 +41,7 @@ By default, we install to `/usr/local`. If you'd like to change the installation
 Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
 1. If, when compiling a program, you see `fatal error: 'cs50.h' file not found`:
 Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
-1. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
+1. If, when executing a program, you see `an error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
 Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
 
 Close and reopen any terminal windows.

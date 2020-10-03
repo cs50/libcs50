@@ -1,4 +1,5 @@
 #!/bin/bash
+cd tests
 
 # Compile
 clang -o get_int_test get_int_test.c -lcs50 -lcmocka
@@ -21,3 +22,4 @@ printf $name'\n'"$string_with_spaces"'\n' | ./get_string_test
 # Cleanup
 rm ./get_int_test
 rm ./get_string_test
+cd ..

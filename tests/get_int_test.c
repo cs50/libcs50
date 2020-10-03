@@ -43,8 +43,7 @@ void test_get_int_ignore_non_number_input (void ** state)
 
 int main(void)
 {
-    const struct CMUnitTest tests [] =
-    {
+    const struct CMUnitTest tests [] = {
         cmocka_unit_test (test_get_int_successfully_reads_user_input),
         cmocka_unit_test (test_get_int_ignore_non_number_input),
     };

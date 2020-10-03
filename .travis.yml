@@ -24,8 +24,6 @@ before_install: gem install fpm
 script:
   - make deb
   - make rpm
-  - apt-get cmocka
-  - ./tests/run_tests.sh
 before_deploy: |
   if [ -z "$(git tag --list "v$(make version)")" ]; then \
       git config --local user.name "bot50"; \

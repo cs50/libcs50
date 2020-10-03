@@ -41,11 +41,10 @@ void test_get_string_reads_strings_with_spaces (void ** state)
 
 int main(void)
 {
-    const struct CMUnitTest tests [] =
-            {
-                    cmocka_unit_test (test_get_string_successfully_reads_user_input),
-                    cmocka_unit_test (test_get_string_reads_strings_with_spaces),
-            };
+    const struct CMUnitTest tests [] = {
+        cmocka_unit_test (test_get_string_successfully_reads_user_input),
+        cmocka_unit_test (test_get_string_reads_strings_with_spaces),
+    };
 
     int count_fail_tests = cmocka_run_group_tests (tests, setup, teardown);
 

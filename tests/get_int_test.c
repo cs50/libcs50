@@ -18,34 +18,36 @@ int teardown (void ** state)
 void test_get_int_successfully_reads_user_input (void ** state)
 {
     // Given user input
-    // 1 and 2
+    int input1 = 1;
+    int input2 = 2;
 
     // When
     int one = get_int("");
     int two = get_int("");
 
     // Should
-    assert_true (one == 1);
-    assert_true (two == 2);
+    assert_true (one == input1);
+    assert_true (two == input2);
 }
 
-void test_get_int_ignore_non_number_input (void ** state)
+void test_get_int_ignores_non_number_input (void ** state)
 {
-    // Given user input
-    // a, b, Rodrigo and 1
+    // Given
+    // user input is a, then b, then Rodrigo and finally 1
+    int last_input = 1;
 
     // When
     int one = get_int("");
 
     // Should
-    assert_true (one == 1);
+    assert_true (one == last_input);
 }
 
 int main(void)
 {
     const struct CMUnitTest tests [] = {
         cmocka_unit_test (test_get_int_successfully_reads_user_input),
-        cmocka_unit_test (test_get_int_ignore_non_number_input),
+        cmocka_unit_test (test_get_int_ignores_non_number_input),
     };
 
     int count_fail_tests = cmocka_run_group_tests (tests, setup, teardown);

@@ -4,9 +4,9 @@
 
 ## Development
 
-`make`: builds dynamic library
+`make`: Builds dynamic library
 
-`make deb`: builds source deb
+`make deb`: Builds source deb
 
 `make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
 
@@ -44,7 +44,7 @@ Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
 1. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
 Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
 
-Close and reopen any terminal windows.
+Close and Reopen any terminal windows.
 
 ## Usage
 

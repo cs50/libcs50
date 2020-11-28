@@ -1,4 +1,4 @@
-VERSION := 10.1.0
+VERSION := 10.1.1
 MAJOR_VERSION := $(shell echo $(VERSION) | cut -d'.' -f1)
 
 # installation directory (/usr/local by default)
@@ -46,6 +46,10 @@ $(LIBS): $(SRC) $(INCLUDE) Makefile
 	install -m 644 $(SRC) build/src
 	install -m 644 $(INCLUDE) build/include
 	mv $(LIB_VERSION) $(LIB_BASE) $(LIB_STATIC) build/lib
+
+build/lib/$(LIB_BASE): build/lib/$(LIB_MAJOR)
+
+build/lib/$(LIB_MAJOR): build/lib/$(LIB_VERSION)
 
 .PHONY: install
 install: all
@@ -140,4 +144,4 @@ uninstall:
 	rm -f $(DESTDIR)/include/cs50.h
 	rm -rf $(DESTDIR)/src/cs50.c
 	rm -f $(addprefix $(DESTDIR)/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
-	rm -f $(addprefix $(DESTDIR)/$(MANDIR)/, eprintf.3 get_*.3)
+	rm -f $(addprefix $(DESTDIR)/$(MANDIR)/, get_*.3)

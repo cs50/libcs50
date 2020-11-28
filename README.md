@@ -65,7 +65,7 @@ Link with `-lcs50`.
 
 ## Documentation
 
-See `man get_*` and `man eprintf` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
+See `man get_*` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
 
 ## TODO
 

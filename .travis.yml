@@ -3,7 +3,6 @@ x-packagecloud: &x-packagecloud
   username: cs50
   repository: repo
   token: $PACKAGECLOUD_TOKEN
-  skip_cleanup: true
   on:
     branch: master
 
@@ -123,7 +122,6 @@ deploy:
   # GitHub release
   - provider: releases
     api_key: $GITHUB_TOKEN
-    skip_cleanup: true
     on:
       branch: master
 notifications:

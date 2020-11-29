@@ -88,6 +88,18 @@ deploy:
   - <<: *deb
     dist: ubuntu/disco
 
+  # 19.10
+  - <<: *deb
+    dist: ubuntu/eoan
+
+  # 20.04
+  - <<: *deb
+    dist: ubuntu/focal
+
+  # 20.10
+  - <<: *deb
+    dist: ubuntu/groovy
+
   # Fedora
   - <<: *rpm
     dist: fedora/24
@@ -99,6 +111,14 @@ deploy:
     dist: fedora/27
   - <<: *rpm
     dist: fedora/28
+  - <<: *rpm
+    dist: fedora/29
+  - <<: *rpm
+    dist: fedora/30
+  - <<: *rpm
+    dist: fedora/31
+  - <<: *rpm
+    dist: fedora/32
 
   # GitHub release
   - provider: releases

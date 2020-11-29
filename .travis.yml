@@ -1,19 +1,18 @@
-packagecloud: &packagecloud
+x-packagecloud: &x-packagecloud
   provider: packagecloud
   username: cs50
   repository: repo
   token: $PACKAGECLOUD_TOKEN
-  skip_cleanup: true
   on:
     branch: master
 
-deb: &deb
-  <<: *packagecloud
-  local-dir: build/deb
+x-deb: &x-deb
+  <<: *x-packagecloud
+  local_dir: build/deb
 
-rpm: &rpm
-  <<: *packagecloud
-  local-dir: build/rpm
+x-rpm: &x-rpm
+  <<: *x-packagecloud
+  local_dir: build/rpm
 
 branches:
   except: "/^v\\d/"
@@ -33,97 +32,96 @@ before_deploy: |
 deploy:
   # Ubuntu
   # 12.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/precise
 
   # 12.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/quantal
 
   # 13.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/raring
 
   # 13.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/saucy
 
   # 14.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/trusty
 
   # 14.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/utopic
 
   # 15.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/vivid
 
   # 15.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/wily
 
   # 16.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/xenial
 
   # 16.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/yakkety
 
   # 17.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/zesty
 
   # 17.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/artful
 
   # 18.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/bionic
 
   # 19.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/disco
 
   # 19.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/eoan
 
   # 20.04
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/focal
 
   # 20.10
-  - <<: *deb
+  - <<: *x-deb
     dist: ubuntu/groovy
 
   # Fedora
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/24
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/25
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/26
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/27
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/28
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/29
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/30
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/31
-  - <<: *rpm
+  - <<: *x-rpm
     dist: fedora/32
 
   # GitHub release
   - provider: releases
-    api_key: $GITHUB_TOKEN
-    skip_cleanup: true
+    token: $GITHUB_TOKEN
     on:
       branch: master
 notifications:

@@ -31,26 +31,6 @@ before_deploy: |
       git tag "v$(make version)"; \
   fi
 deploy:
-  # Fedora
-  - <<: *x-rpm
-    dist: fedora/24
-  - <<: *x-rpm
-    dist: fedora/25
-  - <<: *x-rpm
-    dist: fedora/26
-  - <<: *x-rpm
-    dist: fedora/27
-  - <<: *x-rpm
-    dist: fedora/28
-  - <<: *x-rpm
-    dist: fedora/29
-  - <<: *x-rpm
-    dist: fedora/30
-  - <<: *x-rpm
-    dist: fedora/31
-  - <<: *x-rpm
-    dist: fedora/32
-
   # GitHub release
   - provider: releases
     token: $GITHUB_TOKEN

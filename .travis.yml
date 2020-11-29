@@ -121,7 +121,7 @@ deploy:
 
   # GitHub release
   - provider: releases
-    api_key: $GITHUB_TOKEN
+    token: $GITHUB_TOKEN
     on:
       branch: master
 notifications:

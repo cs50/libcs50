@@ -8,11 +8,11 @@ x-packagecloud: &x-packagecloud
 
 x-deb: &x-deb
   <<: *x-packagecloud
-  local-dir: build/deb
+  local_dir: build/deb
 
 x-rpm: &x-rpm
   <<: *x-packagecloud
-  local-dir: build/rpm
+  local_dir: build/rpm
 
 branches:
   except: "/^v\\d/"

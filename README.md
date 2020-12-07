@@ -67,9 +67,13 @@ Link with `-lcs50`.
 
 See `man get_*` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
 
+## Unit Tests
+
+The lib is currently using the [cmocka](https://cmocka.org/) testing framework to run our unit tests. Install the cmocka package first, then run `run_tests.sh`.
+
 ## TODO
 
-*   Add tests.
+*   Add more tests.
 
 ## Contributors
 

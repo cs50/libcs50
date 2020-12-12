@@ -45,6 +45,13 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+/*
+ * Allows code to be compiled with MSVC
+ */
+#ifdef _MSC_VER
+    #define  __attribute__(x)
+#endif
+
 /**
  * Our own type for (pointers to) strings.
  */

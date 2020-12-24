@@ -28,6 +28,12 @@ else ifeq ($(OS),Darwin)
 	LIB_MAJOR := $(BASENAME)-$(MAJOR_VERSION).dylib
 	LIB_VERSION := $(BASENAME)-$(VERSION).dylib
 	LINKER_FLAGS := -Wl,-install_name,$(LIB_VERSION)
+# FreeBSD
+else ifeq ($(OS),FreeBSD)
+        LIB_BASE := $(BASENAME).so
+        LIB_MAJOR := $(BASENAME).so.$(MAJOR_VERSION)
+        LIB_VERSION := $(BASENAME).so.$(VERSION)
+        LINKER_FLAGS := -Wl,-soname,$(LIB_VERSION)
 endif
 
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))

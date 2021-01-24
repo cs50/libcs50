@@ -9,7 +9,7 @@ SRC := src/cs50.c
 INCLUDE := src/cs50.h
 MANS := $(wildcard docs/*.3.gz)
 
-CFLAGS=-Wall -Wextra -Werror -pedantic -std=c11
+CFLAGS=-Wall -Wextra -Werror -pedantic -std=c11 -O3
 BASENAME=libcs50
 LIB_STATIC=$(BASENAME).a
 LIB_OBJ=$(BASENAME).o

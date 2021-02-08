@@ -27,7 +27,7 @@ else ifeq ($(OS),Darwin)
 	LIB_BASE := $(BASENAME).dylib
 	LIB_MAJOR := $(BASENAME)-$(MAJOR_VERSION).dylib
 	LIB_VERSION := $(BASENAME)-$(VERSION).dylib
-	LINKER_FLAGS := -Wl,-install_name,$(LIB_VERSION)
+	LINKER_FLAGS := -Wl,-install_name,$(DESTDIR)/lib/$(LIB_VERSION)
 endif
 
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))

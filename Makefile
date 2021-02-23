@@ -5,14 +5,14 @@ MAJOR_VERSION := $(shell echo $(VERSION) | cut -d'.' -f1)
 DESTDIR ?= /usr/local
 MANDIR ?= share/man/man3
 
-SRC := src/cs50.c
+SRC := src/*.c
 INCLUDE := src/cs50.h
 MANS := $(wildcard docs/*.3.gz)
 
 CFLAGS=-Wall -Wextra -Wshadow -std=c11 -O3
 BASENAME=libcs50
 LIB_STATIC=$(BASENAME).a
-LIB_OBJ=$(BASENAME).o
+LIB_OBJ=$(SRC:src/%.c=build/%.o)
 
 OS := $(shell uname)
 
@@ -21,13 +21,13 @@ ifeq ($(OS),Linux)
 	LIB_BASE := $(BASENAME).so
 	LIB_MAJOR := $(BASENAME).so.$(MAJOR_VERSION)
 	LIB_VERSION := $(BASENAME).so.$(VERSION)
-	LINKER_FLAGS := -Wl,-soname,$(LIB_MAJOR)
+	LDFLAGS := -Wl,-soname,$(LIB_MAJOR)
 # Mac
 else ifeq ($(OS),Darwin)
 	LIB_BASE := $(BASENAME).dylib
 	LIB_MAJOR := $(BASENAME)-$(MAJOR_VERSION).dylib
 	LIB_VERSION := $(BASENAME)-$(VERSION).dylib
-	LINKER_FLAGS := -Wl,-install_name,$(DESTDIR)/lib/$(LIB_VERSION)
+	LDFLAGS := -Wl,-install_name,$(DESTDIR)/lib/$(LIB_VERSION)
 endif
 
 LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
@@ -35,17 +35,22 @@ LIBS := $(addprefix build/lib/, $(LIB_BASE) $(LIB_MAJOR) $(LIB_VERSION))
 .PHONY: all
 all: $(LIBS) $(MANS)
 
-$(LIBS): $(SRC) $(INCLUDE) Makefile
-	$(CC) $(CFLAGS) -fPIC -shared $(LINKER_FLAGS) -o $(LIB_VERSION) $(SRC)
-	$(CC) $(CFLAGS) -c -o $(LIB_OBJ) $(SRC)
+$(LIBS): $(SRC) $(LIB_OBJ) $(INCLUDE) Makefile
+	# Shared lib
+	$(CC) $(CFLAGS) -fPIC -shared $(LDFLAGS) -o $(LIB_VERSION) $(SRC)
+	ln -sf $(LIB_VERSION) $(LIB_BASE)
+	# Static lib
 	ar rcs $(LIB_STATIC) $(LIB_OBJ)
 	chmod 644 $(LIB_STATIC)
-	rm -f $(LIB_OBJ)
-	ln -sf $(LIB_VERSION) $(LIB_BASE)
+	# Install
 	mkdir -p $(addprefix build/, include lib src)
 	install -m 644 $(SRC) build/src
 	install -m 644 $(INCLUDE) build/include
 	mv $(LIB_VERSION) $(LIB_BASE) $(LIB_STATIC) build/lib
+
+build/%.o: src/%.c $(INCLUDE)
+	mkdir -p build
+	$(COMPILE.c) $< -o $@
 
 build/lib/$(LIB_BASE): build/lib/$(LIB_MAJOR)
 

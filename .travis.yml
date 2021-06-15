@@ -5,7 +5,7 @@ x-packagecloud: &x-packagecloud
   token: $PACKAGECLOUD_TOKEN
   skip_cleanup: true
   on:
-    branch: master
+    branch: main
 
 x-deb: &x-deb
   <<: *x-packagecloud

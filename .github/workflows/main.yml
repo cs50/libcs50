@@ -1,0 +1,31 @@
+on: push
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y rpm
+        gem install fpm package_cloud
+    - name: Build
+      run: |
+        make deb
+        make rpm
+    - name: Deploy
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run: |
+        PACKAGE_CLOUD_USER="cs50"
+
+        # Deploy deb to ubuntu repos
+        UBUNTU_REPOS=( xenial yakkety zesty artful bionic disco eoan focal groovy )
+        for repo in "${UBUNTU_REPOS[@]}"; do
+          package_cloud push "$PACKAGE_CLOUD_USER"/ubuntu/"$repo" build/deb/*.deb
+        done
+
+        # Deploy rpm to fedora repos
+        for repo in $(seq 29 32); do
+          package_cloud push "$PACKAGE_CLOUD_USER"/fedora/"$repo" build/rpm/*.rpm
+        done
+      env:
+        PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}

@@ -15,17 +15,17 @@ jobs:
     - name: Deploy
       if: ${{ github.ref == 'refs/heads/main' }}
       run: |
-        PACKAGE_CLOUD_USER="cs50"
+        PACKAGECLOUD_REPO="cs50/repo"
 
         # Deploy deb to ubuntu repos
         UBUNTU_REPOS=( xenial yakkety zesty artful bionic disco eoan focal groovy )
         for repo in "${UBUNTU_REPOS[@]}"; do
-          package_cloud push "$PACKAGE_CLOUD_USER"/ubuntu/"$repo" build/deb/*.deb
+          package_cloud push "$PACKAGECLOUD_REPO"/ubuntu/"$repo" build/deb/*.deb
         done
 
         # Deploy rpm to fedora repos
         for repo in $(seq 29 32); do
-          package_cloud push "$PACKAGE_CLOUD_USER"/fedora/"$repo" build/rpm/*.rpm
+          package_cloud push "$PACKAGECLOUD_REPO"/fedora/"$repo" build/rpm/*.rpm
         done
       env:
         PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}

@@ -24,7 +24,7 @@ jobs:
         done
 
         # Deploy rpm to fedora repos
-        for repo in $(seq 29 32); do
+        for repo in $(seq 28 32); do
           package_cloud push "$PACKAGECLOUD_REPO"/fedora/"$repo" build/rpm/*.rpm
         done
       env:

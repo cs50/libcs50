@@ -4,23 +4,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: uraimo/run-on-arch-action@v2.0.5
-        name: Build packages for aarch64 platform
-        with:
-          arch: aarch64
-          distro: ubuntu20.04
-          dockerRunArgs: |
-            --volume ${PWD}/artifacts:/artifacts
-          run: |
-            apt-get update
-            apt-get install -y build-essential gem ruby-full rpm 
-            gem install fpm package_cloud
-            make deb
-            make rpm
-            cp build/deb/*.deb /artifacts
-            cp build/rpm/*.rpm /artifacts
-            rm -rf build
-      - name: Build packages for x86_64 platform
+      - name: Build packages for linux/arm64 platform
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y qemu qemu-user-static
+          # Enable an execution of different multi-architecture containers by QEMU
+          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+          
+          # Build packages on aarch64 architecture
+          docker run \
+            -e DEBIAN_FRONTEND=noninteractive \
+            --rm \
+            --tty \
+            --volume "${PWD}/artifacts:/artifacts" \
+            --volume "${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}" \
+            --workdir "${GITHUB_WORKSPACE}" \
+            arm64v8/ubuntu:20.04 \
+            /bin/bash -c \
+            "apt-get update && \
+            apt-get -qq install -y build-essential gem ruby-full rpm && \
+            gem install fpm package_cloud && \
+            make deb && \
+            make rpm && \
+            cp build/deb/*.deb /artifacts && \
+            cp build/rpm/*.rpm /artifacts && \
+            rm -rf build"
+      - name: Build packages for linux/amd64 platform
         run: |
           sudo apt-get install -y rpm
           sudo gem install fpm package_cloud

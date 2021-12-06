@@ -3,7 +3,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v2
       - uses: uraimo/run-on-arch-action@v2.0.5
         name: Build packages for aarch64 platform
         with:
@@ -13,7 +13,7 @@ jobs:
             --volume ${PWD}/artifacts:/artifacts
           run: |
             apt-get update
-            apt-get install -y rpm gem ruby-full build-essential
+            apt-get install -y build-essential gem ruby-full rpm 
             gem install fpm package_cloud
             make deb
             make rpm

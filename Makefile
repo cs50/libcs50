@@ -1,4 +1,4 @@
-VERSION := 10.1.3
+VERSION := 10.1.4
 MAJOR_VERSION := $(shell echo $(VERSION) | cut -d'.' -f1)
 
 # installation directory (/usr/local by default)

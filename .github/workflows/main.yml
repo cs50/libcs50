@@ -1,6 +1,6 @@
 on: push
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -44,13 +44,13 @@ jobs:
           PACKAGECLOUD_REPO="cs50/repo"
 
           # Deploy deb to ubuntu repos
-          UBUNTU_REPOS=( xenial yakkety zesty artful bionic disco eoan focal groovy )
+          UBUNTU_REPOS=( xenial yakkety zesty artful bionic cosmic disco eoan focal groovy hirsute impish jammy )
           for repo in "${UBUNTU_REPOS[@]}"; do
             package_cloud push "$PACKAGECLOUD_REPO"/ubuntu/"$repo" ${PWD}/artifacts/*.deb
           done
 
           # Deploy rpm to fedora repos
-          for repo in $(seq 28 32); do
+          for repo in $(seq 28 36); do
             package_cloud push "$PACKAGECLOUD_REPO"/fedora/"$repo" ${PWD}/artifacts/*.rpm
           done
         env:

@@ -4,7 +4,7 @@
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2020
+ * Copyright (c) 2022
  * All rights reserved
  *
  * BSD 3-Clause License

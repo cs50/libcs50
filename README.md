@@ -29,9 +29,9 @@ $ yum install libcs50
 ### From Source (Linux and Mac)
 
 1. Download the latest release from https://github.com/cs50/libcs50/releases
-2. Extract `libcs50-*.*`
-3. `cd libcs50-*`
-4. `sudo make install`
+1. Extract `libcs50-*.*`
+1. `cd libcs50-*`
+1. `sudo make install`
 
 By default, we install to `/usr/local`. If you'd like to change the installation location, run
 `sudo DESTDIR=/path/to/install make install` as desired.
@@ -43,21 +43,8 @@ Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
 Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
 3. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
 Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
-4. If, when compiling a program, you see something similar to the following:
-```
-cc     calculator.c   -o calculator
-/usr/bin/ld: /tmp/ccst5Jkx.o: in function `main':
-calculator.c:(.text+0x13): undefined reference to `get_int'
-/usr/bin/ld: calculator.c:(.text+0x25): undefined reference to `get_int'
-collect2: error: ld returned 1 exit status
-make: *** [<builtin>: calculator] Error 1
-```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a `Makefile` inside the project folder, and paste the following:
-```
-LDLIBS += -lcs50
-CC := clang
-CFLAGS += -Wall -Wextra -Werror -pedantic -std=c11
-```
+4. If, when compiling a program, you see something similar to `undefined reference to 'get_int'`:
+Create a `Makefile` inside the project folder, and paste the following `LDLIBS += -lcs50`.
 
 Close and reopen any terminal windows.
 

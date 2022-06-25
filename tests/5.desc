@@ -1,0 +1,1 @@
+get_int - returns INT_MAX on EOF

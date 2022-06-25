@@ -4,12 +4,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          cd tests/
+          make
+          ./run_tests
       - name: Build packages for linux/arm64 platform
         run: |
-        
+
           # Enable an execution of different multi-architecture containers by QEMU
           sudo apt-get update -y
-          sudo apt-get install -y qemu qemu-user-static  
+          sudo apt-get install -y qemu qemu-user-static
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
           # Build packages on aarch64 architecture

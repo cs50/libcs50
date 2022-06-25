@@ -52,7 +52,7 @@
 
 #include "cs50.h"
 
-// Disable warnings from some compilers about the way we use variadic arguments 
+// Disable warnings from some compilers about the way we use variadic arguments
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
 
@@ -82,18 +82,6 @@ string get_string(va_list *args, const char *format, ...)
     {
         return NULL;
     }
-
-    // Growable buffer for characters
-    string buffer = NULL;
-
-    // Capacity of buffer
-    size_t capacity = 0;
-
-    // Number of characters actually in buffer
-    size_t size = 0;
-
-    // Character read or EOF
-    int c;
 
     // Prompt user
     if (format != NULL)
@@ -126,87 +114,32 @@ string get_string(va_list *args, const char *format, ...)
         va_end(ap);
     }
 
-    // Iteratively get characters from standard input, checking for CR (Mac OS), LF (Linux), and CRLF (Windows)
-    while ((c = fgetc(stdin)) != '\r' && c != '\n' && c != EOF)
-    {
-        // Grow buffer if necessary
-        if (size + 1 > capacity)
-        {
-            // Increment buffer's capacity if possible
-            if (capacity < SIZE_MAX)
-            {
-                capacity++;
-            }
-            else
-            {
-                free(buffer);
-                return NULL;
-            }
-
-            // Extend buffer's capacity
-            string temp = realloc(buffer, capacity);
-            if (temp == NULL)
-            {
-                free(buffer);
-                return NULL;
-            }
-            buffer = temp;
-        }
-
-        // Append current character to buffer
-        buffer[size++] = c;
-    }
-
-    // Check whether user provided no input
-    if (size == 0 && c == EOF)
-    {
-        return NULL;
-    }
-
-    // Check whether user provided too much input (leaving no room for trailing NUL)
-    if (size == SIZE_MAX)
-    {
-        free(buffer);
-        return NULL;
-    }
-
-    // If last character read was CR, try to read LF as well
-    if (c == '\r' && (c = fgetc(stdin)) != '\n')
-    {
-        // Return NULL if character can't be pushed back onto standard input
-        if (c != EOF && ungetc(c, stdin) == EOF)
-        {
-            free(buffer);
-            return NULL;
-        }
-    }
-
-    // Minimize buffer
-    string s = realloc(buffer, size + 1);
-    if (s == NULL)
-    {
-        free(buffer);
-        return NULL;
+    // Read line, delegating buffer allocation to getline
+    size_t buffer_size = 0;
+    string buffer = NULL;
+    ssize_t length = getline(&buffer, &buffer_size, stdin);
+    if (length <= 0) {
+      free(buffer);
+      return NULL;
     }
 
     // Terminate string
-    s[size] = '\0';
+    buffer[length - 1] = '\0';
 
     // Resize array so as to append string
     string *tmp = realloc(strings, sizeof (string) * (allocations + 1));
     if (tmp == NULL)
     {
-        free(s);
+        free(buffer);
         return NULL;
     }
     strings = tmp;
 
     // Append string to array
-    strings[allocations] = s;
+    strings[allocations] = buffer;
     allocations++;
 
-    // Return string
-    return s;
+    return buffer;
 }
 
 /**

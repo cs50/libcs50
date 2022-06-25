@@ -11,7 +11,6 @@ debian/*.log
 hackerrank/
 libcs50-*
 libcs50_*
-tests/get_string
 tests/*
 !tests/*.*
 !tests/Makefile

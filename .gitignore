@@ -14,4 +14,5 @@ libcs50_*
 tests/get_string
 tests/*
 !tests/*.*
+!tests/Makefile
 tests/tests-out/

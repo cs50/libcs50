@@ -8,7 +8,7 @@ jobs:
         run: |
           cd tests/
           make
-          ./run_tests
+          ./run_tests.sh
       - name: Build packages for linux/arm64 platform
         run: |
 

@@ -1,6 +1,7 @@
 ## Running the tests
 
 ```
+make
 ./run_tests.sh
 ```
 

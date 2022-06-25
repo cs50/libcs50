@@ -14,4 +14,3 @@ libcs50_*
 tests/*
 !tests/*.*
 !tests/Makefile
-tests/tests-out/

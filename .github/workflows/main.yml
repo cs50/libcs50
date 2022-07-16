@@ -6,10 +6,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build packages for linux/arm64 platform
         run: |
-        
+
           # Enable an execution of different multi-architecture containers by QEMU
           sudo apt-get update -y
-          sudo apt-get install -y qemu qemu-user-static  
+          sudo apt-get install -y qemu qemu-user-static
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
           # Build packages on aarch64 architecture
@@ -30,6 +30,7 @@ jobs:
             cp build/deb/*.deb /artifacts && \
             cp build/rpm/*.rpm /artifacts && \
             rm -rf build"
+
       - name: Build packages for linux/amd64 platform
         run: |
           sudo apt-get install -y rpm
@@ -38,6 +39,7 @@ jobs:
           make rpm
           sudo cp build/deb/*.deb ${PWD}/artifacts
           sudo cp build/rpm/*.rpm ${PWD}/artifacts
+
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
@@ -55,3 +57,39 @@ jobs:
           done
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+
+      - name: Extract version from Makefile
+        id: make_version
+        run: |
+          echo ::set-output name=version::$(make version)
+
+      - name: Create Tag
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            try {
+              await github.rest.git.updateRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "tags/v${{ steps.make_version.outputs.version }}",
+                sha: context.sha,
+                force: true
+              })
+            } catch (e) {
+              await github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "refs/tags/v${{ steps.make_version.outputs.version }}",
+                sha: context.sha
+              })
+            }
+
+      - name: Create Release
+        run: |
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: token ${{ secrets.GH_RELEASE_TOKEN }}" \
+            https://api.github.com/repos/${GITHUB_REPOSITORY}/releases \
+            -d '{"tag_name":"v${{ steps.make_version.outputs.version }}","target_commitish":"${{ github.sha }}","name":"v${{ steps.make_version.outputs.version }}","body":"${{ github.event.head_commit.message }}","draft":false,"prerelease":false,"generate_release_notes":false}'

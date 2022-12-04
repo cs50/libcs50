@@ -64,6 +64,7 @@ jobs:
           echo ::set-output name=version::$(make version)
 
       - name: Create Release
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: actions/github-script@v6
         with:
           github-token: ${{ github.token }}

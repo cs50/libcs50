@@ -144,7 +144,8 @@ string get_string(va_list *args, const char *format, ...)
             }
 
             // Extend buffer's capacity
-            string temp = realloc(buffer, capacity);
+            /*Adding the (string) cast to the realloc return value solves an error*/
+            string temp = (string) realloc(buffer, capacity);
             if (temp == NULL)
             {
                 free(buffer);
@@ -182,7 +183,8 @@ string get_string(va_list *args, const char *format, ...)
     }
 
     // Minimize buffer
-    string s = realloc(buffer, size + 1);
+    /*Adding the (string) cast to the realloc return value solves an error*/
+    string s = (string) realloc(buffer, size + 1);
     if (s == NULL)
     {
         free(buffer);
@@ -193,7 +195,8 @@ string get_string(va_list *args, const char *format, ...)
     s[size] = '\0';
 
     // Resize array so as to append string
-    string *tmp = realloc(strings, sizeof (string) * (allocations + 1));
+    /*Adding the (string*) cast to the realloc return value solves an error*/
+    string *tmp = (string*) realloc(strings, sizeof (string) * (allocations + 1));
     if (tmp == NULL)
     {
         free(s);

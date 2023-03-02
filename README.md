@@ -1,8 +1,8 @@
-# CS50 Library for C
+# CS50 Library for C programe
 
 [![Build Status](https://travis-ci.org/cs50/libcs50.svg?branch=master)](https://travis-ci.org/cs50/libcs50)
 
-## D
+## Development
 
 `make`: builds dynamic library
 

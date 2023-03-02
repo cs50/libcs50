@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cs50/libcs50.svg?branch=master)](https://travis-ci.org/cs50/libcs50)
 
-## Development
+## Develop
 
 `make`: builds dynamic library
 

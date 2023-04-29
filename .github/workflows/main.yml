@@ -46,7 +46,7 @@ jobs:
           PACKAGECLOUD_REPO="cs50/repo"
 
           # Deploy deb to ubuntu repos
-          UBUNTU_REPOS=( xenial yakkety zesty artful bionic cosmic disco eoan focal groovy hirsute impish jammy lunar )
+          UBUNTU_REPOS=( xenial yakkety zesty artful bionic cosmic disco eoan focal groovy hirsute impish jammy kinetic lunar )
           for repo in "${UBUNTU_REPOS[@]}"; do
             package_cloud push "$PACKAGECLOUD_REPO"/ubuntu/"$repo" ${PWD}/artifacts/*.deb
           done

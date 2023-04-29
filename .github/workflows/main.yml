@@ -20,7 +20,7 @@ jobs:
             --volume "${PWD}/artifacts:/artifacts" \
             --volume "${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}" \
             --workdir "${GITHUB_WORKSPACE}" \
-            arm64v8/ubuntu:20.04 \
+            arm64v8/ubuntu:22.04 \
             /bin/bash -c \
             "apt-get update && \
             apt-get -qq install -y build-essential gem rpm ruby-full && \

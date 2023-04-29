@@ -4,7 +4,7 @@
  *
  * Based on Eric Roberts' genlib.c and simpio.c.
  *
- * Copyright (c) 2022
+ * Copyright (c) 2023
  * All rights reserved
  *
  * BSD 3-Clause License
@@ -52,7 +52,7 @@
 
 #include "cs50.h"
 
-// Disable warnings from some compilers about the way we use variadic arguments 
+// Disable warnings from some compilers about the way we use variadic arguments
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
 

@@ -52,7 +52,7 @@ jobs:
           done
 
           # Deploy rpm to fedora repos
-          for repo in $(seq 28 39); do
+          for repo in $(seq 28 38); do
             package_cloud push "$PACKAGECLOUD_REPO"/fedora/"$repo" ${PWD}/artifacts/*.rpm
           done
         env:

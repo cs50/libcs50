@@ -20,7 +20,7 @@ jobs:
             --volume "${PWD}/artifacts:/artifacts" \
             --volume "${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE}" \
             --workdir "${GITHUB_WORKSPACE}" \
-            arm64v8/ubuntu:20.04 \
+            arm64v8/ubuntu:22.04 \
             /bin/bash -c \
             "apt-get update && \
             apt-get -qq install -y build-essential gem rpm ruby-full && \
@@ -46,13 +46,13 @@ jobs:
           PACKAGECLOUD_REPO="cs50/repo"
 
           # Deploy deb to ubuntu repos
-          UBUNTU_REPOS=( xenial yakkety zesty artful bionic cosmic disco eoan focal groovy hirsute impish jammy )
+          UBUNTU_REPOS=( xenial yakkety zesty artful bionic cosmic disco eoan focal groovy hirsute impish jammy kinetic lunar )
           for repo in "${UBUNTU_REPOS[@]}"; do
             package_cloud push "$PACKAGECLOUD_REPO"/ubuntu/"$repo" ${PWD}/artifacts/*.deb
           done
 
           # Deploy rpm to fedora repos
-          for repo in $(seq 28 36); do
+          for repo in $(seq 28 39); do
             package_cloud push "$PACKAGECLOUD_REPO"/fedora/"$repo" ${PWD}/artifacts/*.rpm
           done
         env:

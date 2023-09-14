@@ -135,7 +135,16 @@ string get_string(va_list *args, const char *format, ...)
             // Increment buffer's capacity if possible
             if (capacity < SIZE_MAX)
             {
-                capacity++;
+                // Try to accomodate possible extra characters
+                if (capacity == 0)
+                {
+                    capacity += 1;
+                }
+                else
+                {
+                    capacity = (size_t) round(capacity * 1.6);
+                } 
+
             }
             else
             {

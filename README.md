@@ -1,6 +1,6 @@
 # CS50 Library for C
 
-[![Build Status](https://travis-ci.org/cs50/libcs50.svg?branch=master)](https://travis-ci.org/cs50/libcs50)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cs50/libcs50/main.yml)
 
 ## Development
 

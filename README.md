@@ -36,6 +36,31 @@ $ yum install libcs50
 By default, we install to `/usr/local`. If you'd like to change the installation location, run
 `sudo DESTDIR=/path/to/install make install` as desired.
 
+### On Windows OS
+
+##### Prerequisites ([how](https://code.visualstudio.com/docs/cpp/config-mingw#_prerequisites))
+
+* Install MinGM
+* Add the path to your Mingw-w64 bin folder to  the Windows PATH environment variable
+
+##### Steps
+
+0. Add files [cs50.h](https://github.com/cs50/libcs50/blob/main/src/cs50.h), [cs50.c](https://github.com/cs50/libcs50/blob/main/src/cs50.c)
+1. Include cs50.h
+
+        #include "cs50.h"
+
+2. Compiler (Command line)
+
+        gcc -o myCode myCode.c cs50.c
+
+3. Run Program (Command line)
+
+        .\myCode
+
+More and [Source](https://github.com/cs50/libcs50/issues/189#issuecomment-737173845)
+
+
 ## Troubleshooting
 1. If, when compiling a program, you see `/usr/bin/ld: cannot find -lcs50`:
 Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.

@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+"Hello, World"
+void hello_world(void)
+{
+    printf("Hello, World\n");
+}
+
+"Hello, It's Me"
+void hello_its_me(void)
+{
+    printf("Hello, It’s Me\n");
+}
+
+int main(void)
+{
+    hello_world();
+    hello_its_me();
+    return 0;
+}

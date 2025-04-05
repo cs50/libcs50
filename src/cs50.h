@@ -50,6 +50,10 @@
  */
 typedef char *string;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Prompts user for a line of text from standard input and returns the
  * equivalent char; if text is not a single char, user is prompted
@@ -108,4 +112,8 @@ long long get_long_long(const char *format, ...) __attribute__((format(printf, 1
 string get_string(va_list *args, const char *format, ...) __attribute__((format(printf, 2, 3)));
 #define get_string(...) get_string(NULL, __VA_ARGS__)
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif  // CS50_H

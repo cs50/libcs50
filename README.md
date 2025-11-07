@@ -26,6 +26,14 @@ $ curl -s https://packagecloud.io/install/repositories/cs50/repo/script.rpm.sh |
 $ yum install libcs50
 ```
 
+### Arch
+
+```
+$ yay -S libcs50 
+```
+
+
+
 ### From Source (Linux and Mac)
 
 1. Download the latest release from https://github.com/cs50/libcs50/releases

@@ -35,8 +35,6 @@ $ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/
 $ yay -S libcs50 
 ```
 
-
-
 ### From Source (Linux and Mac)
 
 1. Download the latest release from https://github.com/cs50/libcs50/releases

@@ -53,12 +53,12 @@ build/lib/$(LIB_MAJOR): build/lib/$(LIB_VERSION)
 
 .PHONY: install
 install: all
-	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
-	cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
-	cp -R $(MANS) $(DESTDIR)/$(MANDIR)
+	sudo mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
+	sudo cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
+	sudo cp -R $(MANS) $(DESTDIR)/$(MANDIR)
 
 ifeq ($(OS),Linux)
-	ldconfig $(DESTDIR)/lib
+	sudo ldconfig $(DESTDIR)/lib
 endif
 
 .PHONY: clean

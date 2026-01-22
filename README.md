@@ -29,19 +29,40 @@ $ yum install libcs50
 ### From Source (Linux and Mac)
 
 1. Download the latest release from https://github.com/cs50/libcs50/releases
-1. Extract `libcs50-*.*`
-1. `cd libcs50-*`
-1. `sudo make install`
+2. Extract `libcs50-*.*`
+3. `cd libcs50-*`
+4. `sudo make install`
 
 By default, we install to `/usr/local`. If you'd like to change the installation location, run
 `sudo DESTDIR=/path/to/install make install` as desired.
 
+### From Source (Windows / CMake) [using clang-MSVC-toolchain]
+1. Download Visual Studio Build Tools
+    - https://github.com/bycloudai/InstallVSBuildToolsWindows
+        - Remember to enable C++ Clang Tools inside _**"Desktop Development with C++"**_
+
+2. USAGE:-
+    - [TERMINAL] 
+        - `git clone <This Repository URL>`
+    - [CMAKE]
+        - `add_subdirectory("path/to/libcs50")`
+        - `target_link_libraries(YOUR_APP_NAME PUBLIC cs50)`
+    - [VSCode]
+        - C/C++ Extensions Pack with CMAKE Tools [`ms-vscode.cmake-tools`]
+        - `CMake: Select a Kit:- Clang`
+        - for other IDEs, search up "how to use MSVC Clang Toolchain on windows"
+
+3. CMake Introduction:-
+    - https://www.youtube.com/playlist?list=PLK6MXr8gasrGmIiSuVQXpfFuE1uPT615s
+        - watch first 6/7 videos, these are pretty short
+    - CMake is just way too powerfull 😉
+
 ## Troubleshooting
 1. If, when compiling a program, you see `/usr/bin/ld: cannot find -lcs50`:
 Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
-1. If, when compiling a program, you see `fatal error: 'cs50.h' file not found`:
+2. If, when compiling a program, you see `fatal error: 'cs50.h' file not found`:
 Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
-1. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
+3. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
 Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
 
 Close and reopen any terminal windows.

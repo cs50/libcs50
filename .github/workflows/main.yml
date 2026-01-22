@@ -61,7 +61,7 @@ jobs:
       - name: Extract version from Makefile
         id: make_version
         run: |
-          echo ::set-output name=version::$(make version)
+          echo "version=$(make version)" >> $GITHUB_OUTPUT
 
       - name: Create Release
         if: ${{ github.ref == 'refs/heads/main' }}

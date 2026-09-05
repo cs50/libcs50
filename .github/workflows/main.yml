@@ -3,7 +3,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build packages for linux/arm64 platform
         run: |
 
@@ -65,7 +65,7 @@ jobs:
 
       - name: Create Release
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           github-token: ${{ github.token }}
           script: |

@@ -22,6 +22,10 @@ ifeq ($(OS),Linux)
 	LIB_MAJOR := $(BASENAME).so.$(MAJOR_VERSION)
 	LIB_VERSION := $(BASENAME).so.$(VERSION)
 	LINKER_FLAGS := -Wl,-soname,$(LIB_MAJOR)
+# Windows
+else ifneq (,$(findstring MINGW,$(OS)))
+	LIB_VERSION := $(BASENAME)-$(MAJOR_VERSION).dll
+	LINKER_FLAGS := -s -Wl,--out-implib,$(LIB_VERSION).a
 # Mac
 else ifeq ($(OS),Darwin)
 	LIB_BASE := $(BASENAME).dylib
@@ -41,11 +45,16 @@ $(LIBS): $(SRC) $(INCLUDE) Makefile
 	ar rcs $(LIB_STATIC) $(LIB_OBJ)
 	chmod 644 $(LIB_STATIC)
 	rm -f $(LIB_OBJ)
+ifneq (,$(LIB_BASE))
 	ln -sf $(LIB_VERSION) $(LIB_BASE)
+endif
 	mkdir -p $(addprefix build/, include lib src)
 	install -m 644 $(SRC) build/src
 	install -m 644 $(INCLUDE) build/include
 	mv $(LIB_VERSION) $(LIB_BASE) $(LIB_STATIC) build/lib
+ifneq (,$(findstring MINGW,$(OS)))
+	mv $(LIB_VERSION).a build/lib
+endif
 
 build/lib/$(LIB_BASE): build/lib/$(LIB_MAJOR)
 
@@ -56,6 +65,10 @@ install: all
 	mkdir -p $(addprefix $(DESTDIR)/, src lib include $(MANDIR))
 	cp -R $(filter-out deb, $(wildcard build/*)) $(DESTDIR)
 	cp -R $(MANS) $(DESTDIR)/$(MANDIR)
+ifneq (,$(findstring MINGW,$(OS)))
+	mkdir -p $(addprefix $(DESTDIR)/, bin)
+	mv -f $(DESTDIR)/lib/*.dll $(DESTDIR)/bin
+endif
 
 ifeq ($(OS),Linux)
 	ldconfig $(DESTDIR)/lib

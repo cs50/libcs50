@@ -132,25 +132,47 @@ string get_string(va_list *args, const char *format, ...)
         // Grow buffer if necessary
         if (size + 1 > capacity)
         {
-            // Increment buffer's capacity if possible
-            if (capacity < SIZE_MAX)
+            // Use exponential growth strategy for better performance
+            // Start with 64 bytes, then double each time
+            size_t new_capacity;
+            if (capacity == 0)
             {
-                capacity++;
+                new_capacity = 64;
+            }
+            else if (capacity <= SIZE_MAX / 2)
+            {
+                new_capacity = capacity * 2;
             }
             else
+            {
+                // If doubling would overflow, try to increment to SIZE_MAX
+                if (capacity < SIZE_MAX)
+                {
+                    new_capacity = SIZE_MAX;
+                }
+                else
+                {
+                    free(buffer);
+                    return NULL;
+                }
+            }
+
+            // Check if we have room for the new character plus null terminator
+            if (new_capacity < size + 1)
             {
                 free(buffer);
                 return NULL;
             }
 
             // Extend buffer's capacity
-            string temp = realloc(buffer, capacity);
+            string temp = realloc(buffer, new_capacity);
             if (temp == NULL)
             {
                 free(buffer);
                 return NULL;
             }
             buffer = temp;
+            capacity = new_capacity;
         }
 
         // Append current character to buffer

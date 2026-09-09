@@ -36,6 +36,13 @@ $ yum install libcs50
 By default, we install to `/usr/local`. If you'd like to change the installation location, run
 `sudo DESTDIR=/path/to/install make install` as desired.
 
+### From Source (Windows) - Run Locally
+1. Download the latest release from https://github.com/cs50/libcs50/releases
+2. Extract `libcs50-*.*`
+3. Navigate to the `src` folder & copy both files `cs50.c` & `cs50.h`
+4. Paste these files in your directory where you are coding and compiling
+5. In your `.c` file, use `#include "cs50.h"` instead of <cs50.h>
+
 ## Troubleshooting
 1. If, when compiling a program, you see `/usr/bin/ld: cannot find -lcs50`:
 Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.

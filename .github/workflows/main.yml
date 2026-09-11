@@ -16,6 +16,7 @@ jobs:
           # Build packages on aarch64 architecture
           docker run \
             -e DEBIAN_FRONTEND=noninteractive \
+            --platform linux/arm64 \
             --rm \
             --tty \
             --volume "${PWD}/artifacts:/artifacts" \

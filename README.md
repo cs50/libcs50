@@ -26,6 +26,15 @@ $ curl -s https://packagecloud.io/install/repositories/cs50/repo/script.rpm.sh |
 $ yum install libcs50
 ```
 
+### Arch
+
+```
+$ sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+```
+```
+$ yay -S libcs50 
+```
+
 ### From Source (Linux and Mac)
 
 1. Download the latest release from https://github.com/cs50/libcs50/releases

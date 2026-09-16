@@ -43,6 +43,8 @@ Add `export LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
 Add `export C_INCLUDE_PATH=/usr/local/include` to your `.bashrc`.
 1. If, when executing a program, you see `error while loading shared libraries: libcs50.so.8: cannot open shared object file: No such file or directory`:
 Add `export LD_LIBRARY_PATH=/usr/local/lib` to your `.bashrc`.
+1. If, when compiling a program, you see something similar to `undefined reference to 'get_int'`:
+Create a `Makefile` inside the project folder, and paste the following `LDLIBS += -lcs50`.
 
 Close and reopen any terminal windows.
 

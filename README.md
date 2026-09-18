@@ -48,8 +48,20 @@ Close and reopen any terminal windows.
 
 ## Usage
 
-Link with `-lcs50`.
+To use the CS50 Library for C, you must include the header file at the top of your C file:
 
+```c
+#include <cs50.h>
+```
+
+When compiling, you must also link the library by adding the `-lcs50` flag:
+
+```bash
+gcc program.c -o program -lcs50
+```
+
+### Usage Example:
+```
     #include <cs50.h>
 
     ...
@@ -62,6 +74,63 @@ Link with `-lcs50`.
 
     // deprecated as of fall 2017
     long long ll = get_long_long("Prompt: ");
+```
+
+
+## Functions
+
+The library provides several functions for getting input from the user via standard input (`stdin`). Each function displays a prompt to the user and ensures the input matches the expected data type, re-prompting the user if the input is invalid.
+
+#### `get_char`
+Prompts the user for a single `char`.
+```c
+char c = get_char("Enter a character: ");
+```
+
+#### `get_double`
+Prompts the user for a `double` (floating-point number with double precision).
+```c
+double d = get_double("Enter a double: ");
+```
+
+#### `get_float`
+Prompts the user for a `float` (floating-point number).
+```c
+float f = get_float("Enter a float: ");
+```
+
+#### `get_int`
+Prompts the user for an `int` (integer).
+```c
+int i = get_int("Enter an integer: ");
+```
+
+#### `get_long`
+Prompts the user for a `long` (a larger integer).
+```c
+long l = get_long("Enter a long: ");
+```
+
+#### `get_string`
+Prompts the user for a sequence of characters (a "string"). In the CS50 library, `string` is a type alias for `char *`.
+```c
+string s = get_string("What's your name? ");
+```
+
+### Example
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string name = get_string("What is your name? ");
+    int age = get_int("How old are you? ");
+    
+    printf("Hello, %s! You are %i years old.\n", name, age);
+}
+```
 
 ## Documentation
 

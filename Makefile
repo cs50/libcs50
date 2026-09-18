@@ -88,7 +88,7 @@ deb: $(LIBS) $(MANS)
 	    --deb-priority optional \
 	    --description "CS50 library for C" \
 	    --input-type dir \
-	    --license "MIT" \
+	    --license "GPL-3.0" \
 	    --maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
 	    --name $(BASENAME) \
 	    --output-type deb \
@@ -121,7 +121,7 @@ rpm: $(LIBS) $(MANS)
 	    --chdir build/rpm/$(BASENAME) \
 	    --description "CS50 library for C" \
 	    --input-type dir \
-	    --license "MIT" \
+	    --license "GPL-3.0" \
 	    --maintainer "CS50 <sysadmins@cs50.harvard.edu>" \
 	    --name $(BASENAME) \
 	    --output-type rpm \

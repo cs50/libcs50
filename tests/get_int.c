@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    int i = get_int();
+    int i = get_int("Bar: ");
     printf("%i\n", i);
     int j = get_int("Foo: ");
     printf("%i\n", j);

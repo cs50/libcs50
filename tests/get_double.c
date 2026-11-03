@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    double d = get_double("Double: ");
+    double d = get_double("Enter a double: ");
     printf("%g\n", d);
 }

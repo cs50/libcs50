@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    long long ll = get_long_long("Long long: ");
-    printf("%lld\n", ll);
+    long long n = get_long_long("Enter a long long: ");
+    printf("%lld\n", n);
 }

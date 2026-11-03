@@ -10,11 +10,17 @@
 
 `make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
 
-`make test`: compiles the example programs in `tests/` into `build/tests/`.
+`make test`: compiles the interactive example programs in `tests/` into `build/tests/`.
 
 ## Running the examples
 
-From the repository root, run `make test` to compile the examples. Then run an example, such as `build/tests/get_int`, and enter a value when prompted. The examples demonstrate the library's input functions; they are interactive programs, not automated assertions.
+From the repository root, run `make test` to compile the examples, then run one of the resulting programs and enter a value when prompted. For example:
+
+```sh
+build/tests/get_int
+```
+
+Examples are available for `get_char`, `get_double`, `get_float`, `get_int`, `get_long`, `get_long_long`, and `get_string`. These programs demonstrate interactive use; `make test` compiles them but does not run them automatically.
 
 ## Installation
 

@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    float f = get_float("Float: ");
-    printf("%g\n", f);
+    float f = get_float("Enter a float: ");
+    printf("%g\n", (double) f);
 }

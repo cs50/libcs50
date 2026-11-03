@@ -3,6 +3,6 @@
 
 int main(void)
 {
-    char c = get_char("Character: ");
+    char c = get_char("Enter a character: ");
     printf("%c\n", c);
 }

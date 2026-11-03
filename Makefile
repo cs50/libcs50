@@ -53,6 +53,7 @@ build/lib/$(LIB_BASE): build/lib/$(LIB_MAJOR)
 
 build/lib/$(LIB_MAJOR): build/lib/$(LIB_VERSION)
 
+# Compile the interactive example programs in tests/.
 .PHONY: test
 test: $(TEST_PROGRAMS)
 

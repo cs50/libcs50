@@ -8,6 +8,8 @@ MANDIR ?= share/man/man3
 SRC := src/cs50.c
 INCLUDE := src/cs50.h
 MANS := $(wildcard docs/*.3.gz)
+TEST_SOURCES := $(wildcard tests/*.c)
+TEST_PROGRAMS := $(patsubst tests/%.c,build/tests/%,$(TEST_SOURCES))
 
 CFLAGS=-Wall -Wextra -Werror -pedantic -std=c11
 BASENAME=libcs50
@@ -50,6 +52,13 @@ $(LIBS): $(SRC) $(INCLUDE) Makefile
 build/lib/$(LIB_BASE): build/lib/$(LIB_MAJOR)
 
 build/lib/$(LIB_MAJOR): build/lib/$(LIB_VERSION)
+
+.PHONY: test
+test: $(TEST_PROGRAMS)
+
+build/tests/%: tests/%.c $(SRC) $(INCLUDE) Makefile
+	mkdir -p build/tests
+	$(CC) $(CFLAGS) -Isrc -o $@ $< $(SRC)
 
 .PHONY: install
 install: all

@@ -10,6 +10,18 @@
 
 `make install`: installs the library under `/usr/local` by default (set `DESTDIR` to change that)
 
+`make test`: compiles the interactive example programs in `tests/` into `build/tests/`.
+
+## Running the examples
+
+From the repository root, run `make test` to compile the examples, then run one of the resulting programs and enter a value when prompted. For example:
+
+```sh
+build/tests/get_int
+```
+
+Examples are available for `get_char`, `get_double`, `get_float`, `get_int`, `get_long`, `get_long_long`, and `get_string`. These programs demonstrate interactive use; `make test` compiles them but does not run them automatically.
+
 ## Installation
 
 ### Ubuntu
@@ -66,10 +78,6 @@ Link with `-lcs50`.
 ## Documentation
 
 See `man get_*` after installation, or [CS50 Reference](https://reference.cs50.net/cs50/)!
-
-## TODO
-
-*   Add tests.
 
 ## Contributors
 
